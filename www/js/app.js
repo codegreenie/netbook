@@ -40,7 +40,7 @@ toastMe = function(toastMessage){
 
 messenger = function(theMessage, theChannel, theEmail, thePhone, theSubject){
 
-  app.request.post('http://192.168.10.101/repo/php_hub/auditbar_backend/messenger.php', 
+  app.request.post('https://nairasurvey.com/auditbar_backend/messenger.php', 
             {
              "the_message" : theMessage,
              "the_channel" : theChannel,
@@ -273,7 +273,7 @@ $$(document).on('page:init', '.page[data-name="login"]', function (e){
           $$("#login-btn").html("Logging in...").prop("disabled", true);
             
 
-            app.request.post('http://192.168.10.101/repo/php_hub/auditbar_backend/user_login.php', 
+            app.request.post('https://nairasurvey.com/auditbar_backend/user_login.php', 
             {
              "user_email" : $$("#user-email").val(),
              "user_password" : $$("#user-password").val()
@@ -462,7 +462,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
             tempStorage = JSON.parse(tempStorage);
 
 
-             app.request.post('http://192.168.10.101/repo/php_hub/auditbar_backend/user_registration.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/user_registration.php', 
             {
              "new_user_first_name" : tempStorage.first_name,
              "new_user_last_name" : tempStorage.last_name,
@@ -564,7 +564,7 @@ $$(document).on('page:init', '.page[data-name="recovery"]', function (e){
         else{
 
             $$(this).html("Please wait...").prop("disabled", true);
-             app.request.post('http://192.168.10.101/repo/php_hub/auditbar_backend/recover_account.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/recover_account.php', 
             {
              "user_email" : $$("#recovery-email").val(),
            },
@@ -771,7 +771,7 @@ $$(document).on('page:init', '.page[data-name="newpassword"]', function (e){
         else{
 
             $$(this).html("Please wait...").prop("disabled", true);
-             app.request.post('http://192.168.10.101/repo/php_hub/auditbar_backend/set_new_password.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/set_new_password.php', 
             {
             "user_serial_no" : recoveryProps.user_serial_no,
              "user_email" : recoveryProps.recovery_email,
