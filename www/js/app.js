@@ -854,7 +854,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
             labelText : 'Expenses',
             labelTextColor : '#2f2f2f'
           });
-         }, 5000);
+         }, 3000);
 
 
 
