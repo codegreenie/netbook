@@ -36,6 +36,11 @@ body{
 .swiper-pagination-bullet{
 	margin-right:10px;
 }
-
+div.invoice-item::before{
+	display: none !important;
+}
+.keyboard-open{
+	font-size: 13px !important;
+}
 
 
