@@ -1,6 +1,5 @@
 // Declare Global variables
-var getLogo, messenger, shift;
-
+var getLogo, messenger, shift, selectCompany, grabCompanySummary, resetDashboard, resetDateRange, changeCurrency, refreshInvoiceList, invoicePageRefreshList, deleteInvoiceItem, uploadCompanyLogo;
 
 
 // Dom7
@@ -28,7 +27,7 @@ toastMe = function(toastMessage){
 
     var toastMe = app.toast.create({
     text: toastMessage,
-    position: 'bottom',
+    position: 'center',
     closeTimeout: 3000,
   });
 
@@ -127,7 +126,7 @@ function deviceIsReady(){
     var currentPage = mainView.router.currentRoute.name;
     
     //Re-route to Dashboard
-    if(currentPage == "dashboard" || currentPage == "main" || currentPage == "login" || currentPage == "slides"){
+    if(currentPage == "dashboard" || currentPage == "login" || currentPage == "slides" || currentPage == "signup"){
 
         navigator.app.exitApp();
     }
@@ -147,6 +146,8 @@ function deviceIsReady(){
 
   getLogo = function(){
 
+    
+
       navigator.camera.getPicture(cameraSuccess, cameraError, {
 
           sourceType : Camera.PictureSourceType.PHOTOLIBRARY,
@@ -163,7 +164,13 @@ function deviceIsReady(){
 
           //change the logo to selected image and store logo name in localstorage
 
-          $$(".logo-to-change").prop("src", imageURI);
+          $$(".the-logo-to-change").prop("src", imageURI).css({
+            "border-radius": "100%",
+            "max-width" : "100px",
+            "min-width" : "100px",
+            "max-height" : "100px",
+            "min-height" : "100px"
+          });
 
           var tempStorage = window.localStorage.getItem("temporaryReg");
           tempStorage = JSON.parse(tempStorage);
@@ -172,14 +179,70 @@ function deviceIsReady(){
             tempStorage = JSON.stringify(tempStorage);
             window.localStorage.setItem("temporaryReg", tempStorage);
 
-
+            $$("#store-company-logo").val(imageURI);
         }
 
         function cameraError(message){
 
-          app.dialog.alert("Failed: " + message);
+          toastMe("Uanble to get image " + message);
 
         }
+
+
+  }
+
+
+
+  uploadCompanyLogo = function(){
+
+
+$("#upload-company-logo-form").ajaxSubmit({
+            
+            beforeSend : function(){
+                
+                //$("#registration-btn").html("<i class='fa fa-spinner fa-spin'></i>").prop("disabled", "disabled");
+            
+            },
+            success : (data) => {
+
+              console.log(data);
+              var dataParse = JSON.parse(data);
+
+              
+            if (dataParse.status == "upload successful"){
+
+              var moiChosenCompany = window.localStorage.getItem("chosenCompany");
+              moiChosenCompany = JSON.parse(moiChosenCompany);
+
+              for(x in moiChosenCompany){
+                moiChosenCompany["company_logo"] = dataParse.file_url;
+              }
+              window.localStorage.setItem("chosenCompany", JSON.stringify(moiChosenCompany));
+
+              window.setTimeout(function(){
+                mainView.router.navigate("/regchooseplan/");
+              }, 2000);
+              
+            }
+
+            else{
+
+              window.alert(dataParse);
+              $("#registration-btn").html("<i class='fa fa-check-square'></i> Register").prop("disabled", false);
+            }
+
+                  
+             },
+
+            error : (jqXHR, error, status) => {
+
+             window.alert("Unable to locate file. Network Error");
+       $("#registration-btn").html("<i class='fa fa-check-square'></i> Register").prop("disabled", false);
+
+            }
+        });
+
+
 
 
   }
@@ -206,8 +269,9 @@ $$(document).on('page:init', function (e) {
 });
 
 
-$$(document).on('page:init', '.page[data-name="main"]', function (e){
+$$(document).on('page:init', '.page[data-name="slides"]', function (e){
 
+  $$("#continue-btn").hide();
 
 
         app.swiper.create({
@@ -233,23 +297,20 @@ $$(document).on('page:init', '.page[data-name="main"]', function (e){
             thisSwipe = swiper.activeIndex;
             switch(thisSwipe){
                     case 2 : 
-                    $$("#next-btn").text("Continue");
+                    $$("#next-btn").hide();
+                    $$("#continue-btn").show();
                     break;
 
                     default :
-                    $$("#next-btn").text("Next");
+                    $$("#next-btn").show();
+                    $$("#continue-btn").hide();
                     console.log("You hit a road block");
             }
 
           });
 
 
-          $$("#next-btn").click(function(){
-            thisSwipe = swiper.activeIndex;
-            if (thisSwipe == 2) {
-              mainView.router.navigate("/login/");
-            }
-          });
+        
 
 
 });
@@ -302,6 +363,27 @@ $$(document).on('page:init', '.page[data-name="login"]', function (e){
 
                 console.log(dataCheck.status);
                 toastMe("Login successful!");
+
+                dateRange = {
+                  "fromDate" : "",
+                  "endDate" : ""
+                }
+                dateRange = JSON.stringify(dateRange);
+                var dateRange = window.localStorage.setItem("dateRange", dateRange);
+                
+
+                //quickly set chosen company
+                var favouriteCompanyID = dataCheck.companys[0].company_id;
+                var favouriteCompanyName = dataCheck.companys[0].company_name;
+                var favouriteCompanyLogo = dataCheck.companys[0].company_logo;
+
+                var chosenCompany = {
+                  company_id : favouriteCompanyID,
+                  company_name : favouriteCompanyName,
+                  company_logo : favouriteCompanyLogo
+                }
+
+                window.localStorage.setItem("chosenCompany", JSON.stringify(chosenCompany));
 
                 window.localStorage.setItem("permanentReg", data);
                   window.setTimeout(function(){
@@ -445,18 +527,10 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
       $$("#temp-company-name").text(companyName);
 
 
-      toastMe("Click icon to set your Logo");
+      $$("#store-company-logo").change(function(){
 
 
-      $$(".logo-to-change").click(function(){
-        getLogo();
-      });
-
-
-
-      $$("#finish-btn, #skip-logo").click(function(e){
-
-            $$(this).text("Finishing...").prop("disabled", true);
+        $$("#skip-logo-btn").html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
 
             var tempStorage = window.localStorage.getItem("temporaryReg");
             tempStorage = JSON.parse(tempStorage);
@@ -474,7 +548,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
              "company_description" : tempStorage.businessDescription
            },
              function (data) {
-              
+              console.log(data);
               data = JSON.parse(data);
               console.log(data);
 
@@ -483,40 +557,150 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
                 console.log(data.status);
                 toastMe(data.status);
                 $$("#finish-btn").html("Finish Registration").prop("disabled", false);
+                
 
               }
               else{
 
                 
-            var tempStorage = window.localStorage.getItem("temporaryReg");
-            tempStorage = JSON.parse(tempStorage);
+                var tempStorage = window.localStorage.getItem("temporaryReg");
+                tempStorage = JSON.parse(tempStorage);
 
-            var tempRegInputs = ["userSerial", "companys"];
-            var tempRegArray = [data.user_serial, data.companys];
+                var tempRegInputs = ["userSerial", "companys"];
+                var tempRegArray = [data.user_serial, data.companys];
 
-            for (var i = 0; i < tempRegInputs.length; i++) {
+                for (var i = 0; i < tempRegInputs.length; i++) {
 
-              var tempInput = tempRegInputs[i];
-              var tempReg = tempRegArray[i];
+                  var tempInput = tempRegInputs[i];
+                  var tempReg = tempRegArray[i];
 
-              tempStorage[tempInput] = tempReg;
+                  tempStorage[tempInput] = tempReg;
 
-            }
-            tempStorage = JSON.stringify(tempStorage);
-            window.localStorage.setItem("permanentReg", tempStorage);
-            
-            window.setTimeout(function(){
-                mainView.router.navigate("/regchooseplan/");
-            }, 3000);
+                }
+                tempStorage = JSON.stringify(tempStorage);
+                window.localStorage.setItem("permanentReg", tempStorage);
+
+                var companyID = data.companys[0].company_id;
+
+                $$("#company-id-palette").val(companyID);
+
+                //build chosen company parameters
+                var myChosenCompany = {
+                  "company_name" : data.companys[0].company_name,
+                  "company_id" : companyID
+                }
+
+                window.localStorage.setItem("chosenCompany", JSON.stringify(myChosenCompany));
+
+                var dateRange = {
+                  "fromDate" : "",
+                  "endDate" : ""
+                }
+                window.localStorage.setItem("dateRange", JSON.stringify(dateRange));
+                
+
+                // now quickly upload company logo
+                window.setTimeout(function(){
+                  uploadCompanyLogo();
+                }, 1000);
+                
                       
               }
 
             }, function(){
               
                     toastMe("Network Error, Try again later");
-                    $$("#finish").text("Finish Registration").prop("disabled", false);
-                    $$("#skip-logo").text("Skip").prop("disabled", false);
+                    $$("#finish-btn").text("Finish Registration").prop("disabled", false);
+            });
 
+      });
+      
+
+
+
+      $$("#skip-logo-btn").click(function(e){
+
+            $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
+
+            var tempStorage = window.localStorage.getItem("temporaryReg");
+            tempStorage = JSON.parse(tempStorage);
+
+
+             app.request.post('https://nairasurvey.com/auditbar_backend/user_registration.php', 
+            {
+             "new_user_first_name" : tempStorage.first_name,
+             "new_user_last_name" : tempStorage.last_name,
+             "new_user_mail" : tempStorage.user_email,
+             "new_user_phone" : tempStorage.phone_number,
+             "new_user_password" : tempStorage.tempUserPassword,
+             "company_name" : tempStorage.businessName,
+             "company_email" : tempStorage.businessEmail,
+             "company_description" : tempStorage.businessDescription
+           },
+             function (data) {
+              console.log(data);
+              data = JSON.parse(data);
+              console.log(data);
+
+              if (data.status != "account created") {
+
+                console.log(data.status);
+                toastMe(data.status);
+                $$("#finish-btn").html("Finish Registration").prop("disabled", false);
+                
+
+              }
+              else{
+
+                
+                var tempStorage = window.localStorage.getItem("temporaryReg");
+                tempStorage = JSON.parse(tempStorage);
+
+                var tempRegInputs = ["userSerial", "companys"];
+                var tempRegArray = [data.user_serial, data.companys];
+
+                for (var i = 0; i < tempRegInputs.length; i++) {
+
+                  var tempInput = tempRegInputs[i];
+                  var tempReg = tempRegArray[i];
+
+                  tempStorage[tempInput] = tempReg;
+
+                }
+                tempStorage = JSON.stringify(tempStorage);
+                window.localStorage.setItem("permanentReg", tempStorage);
+
+                var companyID = data.companys[0].company_id;
+
+                var myChosenCompany = {
+                  "company_name" : data.companys[0].company_name,
+                  "company_id" : companyID,
+                  "company_logo" : ""
+                }
+
+                window.localStorage.setItem("chosenCompany", JSON.stringify(myChosenCompany));
+
+
+
+                var dateRange = {
+                  "fromDate" : "",
+                  "endDate" : ""
+                }
+                window.localStorage.setItem("dateRange", JSON.stringify(dateRange));
+                
+                // now quickly upload company logo
+                window.setTimeout(function(){
+                  mainView.router.navigate("/regchooseplan/");
+                }, 1500);
+                
+                
+                      
+              }
+
+            }, function(){
+              
+                    toastMe("Network Error, Try again later");
+                    $$("#finish-btn").text("Finish Registration").prop("disabled", false);
             });
 
            
@@ -540,6 +724,8 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
 
 $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
 
+
+    console.log("Welcome to the reg choose plan page");
 
 
   });
@@ -735,6 +921,10 @@ $$(document).on('page:init', '.page[data-name="recoverycode"]', function (e){
 
             $$("#verify-btn").text("Verify").prop("disabled", false);
             toastMe("Wrong recovery code!");
+            $$("#recovery-code-div").addClass("shake");
+            window.setTimeout(function(){
+              $$("#recovery-code-div").removeClass("shake");
+            }, 2500);
 
         }
 
@@ -826,10 +1016,180 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
 
   var permanentReg = window.localStorage.getItem("permanentReg");
   permanentReg = JSON.parse(permanentReg);
-  var company_name = permanentReg.companys[0]["company_name"];
-  $$(".company-name").text(company_name);
+
+  var addItem = app.popup.create({
+    el : ".add-business-popup"
+  });
+
+
+ 
+
+  var theChosenCompany = window.localStorage.getItem("chosenCompany");
+  theChosenCompany = JSON.parse(theChosenCompany);
+  var chosen_company_name = theChosenCompany.company_name;
+  var chosen_company_logo = theChosenCompany.company_logo;
+  var chosen_company_id = theChosenCompany.company_id;
+
+  $$(".company-name").text(chosen_company_name);
+  /*var logoLink = "https://nairasurvey.com/auditbar_backend/businesses/" + company_name + "_" + company_id + "/" + company_logo;
+  console.log(logoLink);
+  $$(".company-logo").prop("src", logoLink);*/
+  
+  //then load default chosen company summary
+  window.setTimeout(function(){
+    resetDateRange();
+    grabCompanySummary(chosen_company_id);
+  }, 1500);
+
+
+  var ptr = $$('.ptr-content');
+  ptr.on("ptr:refresh", function(){
+    var theChosenCompany = window.localStorage.getItem("chosenCompany");
+    theChosenCompany = JSON.parse(theChosenCompany);
+    resetDateRange();
+    grabCompanySummary(chosen_company_id);
+    setTimeout(function(){
+      app.ptr.done();
+    }, 5000);
+  });
+  
+
+
+  //Load up company list in popover
+  for (var i = 0; i < permanentReg.companys.length; i++) {
+
+    var company_id = permanentReg.companys[i]["company_id"];
+    var company_name = permanentReg.companys[i]["company_name"];
+    var company_logo = permanentReg.companys[i]["company_logo"];
+
+    var peg = "<li><a class='list-button item-link' href='#' onclick=selectCompany(" + company_id + ")>" + company_name + "</a></li>";
+    $$("#dashboard-company-list").append(peg);
+  }
+
+   var dashboardPopover = app.popover.create({
+      el : '.popover-company-list'
+   });
+
+
+  selectCompany = function(theCompanyID){
+
+        for (var i = 0; i < permanentReg.companys.length; i++) {
+
+        var company_id = permanentReg.companys[i]["company_id"];
+        if (company_id == theCompanyID) {
+
+          var company_name = permanentReg.companys[i]["company_name"];
+          var company_logo = permanentReg.companys[i]["company_logo"];
+          var company_email = permanentReg.companys[i]["company_email"];
+          $$(".company-name").text(company_name);
+          dashboardPopover.close();
+
+          //update chosen company
+          var chosenCompanyDetails = {
+            "company_id" : theCompanyID,
+            "company_name" : company_name,
+            "company_logo" : company_logo,
+            "company_email" : company_email
+          }
+          chosenCompanyDetails = JSON.stringify(chosenCompanyDetails);
+          window.localStorage.setItem("chosenCompany", chosenCompanyDetails);
+          resetDateRange();
+          grabCompanySummary(theCompanyID);
+
+          break;
+        }
+        
+      }
+
+  }
+
+
+
+  grabCompanySummary = function(theCompanyID){
+
+    var dateRange = window.localStorage.getItem("dateRange");
+    dateRange = JSON.parse(dateRange);
+
+      app.request.post('https://nairasurvey.com/auditbar_backend/company_summary.php', 
+            {
+            "company_serial" : theCompanyID,
+             "from_date" : dateRange.fromDate,
+             "to_date" : dateRange.endDate            
+           },
+             function (data) {
+
+              console.log(data);
+
+              dataCheck = JSON.parse(data);
+              console.log(dataCheck);
+              var cashIDs = ["total-income", "total-expenses", "gross-profit", "total-invoice-amount", "total-paid-invoice", "total-unpaid-invoice", "inventory", "labour", "rent", "tax", "other", "net-profit"];
+              var viewDatas = ["total_invoice_income", "total_expenses", "gross_profit", "total_invoice_amount", "total_invoice_income", "total_invoice_pending", "inventory_expenses", "labour_expenses", "rent_expenses", "tax_expenses", "other_expenses", "net_profit"];
+
+                if (dataCheck.status == "no transactions") {
+                  toastMe("No transactions");
+                  resetDashboard();  
+                }
+                else{
+                  for (var i = 0; i < cashIDs.length; i++) {
+                    var thisDataView = viewDatas[i];
+                    $$("#" + cashIDs[i]).text("NGN" + dataCheck[thisDataView]);
+                  }
+
+                   gauge.update({
+                      value : dataCheck.guage_calculator,
+                      valueText : (parseInt(dataCheck.guage_calculator * 100)) + '%',
+                      borderColor : '#f93',
+                      borderBgColor : '#069',
+                      labelText : 'Expenses',
+                      labelTextColor : '#2f2f2f'
+                    });
+                   
+                }
+             },
+             function(){
+                toastMe("Network error. Try again later");
+             });
+      }
+
+
+
+
+      resetDashboard = function(){
+
+         var cashIDs = ["total-income", "total-expenses", "gross-profit", "total-invoice-amount", "total-paid-invoice", "total-unpaid-invoice", "inventory", "labour", "rent", "tax", "other", "net-profit"];
+
+         for (var i = 0; i < cashIDs.length; i++) {
+            $$("#" + cashIDs[i]).text("NGN0");
+          }
+            gauge.update({
+              value : '0',
+              valueText : '0%',
+              borderColor : 'transparent',
+              borderBgColor : '#eeeeee',
+              labelText : 'Expenses',
+              labelTextColor : '#2f2f2f'
+            });
+
+          resetDateRange(); 
+      }
+
+
+
+      function resetDateRange(){
+
+        var dateRange = window.localStorage.getItem("dateRange");
+        dateRange = JSON.parse(dateRange);
+        for (var p in dateRange) {
+          dateRange[p] = "";
+        }
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("dateRange", dateRange);
+
+      }
 
   
+
+
 
         var gauge = app.gauge.create({
           el: '.gauge',
@@ -845,16 +1205,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
         });
 
 
-         window.setTimeout(function(){
-          gauge.update({
-            value : '0.35',
-            valueText : '35%',
-            borderColor : '#ff9500',
-            borderBgColor : '#069',
-            labelText : 'Expenses',
-            labelTextColor : '#2f2f2f'
-          });
-         }, 3000);
+        
 
 
 
@@ -863,8 +1214,68 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
             openIn: 'customModal',
             header: true,
             footer: true,
-            dateFormat: 'MM dd yyyy',
-            rangePicker : true
+            dateFormat: 'yyyy-mm-dd',
+            rangePicker : true,
+            direction : 'vertical',
+            header: true,
+            toolbarCloseText : 'Apply',
+            headerPlaceholder : 'Auditbar custom date',
+            closeByOutsideClick : false,
+            on: {
+              closed: function(){
+                console.log(calendarModal.value);
+                var fromDate = calendarModal.value[0];
+                var fromDay;
+                if (fromDate.getDate().toString().length == 1) {
+                  fromDay = "0" + fromDate.getDate();
+                }
+                else{
+                  fromDay = fromDate.getDate();
+                }
+
+
+                var fromMonth;
+                if (fromDate.getMonth().toString().length == 1) {
+                  fromMonth = "0" + parseInt(fromDate.getMonth() + 1);
+                }
+                else{
+                  fromMonth = parseInt(fromDate.getMonth()) + 1;
+                }
+
+                var mergeFromDate = fromDate.getFullYear() + "-" + fromMonth + "-" + fromDay + " " + "00:00:00";
+                console.log(mergeFromDate);
+
+                var endDate = calendarModal.value[1];
+                var endDay;
+                if (endDate.getDate().toString().length == 1) {
+                  endDay = "0" + endDate.getDate();
+                }
+                else{
+                  endDay = fromDate.getDate();
+                }
+
+                var endMonth;
+                if (endDate.getMonth().toString().length == 1) {
+                  endMonth = "0" + parseInt(endDate.getMonth() + 1);
+                }
+                else{
+                  endMonth = endDate.getMonth();
+                }
+
+                var mergeEndDate = endDate.getFullYear() + "-" + endMonth + "-" + endDay + " " + "00:00:00";
+                console.log(mergeEndDate);
+
+                var dateRange = window.localStorage.getItem("dateRange");
+                dateRange = JSON.parse(dateRange);
+                for (var p in dateRange) {
+                  dateRange["fromDate"] = mergeFromDate;
+                  dateRange["endDate"] = mergeEndDate;
+                }
+                dateRange = JSON.stringify(dateRange);
+                window.localStorage.setItem("dateRange", dateRange);
+                grabCompanySummary(chosen_company_id);
+              }
+            }
           });
 
 
@@ -877,21 +1288,327 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
 
 $$(document).on('page:init', '.page[data-name="more"]', function (e){
 
+  var chosenCompany = window.localStorage.getItem("chosenCompany");
+  chosenCompany = JSON.parse(chosenCompany);
+
+  $$(".company-name").text(chosenCompany.company_name);
+
+  $$("#logout-button").click(function(){
+    app.dialog.confirm("Are you sure you want to Log out?", function(){
+      window.localStorage.removeItem("permanentReg");
+      window.localStorage.removeItem("chosenCompany");
+      window.localStorage.removeItem("invoiceList");
+      window.localStorage.removeItem("dateRange");
+
+      mainView.router.navigate("/login/");
+    });
+  });
+
+});
+
+
+
+
+
+$$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
+
+  if(!window.localStorage.getItem("invoiceList")){
+    window.localStorage.setItem("invoiceList", JSON.stringify({
+      "item_name" : [],
+      "item_price" : [],
+      "item_quantity" : [],
+      "item_description" : []
+    }));
+  }
+
+
+  var invoiceList = window.localStorage.getItem("invoiceList");
+  invoiceList = JSON.parse(invoiceList);
+
+
   var permanentReg = window.localStorage.getItem("permanentReg");
   permanentReg = JSON.parse(permanentReg);
-  var company_name = permanentReg.companys[0]["company_name"];
-  $$(".company-name").text(company_name);
 
-      var calendarModal = app.calendar.create({
-            inputEl: '.demo-calendar-modal',
+  var chosenCompany = window.localStorage.getItem("chosenCompany");
+  chosenCompany = JSON.parse(chosenCompany);
+
+  $$(".company-name").text(chosenCompany.company_name);
+
+  changeCurrency = function(theCurrency){
+    $$("#currency-plate").text(theCurrency);
+    $$("#currency").val(theCurrency);
+    currencyPopover.close();
+  }
+
+  var currencyPopover = app.popover.create({
+      el : '.popover-currency-change'
+   });
+
+  var addItemPopup = app.popup.create({
+      el : '.add-item-popup'
+  });
+
+  var viewListPopup = app.popup.create({
+      el : '.view-list-popup',
+      on: {
+        opened: function (popup) {
+          toastMe('Swipe an item left to delete');
+        }
+      }
+  });
+
+
+  var previewInvoicePopup = app.popup.create({
+      el : '.preview-invoice-popup'
+  });
+
+
+  var invoiceSentPopup = app.popup.create({
+      el : '.invoice-sent-popup'
+  });
+  
+
+
+   var calendarModal = app.calendar.create({
+            inputEl: '#invoice-due-date',
             openIn: 'customModal',
             header: true,
             footer: true,
-            dateFormat: 'MM dd yyyy',
-            rangePicker : true
-      });
+            dateFormat: 'yyyy-mm-dd',
+            rangePicker : false,
+            direction : 'vertical',
+            header: true,
+            toolbarCloseText : 'Apply',
+            headerPlaceholder : 'Auditbar custom date',
+            closeByOutsideClick : false,
+            
+          });
 
+  
+
+
+  $$('.swipeout').on('swipeout:deleted', function () {
+    app.dialog.alert('Thanks, item removed!');
   });
+
+
+  refreshInvoiceList = function(){
+
+    var chosenCurrency = $$("#currency").val();
+
+    $$("#invoice-list-container").html("");
+
+    for (var i = 0; i < invoiceList["item_name"].length; i++) {
+      var itemName = invoiceList["item_name"][i];
+      var itemQty = invoiceList["item_quantity"][i];
+      var itemPrice = invoiceList["item_price"][i];
+      var itemDescription = invoiceList["item_description"][i];
+
+      var itemTotalPrice = itemQty * itemPrice;
+
+      var listItem = "<li class='swipeout'><div class='swipeout-content'><a href='#' class='item-link item-content'><div class='item-media'><i class='icon f7-icons'>document</i></div><div class='item-inner invoice-item'><div class='item-title'><div class='item-header'>" + chosenCurrency + "" + itemPrice + " X " + itemQty + "</div>" + itemName + "</div><div class='item-after'>NGN" + itemTotalPrice + "</div></div></a></div><div class='swipeout-actions-right'><a href='#' class='swipeout-delete' onclick=\"deleteInvoiceItem('" + i + "')\"><i class='icon material-icons'>delete</i></a></div></li>"
+      $$("#invoice-list-container").append(listItem);
+    }
+
+  }
+
+
+  refreshInvoiceList();
+
+
+
+
+
+    invoicePageRefreshList = function(){
+
+    $$("#invoice-page-list").html("");
+
+    for (var i = 0; i < invoiceList["item_name"].length; i++) {
+
+      if (i == 5) {
+        break;
+      }
+
+      var itemName = invoiceList["item_name"][i];
+      var itemQty = invoiceList["item_quantity"][i];
+      var itemPrice = invoiceList["item_price"][i];
+      var itemDescription = invoiceList["item_description"][i];
+
+      var itemTotalPrice = itemQty * itemPrice;
+
+      var listItem = "<li><a href='#' class='item-link item-content'><div class='item-media'><i class='icon f7-icons'>document</i></div><div class='item-inner invoice-item'><div class='item-title'><div class='item-header'>X " + itemQty + "</div>" + itemName + "</div><div class='item-after'>NGN" + itemTotalPrice + "</div></div></a></li>";
+        $$("#invoice-page-list").append(listItem);
+    }
+
+  }
+
+
+  invoicePageRefreshList();
+
+
+  deleteInvoiceItem = function(arrayNumber){
+    
+
+      var itemName = invoiceList["item_name"];
+      var itemQty = invoiceList["item_quantity"];
+      var itemPrice = invoiceList["item_price"];
+      var itemDescription = invoiceList["item_description"];
+
+
+      console.log("Before deletion", itemName);
+
+        var theIndex = itemName.indexOf(itemName[arrayNumber]);
+        if (theIndex >  -1) {
+          itemName.splice(theIndex, 1);
+          itemPrice.splice(theIndex, 1);
+          itemQty.splice(theIndex, 1);
+          itemDescription.splice(theIndex, 1);
+        }
+
+        console.log("After deletion", itemName);
+        window.localStorage.setItem("invoiceList", JSON.stringify({
+          "item_name" : itemName,
+          "item_price" : itemPrice,
+          "item_quantity" : itemQty,
+          "item_description" : itemDescription
+        }));
+        refreshInvoiceList();
+        invoicePageRefreshList();
+  }
+
+
+
+
+
+  $$("#add-item-button").click(function(){
+
+    if ($$("#item-name").val().trim() == "" || $$("#item-price").val().trim() == "" || $$("#item-quantity").val().trim() == "") {
+
+      app.dialog.alert("Please complete the form!");
+
+    }
+    else{
+
+          $$(this).html("Adding Item...").prop("disabled", true);
+          invoiceList["item_name"].push($$("#item-name").val());
+          invoiceList["item_quantity"].push($$("#item-quantity").val());
+          invoiceList["item_price"].push($$("#item-price").val());
+          invoiceList["item_description"].push($$("#item-description").val());
+          console.log(invoiceList);
+          window.localStorage.setItem("invoiceList", JSON.stringify(invoiceList));
+          $$(this).html("Add").prop("disabled", false);
+          refreshInvoiceList();
+          invoicePageRefreshList();
+          addItemPopup.close();
+          $$("#item-name").val("").blur();
+          $$("#item-quantity").val("").blur();
+          $$("#item-price").val("").blur();
+          $$("#item-description").val("").blur();       
+    }
+  });
+
+
+
+
+
+
+    $$("#preview-invoice-button").click(function(){
+
+      var invoiceList = window.localStorage.getItem("invoiceList");
+      invoiceList = JSON.parse(invoiceList);
+
+      if ($$("#invoice-name").val().trim() == "" || $$("#invoice-due-date").val().trim() == "" || $$("#biller").val().trim() == "" || $$("#biller-address").val().trim() == "" || $$("#bank-details").val().trim() == "" || $$("#invoice-terms").val().trim() == "" || invoiceList["item_name"].length == 0) {
+
+          app.dialog.alert("Please complete the form!");
+
+      }
+      else{
+
+      var totalInvoicePrice = 0;
+      for (var i = 0; i < invoiceList["item_price"].length; i++) {
+        var invoiceItemPrice = invoiceList["item_price"][i];
+        var invoiceItemQty = invoiceList["item_quantity"][i];
+        var itemTotalPrice = parseInt(invoiceItemPrice) * parseInt(invoiceItemQty);
+        totalInvoicePrice = totalInvoicePrice + itemTotalPrice;
+      }
+
+      $$("#company-name-plate").text(chosenCompany.company_name);
+      $$("#company-email-plate").text(chosenCompany.company_email);
+      $$("#invoice-currency-plate").text($$("#currency").val());
+      $$("#invoice-name-plate").text($$("#invoice-name").val());
+      $$("#invoice-due-date-plate").text($$("#invoice-due-date").val());
+      $$("#invoice-biller-plate").text($$("#biller").val());
+      $$("#invoice-biller-email-plate").text($$("#biller-email").val());
+      $$("#invoice-biller-phone-plate").text($$("#biller-phone").val());
+      $$("#invoice-date-plate").text(new Date().getFullYear() + "-" + new Date().getMonth() + "-" + new Date().getDay());
+
+      $$("#invoice-biller-address-plate").text($$("#biller-address").val());
+      $$("#invoice-bank-details-plate").text($$("#bank-details").val());
+      $$("#invoice-terms-plate").text($$("#invoice-terms").val());
+      $$("#invoice-items-count-plate").text(invoiceList["item_name"].length + " item(s)");
+      $$("#invoice-total-plate").text(totalInvoicePrice);
+
+      previewInvoicePopup.open();
+
+
+    }
+    });
+
+
+
+
+    $$("#send-invoice-button").click(function(){
+
+      $$(this).html("Sending...").prop("disbled", true);
+      
+
+          app.request.post("https://nairasurvey.com/auditbar_backend/create_invoice.php",
+          {
+            "invoice_name" : $$("#invoice-name").val(),
+            "invoice_owner" : chosenCompany.company_id,
+            "biller_name" : $$("#biller").val(),
+            "biller_email" : $$("#biller-email").val(),
+            "biller_phone" : $$("#biller-phone").val(),
+            "biller_address" : $$("#biller-address").val(),
+            "currency" : $$("#currency").val(),
+            "bank_details" : $$("#bank-details").val(),
+            "invoice_terms" : $$("#invoice-terms").val(),
+            "invoice_item" : invoiceList.item_name,
+            "invoice_item_description" : invoiceList.item_description,
+            "invoice_item_amount" : invoiceList.item_price,
+            "invoice_item_quantity" : invoiceList.item_quantity,
+            "invoice_due_date" : $$("#invoice-due-date").val()
+
+          },
+            function(data){
+              console.log(data);
+              data = JSON.parse(data);
+              if (data.status == "successful") {
+                toastMe("Invoice Sent!");
+                $$("#sent-to-company-name").text(chosenCompany.company_name)
+                invoiceSentPopup.open();
+
+              }
+              else{
+                toastMe("Unable to send invoice. Try later");
+                $$("#send-invoice-button").html("Send Invoice").prop("disbled", false);
+              }
+
+          }, function(){
+
+              toastMe("Network error. Try again later");
+
+          });
+
+});
+
+
+
+
+
+
+  }); // end of create invoice page
+
 
 
 
