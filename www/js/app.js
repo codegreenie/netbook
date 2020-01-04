@@ -1017,8 +1017,15 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
   var permanentReg = window.localStorage.getItem("permanentReg");
   permanentReg = JSON.parse(permanentReg);
 
-  var addItem = app.popup.create({
+  var addBusinessPopup = app.popup.create({
     el : ".add-business-popup"
+  });
+
+  $$("#create-invoice-btn").click(function(){
+    addBusinessPopup.close();
+    window.setTimeout(function(){
+      mainView.router.navigate("/createinvoice/");
+    }, 1500);
   });
 
 
