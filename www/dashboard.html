@@ -2,19 +2,15 @@
 
 
   <div class="fab fab-right-bottom" style="margin-bottom: 42px;"> 
-    <a href="#" class="">
+    <a href="#" class="popup-open" data-popup=".add-business-popup">
       <i class="icon f7-icons">add</i>
     </a>
   </div>
 
-  <div class="popover popover-links">
+  <div class="popover popover-company-list">
     <div class="popover-inner">
       <div class="list">
-        <ul>
-          <li><a class="list-button item-link" href="#">Diamond Stores</a></li>
-          <li><a class="list-button item-link" href="#">Benevolent Supermarket</a></li>
-          <li><a class="list-button item-link" href="#">Bluewater Hotels</a></li>
-          <li><a class="list-button item-link" href="#">Maniet Pharmacy</a></li>
+        <ul id="dashboard-company-list">
         </ul>
       </div>
     </div>
@@ -24,7 +20,7 @@
   <div class="toolbar tabbar tabbar-labels toolbar-bottom bg-color-white">
       <div class="toolbar-inner" style="padding-top:5px;">
         
-        <a href="#" class="tab-link text-color-primary">
+        <a href="#" class="tab-link tab-link-active text-color-primary">
           <i class="icon f7-icons">data</i>
           <span class="tabbar-label">Home</span>
         </a>
@@ -58,20 +54,23 @@
       <div class="navbar">
               <div class="navbar-inner bg-color-white">
 
-                <div class="left">
-                  <a class="link popover-open text-color-black" href="#" data-popover=".popover-links">
-                  <img src="imgs/assets/logo.png" style="max-width:30px;">
-                  &nbsp;
-                  <span class="company-name"></span>
-                  <i class="icon f7-icons" style="font-size: 12px;">chevron_down</i>
-                  </a>
+                <div class="left ios-only">
+                  Dashboard
+                </div>
+
+                <div class="left md-only">
+                  &nbsp;Dashboard
                 </div>
 
 
                 <div class="title"></div>
 
-                <div class="right text-color-gray">
+                <div class="right text-color-gray ios-only">
                   <i class="icon f7-icons demo-calendar-modal">sort_round</i>
+                </div>
+
+                <div class="right text-color-gray md-only">
+                  <i class="icon f7-icons demo-calendar-modal">sort_round</i>&nbsp;
                 </div>
 
                
@@ -81,7 +80,61 @@
   
 
 
-  <div class="page-content" style="padding-bottom:40px;">
+  <div class="page-content ptr-content" data-ptr-distance="55" style="padding-bottom:40px;">
+
+      <div class="ptr-preloader">
+      <div class="preloader"></div>
+      <div class="ptr-arrow"></div>
+      </div>
+
+    <div class="popup add-business-popup">
+      <div class="page">
+        <div class="page-content">
+
+          <div class="block">
+          <a href="#" class="popup-close link">
+            <i class="icon f7-icons" style="font-size: 32px;">close</i>
+          </a>
+          </div>
+
+          <div class="block text-center">
+                  <img src="imgs/assets/box.png" style="display: block; margin: 0 auto; max-width: 100px; margin-top: 100px;">
+                  <h2 style="margin-bottom: 0px;">Add business or create invoice</h2>
+                  <h5 style="margin-top: 0px;">Monitor and record business transactions with your Auditbar account</h5>
+                  
+                  <div class="row">
+
+                  <button class="col button button-large button-raised button-fill">
+                    <a href="/createinvoice/" class="link text-color-white popup-close">
+                      Create invoice
+                    </a>
+                  </button>
+
+                  <button class="col button button-large button-raised button-fill">
+                    <a href="/more/" class="link text-color-white popup-close">
+                      Add Business
+                    </a>
+                  </button>
+
+
+                  </div>
+                  
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+      <div class="text-center" style="margin-top: 10px;">
+        <a class="link popover-open text-color-black" href="#" data-popover=".popover-company-list">
+        <img src="imgs/assets/logo.png" style="max-width:30px;" class="commpany-logo">
+        &nbsp;
+        <span class="company-name"></span>
+        <i class="icon f7-icons" style="font-size: 12px;">chevron_down</i>
+        </a>
+      </div>
+
 
    
     <div class="block">
@@ -113,27 +166,19 @@
 
       <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: 100px;">
         <h2>Net Profit</h2>
-        <h1><strike>N</strike>380,000.00</h1>
+        <h1 id="net-profit">NGN0</h1>
       </div>
 
 
 
 
-      <div class="list">
+      <div class="list no-hairlines-md no-hairlines-ios">
       <ul>
         <li>
           <div class="item-content">
             <div class="item-inner">
               <div class="item-title">Income</div>
-              <div class="item-after text-color-black">NGN85,000.00</div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Cost of goods sold</div>
-              <div class="item-after text-color-black">NGN32,000.00</div>
+              <div class="item-after text-color-black" id="total-income">NGN0</div>
             </div>
           </div>
         </li>
@@ -141,7 +186,7 @@
           <div class="item-content">
             <div class="item-inner">
               <div class="item-title">Expenses</div>
-              <div class="item-after text-color-black">NGN185,000.00</div>
+              <div class="item-after text-color-black" id="total-expenses">NGN0</div>
             </div>
           </div>
         </li>
@@ -149,7 +194,7 @@
           <div class="item-content">
             <div class="item-inner">
               <div class="item-title">Gross Profit</div>
-              <div class="item-after text-color-black">NGN76,000.00</div>
+              <div class="item-after text-color-black" id="gross-profit">NGN0</div>
             </div>
           </div>
         </li>
@@ -171,37 +216,29 @@
 
 
 
-      <div class="list">
+      <div class="list no-hairlines-md no-hairlines-ios">
       <ul>
         <li>
           <div class="item-content">
             <div class="item-inner">
-              <div class="item-title">Income</div>
-              <div class="item-after text-color-black">NGN85,000.00</div>
+              <div class="item-title">Total Invoice</div>
+              <div class="item-after text-color-black" id="total-invoice-amount">NGN0</div>
             </div>
           </div>
         </li>
         <li>
           <div class="item-content">
             <div class="item-inner">
-              <div class="item-title">Cost of goods sold</div>
-              <div class="item-after text-color-black">NGN32,000.00</div>
+              <div class="item-title">Paid Invoice</div>
+              <div class="item-after text-color-black" id="total-paid-invoice">NGN0</div>
             </div>
           </div>
         </li>
         <li>
           <div class="item-content">
             <div class="item-inner">
-              <div class="item-title">Expenses</div>
-              <div class="item-after text-color-black">NGN185,000.00</div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Gross Profit</div>
-              <div class="item-after text-color-black">NGN76,000.00</div>
+              <div class="item-title">Unpaid Invoice</div>
+              <div class="item-after text-color-black" id="total-unpaid-invoice">NGN0</div>
             </div>
           </div>
         </li>
@@ -221,37 +258,45 @@
 
 
 
-      <div class="list">
+      <div class="list no-hairlines-md no-hairlines-ios">
       <ul>
         <li>
           <div class="item-content">
             <div class="item-inner">
-              <div class="item-title">Income</div>
-              <div class="item-after text-color-black">NGN85,000.00</div>
+              <div class="item-title">Inventory</div>
+              <div class="item-after text-color-black" id="inventory">NGN0</div>
             </div>
           </div>
         </li>
         <li>
           <div class="item-content">
             <div class="item-inner">
-              <div class="item-title">Cost of goods sold</div>
-              <div class="item-after text-color-black">NGN32,000.00</div>
+              <div class="item-title">Labour</div>
+              <div class="item-after text-color-black" id="labour">NGN0</div>
             </div>
           </div>
         </li>
         <li>
           <div class="item-content">
             <div class="item-inner">
-              <div class="item-title">Expenses</div>
-              <div class="item-after text-color-black">NGN185,000.00</div>
+              <div class="item-title">Rent</div>
+              <div class="item-after text-color-black" id="rent">NGN0</div>
             </div>
           </div>
         </li>
         <li>
           <div class="item-content">
             <div class="item-inner">
-              <div class="item-title">Gross Profit</div>
-              <div class="item-after text-color-black">NGN76,000.00</div>
+              <div class="item-title">Tax</div>
+              <div class="item-after text-color-black" id="tax">NGN0</div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title">Others</div>
+              <div class="item-after text-color-black" id="other">NGN0</div>
             </div>
           </div>
         </li>

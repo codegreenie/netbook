@@ -5,11 +5,19 @@
 
               <div class="block text-center login-block" style="margin-top:15px;">
 
-                <img src="imgs/assets/logo.png" style="margin:0 auto; display: block; max-width: 70px;" class="animated fadeIn logo-to-change">
+                <form method="post" enctype="multipart/form-data" id="upload-company-logo-form" action="https://nairasurvey.com/auditbar_backend/upload_company_logo.php" onsubmit="return false">
+
+                <img src="imgs/assets/default_asset_logo22991010.png" style="margin:0 auto; display: block; max-width: 70px;" class="animated fadeIn logo-to-change the-logo-to-change">
+                <br>
+                <label for="store-company-logo" class="logo-to-change">Pick logo from gallery</span>
                 <h2 class="animated fadeIn" id="temp-company-name" style="margin-bottom: 0px;"></h2>
                 <h4 style="margin-top:5px;">Upload your business logo</h4>
 
+                
+                <input type="file" name="the_uploaded_logo" id="store-company-logo" style="position: absolute; left: -999px;">
+                <input type="text" name="company_id" id="company-id-palette" style="position: absolute; left: -999px;" value="">
 
+              </form>
 
           
 
@@ -17,7 +25,7 @@
 
     <div class="block" style="margin-top:65px;">
       
-      <button class="button button-large button-raised button-fill" id="finish-btn">Finish Registration</button>
+      <button class="button button-large button-raised button-fill" id="skip-logo-btn">I don't have a logo yet</button>
 
 
       

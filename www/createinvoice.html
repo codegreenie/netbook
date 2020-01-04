@@ -1,0 +1,620 @@
+<div class="page" data-name="createinvoice">
+
+ <div class="popover popover-currency-change" style="width: 80px;">
+    <div class="popover-inner">
+      <div class="list">
+        <ul id="">
+
+          <li onclick = "changeCurrency('NGN')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              NGN
+            </span>
+           </a>
+          </li>
+
+
+
+          <li onclick = "changeCurrency('£')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              £
+            </span>
+           </a>
+          </li>
+
+
+           <li onclick = "changeCurrency('€')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              €
+            </span>
+           </a>
+          </li>
+
+
+
+          <li onclick = "changeCurrency('$')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              $
+            </span>
+           </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div class="navbar no-hairlines-md no-hairlines-ios">
+              <div class="navbar-inner bg-color-white no-hairlines-md no-hairlines-ios">
+
+                <div class="left">
+                  <a href="#" class="link back text-color-gray">
+                  <i class="icon f7-icons">arrow_left</i>
+                  </a>
+                </div>
+
+               
+
+                <div class="title">
+                 
+                 
+                  <span class="company-name"></span>
+        
+                </div>
+
+                <!-- iphone here -->
+                <div class="right ios-only">
+                  <a class="link popover-open text-color-black" href="#" data-popover=".popover-currency-change">
+                  <span id="currency-plate">
+                    NGN
+                  </span>
+                </a>
+                </div>
+
+                
+                <!-- android here  -->
+                <div class="right md-only">
+                  <a class="link popover-open text-color-black" href="#" data-popover=".popover-currency-change">
+                  <span id="currency-plate">
+                    NGN
+                  </span>
+                </a>
+                  &nbsp;
+                </div>
+
+                
+
+               
+             
+              </div>
+            </div>
+  
+
+
+  <div class="page-content" style="padding-bottom:40px;">
+
+
+
+    <div class="popup add-item-popup">
+      <div class="page">
+        <div class="page-content">
+
+          <div class="block">
+          <a href="#" class="popup-close link" data-popup=".add-item-popup">
+            <i class="icon f7-icons" style="font-size: 32px;">close</i>
+          </a>
+
+          </div>
+
+          <div class="block">
+          <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: 50px; margin-top: 0px; margin-bottom:0px;">
+          <h3>Add Item</h3>
+          
+         </div>
+        </div>
+
+          
+  <form id="" class="list no-hairlines-md no-hairlines-ios" style="margin-top: 0px;" method="post">
+
+        
+
+      <ul style="margin-top: 0px;">
+
+         <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Item Name</div>
+            <div class="item-input-wrap">
+              <input type="text" placeholder="" id="item-name">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Item Price</div>
+              <div class="item-input-wrap">
+                <input type="tel" placeholder="" id="item-price">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+
+
+        
+         
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Item Quantity</div>
+              <div class="item-input-wrap">
+                <input type="tel" placeholder="" id="item-quantity">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+
+
+
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Item Description</div>
+              <div class="item-input-wrap">
+                <textarea placeholder="" rows="2" id="item-description"></textarea>
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+         
+      
+
+       
+      </ul>
+
+
+      <div class="block" style="margin-top:10px;">
+      <button type="button" class="button button-fill color-blue button-large" id="add-item-button">Add</button>
+      </div>
+    </form>
+
+
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+     <div class="popup view-list-popup">
+      <div class="page">
+        <div class="page-content">
+
+          <div class="block">
+          <a href="#" class="popup-close link" data-popup=".view-list-popup">
+            <i class="icon f7-icons" style="font-size: 32px;">close</i>
+          </a>
+
+          <a href="#" class="popup-open" data-popup=".add-item-popup">
+          <span style="float:right;"><i class="icon f7-icons">add_round</i></span>
+          </a>
+          </div>
+
+          <div class="block">
+          <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: 50px; margin-top: 0px; margin-bottom:0px;">
+          <h3>Invoice list</h3>
+          
+         </div>
+        </div>
+
+          
+            <div class="list no-hairlines-md no-hairlines-ios">
+            <ul id="invoice-list-container">
+                
+
+              </ul>
+
+            </div>
+
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+      <div class="popup preview-invoice-popup">
+      <div class="page">
+        <div class="page-content" style="padding-bottom: 70px;">
+
+          <div class="block">
+          <a href="#" class="popup-close link" data-popup=".preview-invoice-popup">
+            <i class="icon f7-icons" style="font-size: 32px;">close</i>
+          </a>
+
+
+           <a href="#" class="popup-open" data-popup=".add-item-popup"  style="float:right;font-size: 22px;">
+          <span id="invoice-currency-plate"></span>
+          <span id="invoice-total-plate"></span>
+          </a>
+
+          </div>
+
+          <div class="block text-color-blue text-center">
+            <h2 style="margin:0px;"><span id="company-name-plate"></span> - Invoice Preview</h2>
+            <span id="company-email-plate"></span>       
+          </div>
+
+          
+            <div class="list no-hairlines-md no-hairlines-ios">
+            <ul id="">
+
+                  <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Invoice Name</div>
+                      <div class="item-after text-color-black" id="invoice-name-plate"></div>
+                    </div>
+                  </div>
+                  </li>
+
+
+
+                  <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Invoice Date</div>
+                      <div class="item-after text-color-black" id="invoice-date-plate"></div>
+                    </div>
+                  </div>
+                  </li>
+
+                  
+
+
+
+                  <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Biller</div>
+                      <div class="item-after text-color-black" id="invoice-biller-plate"></div>
+                    </div>
+                  </div>
+                  </li>
+
+
+                  <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Biller Email</div>
+                      <div class="item-after text-color-black" id="invoice-biller-email-plate"></div>
+                    </div>
+                  </div>
+                  </li>
+
+
+
+                  <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Biller Phone</div>
+                      <div class="item-after text-color-black" id="invoice-biller-phone-plate"></div>
+                    </div>
+                  </div>
+                  </li>
+
+
+
+                  <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Item List</div>
+                      <div class="item-after text-color-black" id="invoice-items-count-plate"></div>
+                    </div>
+                  </div>
+                  </li>
+
+
+                
+
+                  <li>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Invoice Due Date</div>
+                      <div class="item-after text-color-black" id="invoice-due-date-plate"></div>
+                    </div>
+                  </div>
+                  </li>
+
+
+
+
+            </ul>
+
+            </div>
+
+
+            <div class="block">
+              <h2>Biller Address:</h2>
+              <p id="invoice-biller-address-plate" style="font-size: 16px;"></p>
+
+              <h2>Bank Details:</h2>
+              <p id="invoice-bank-details-plate" style="font-size: 16px;"></p>
+
+              <h2>Terms and Conditions:</h2>
+              <p id="invoice-terms-plate" style="font-size: 16px;"></p>
+            </div>
+
+          <div class="block" style="bottom: 0px; position: fixed; width: 100%;">
+          <button type="button" class="button button-fill color-blue button-large" id="send-invoice-button">Send Invoice</button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="popup invoice-sent-popup">
+      <div class="page">
+        <div class="page-content">
+
+         
+
+          <div class="block text-center">
+                
+            <img src="imgs/assets/check.png" style="margin:200px auto 0px; display: block; max-width: 80px;">
+            <h2>Invoice sent to: <br>
+            <span id="sent-to-company-name"></span>
+            </h2>
+
+
+            <br><br>
+
+          <button class="col button button-large button-raised button-fill">
+            <a href="/dashboard/" class="link text-color-white popup-close">
+             Done
+            </a>
+          </button>
+
+
+          </div>
+
+
+
+
+          
+            
+
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+   
+    <div class="block">
+
+      <h2 class="text-center">New Invoice</h2>
+      
+
+      <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: 50px; margin-top: 0px; margin-bottom:0px;">
+        <h3>Invoice details</h3>
+        
+      </div>
+
+      <form class="list no-hairlines-md no-hairlines-ios" style="margin-top: 0px;" method="post">
+
+        <input type="hidden" name="currency" value="NGN" id="currency">
+
+      <ul style="margin-top: 0px;">
+
+         <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Invoice name</div>
+            <div class="item-input-wrap">
+              <input type="text" placeholder="" id="invoice-name" maxlength="40">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        
+         
+          <li class="item-content item-input item-input-outline">
+            <div class="item-inner">
+              <div class="item-title item-floating-label">Invoice due date</div>
+              <div class="item-input-wrap">
+                <input type="text" placeholder="" id="invoice-due-date">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>
+         
+      
+
+      <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: 50px; margin-bottom: 0px;">
+        <h3>Biller details</h3>
+        
+      </div>
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Bill to</div>
+            <div class="item-input-wrap">
+              <input type="text" placeholder="" id="biller" maxlength="40">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Biller Email</div>
+            <div class="item-input-wrap">
+              <input type="email" placeholder="" id="biller-email" maxlength="40">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Bill Phone</div>
+            <div class="item-input-wrap">
+              <input type="tel" placeholder="" id="biller-phone" maxlength="11">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Biller address</div>
+            <div class="item-input-wrap">
+              <textarea placeholder="" rows="2" id="biller-address"></textarea>
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: 50px; margin-bottom: 0px;">
+
+          <a href="#" class="popup-open text-color-white" data-popup=".view-list-popup">
+            <span style="float:right;"><i class="icon f7-icons">eye</i> View list</span>
+          </a>
+            <h3 style="float:left;margin:0px;">Item list</h3>
+         
+      </div>
+
+     
+
+      <br>
+
+        <div id="invoice-page-list">
+
+        
+
+      </div>
+        
+        
+     
+
+
+
+        <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: 50px; margin-bottom: 0px;">
+      <h3>Other Details</h3>
+        
+      </div>
+        
+        
+
+        
+    
+
+
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Bank Details</div>
+            <div class="item-input-wrap">
+              <textarea placeholder="" rows="2" id="bank-details"></textarea>
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Terms &amp; Conditions</div>
+            <div class="item-input-wrap">
+              <textarea placeholder="" rows="2" id="invoice-terms"></textarea>
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        
+
+       
+      </ul>
+
+
+
+
+        <div class="block" style="margin-top:10px;">
+      <button type="button" class="col button button-fill color-blue button-large" id="preview-invoice-button">Preview Invoice</button>
+      </div>
+
+
+    </form>
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+    
+
+
+
+
+              </div>
+
+           </div>
+
