@@ -68,5 +68,10 @@ var routes = [
     name: 'more',
     path: '/more/',
     url: './more.html'
+    },
+    {
+    name: 'createinvoice',
+    path: '/createinvoice/',
+    url: './createinvoice.html'
     }
 ];
