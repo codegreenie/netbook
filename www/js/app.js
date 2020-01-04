@@ -1022,10 +1022,8 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
   });
 
   $$("#create-invoice-btn").click(function(){
-    addBusinessPopup.close();
-    window.setTimeout(function(){
       mainView.router.navigate("/createinvoice/");
-    }, 1500);
+      addBusinessPopup.close();
   });
 
 
