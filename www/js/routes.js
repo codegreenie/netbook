@@ -73,5 +73,20 @@ var routes = [
     name: 'createinvoice',
     path: '/createinvoice/',
     url: './createinvoice.html'
+    },
+    {
+    name: 'addcontact',
+    path: '/addcontact/',
+    url: './addcontact.html'
+    },
+    {
+    name: 'contactsearch',
+    path: '/contactsearch/',
+    url: './contactsearch.html'
+    },
+    {
+    name: 'invoices',
+    path: '/invoices/',
+    url: './invoices.html'
     }
 ];
