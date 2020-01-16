@@ -43,23 +43,25 @@
 <script src="js/app.js"></script>
 <script type="text/javascript">
   
-    if (!window.localStorage.getItem("permanentReg")) {
+  if (!window.localStorage.getItem("permanentReg")) {
     	console.log("No user has logged in yet!");
       window.setTimeout(function(){
       mainView.router.navigate("/slides/");
-    }, 1500);
+    }, 2000);
     }
     else{
       window.setTimeout(function(){
       mainView.router.navigate("/dashboard/");
-    }, 1500);
+    }, 2000);
   }
+  
 
 
 
    /*window.setTimeout(function(){
-      mainView.router.navigate("/companylogo/");
-    }, 4000);*/
+      mainView.router.navigate("/regchooseplan/");
+    }, 2000);*/
+
 
 </script>
 </body>

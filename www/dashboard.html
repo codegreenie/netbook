@@ -27,7 +27,7 @@
 
         
 
-        <a href="#" class="tab-link text-color-gray">
+        <a href="/invoices/" class="tab-link text-color-gray">
           <i class="icon f7-icons">document_chart</i>
           <span class="tabbar-label">Invoices</span>
         </a>
@@ -66,11 +66,11 @@
                 <div class="title"></div>
 
                 <div class="right text-color-gray ios-only">
-                  <i class="icon f7-icons demo-calendar-modal">sort_round</i>
+                  <i class="icon f7-icons demo-calendar-modal">calendar</i>
                 </div>
 
                 <div class="right text-color-gray md-only">
-                  <i class="icon f7-icons demo-calendar-modal">sort_round</i>&nbsp;
+                  <i class="icon f7-icons demo-calendar-modal">calendar</i>&nbsp;
                 </div>
 
                
@@ -99,19 +99,17 @@
 
           <div class="block text-center">
                   <img src="imgs/assets/box.png" style="display: block; margin: 0 auto; max-width: 100px; margin-top: 100px;">
-                  <h2 style="margin-bottom: 0px;">Add business or create invoice</h2>
+                  <h2 style="margin-bottom: 0px;">Create & send invoice or add contacts to your business.</h2>
                   <h5 style="margin-top: 0px;">Monitor and record business transactions with your Auditbar account</h5>
                   
                   <div class="row">
 
-                  <button class="col button button-large button-raised button-fill" id="create-invoice-btn">
+                  <button class="col button button-large button-raised button-fill" id="create-invoice-btn" type="button">
                     Create invoice
                   </button>
 
-                  <button class="col button button-large button-raised button-fill" id="add-business-btn">
-                    
-                      Add Business
-                    
+                <button class="col button button-large button-raised button-fill" id="add-contact-btn" type="button">
+                  Add Contact 
                   </button>
 
 
@@ -126,7 +124,7 @@
 
       <div class="text-center" style="margin-top: 10px;">
         <a class="link popover-open text-color-black" href="#" data-popover=".popover-company-list">
-        <img src="imgs/assets/logo.png" style="max-width:30px;" class="commpany-logo">
+        <img src="" class="company-logo lazy-load" style="max-width: 35px; min-width: 35px; max-height: 35px; min-height: 35px;">
         &nbsp;
         <span class="company-name"></span>
         <i class="icon f7-icons" style="font-size: 12px;">chevron_down</i>
@@ -162,9 +160,10 @@
 
 
 
-      <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: 100px;">
-        <h2>Net Profit</h2>
-        <h1 id="net-profit">NGN0</h1>
+      <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px;">
+        <span>Net Profit</span>
+        <br>
+        <span id="net-profit" style="font-size:30px;">NGN0</span>
       </div>
 
 
@@ -256,7 +255,7 @@
 
 
 
-      <div class="list no-hairlines-md no-hairlines-ios">
+      <div class="list no-hairlines-md no-hairlines-ios" style="margin-bottom: 70px;">
       <ul>
         <li>
           <div class="item-content">
