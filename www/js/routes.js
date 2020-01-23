@@ -88,5 +88,25 @@ var routes = [
     name: 'invoices',
     path: '/invoices/',
     url: './invoices.html'
+    },
+    {
+    name: 'contacts',
+    path: '/contacts/',
+    url: './contacts.html'
+    },
+    {
+    name: 'editcontact',
+    path: '/editcontact/',
+    url: './editcontact.html'
+    },
+    {
+    name: 'employees',
+    path: '/employees/',
+    url: './employees.html'
+    },
+    {
+    name: 'addemployee',
+    path: '/addemployee/',
+    url: './addemployee.html'
     }
 ];
