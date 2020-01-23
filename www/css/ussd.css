@@ -42,5 +42,7 @@ div.invoice-item::before{
 .keyboard-open{
 	font-size: 13px !important;
 }
-
+.popup{
+	background-color: #fff;
+}
 
