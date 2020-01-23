@@ -5,11 +5,38 @@
 
 
 
+    <div class="popup payment-complete-popup">
+      <div class="page">
+        <div class="page-content">
+
+          <div class="block text-center">
+                
+            <img src="imgs/assets/check.png" style="margin:200px auto 0px; display: block; max-width: 80px;">
+            <h2>Payment Successful</h2>
+
+
+            <br><br>
+
+          <button class="col button button-large button-raised button-fill" id="goto-dashboard-button" type="button">
+             Go to dashboard
+          </button>
+
+
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
               <div class="block text-center login-block" style="margin-top:15px;">
 
                 <img src="imgs/assets/box.png" style="margin:0 auto; display: block; max-width: 80px;" class="animated fadeIn logo-to-change">
-                <h2 class="animated fadeIn" style="">
-                  Melon Stores
+                <h2 class="animated fadeIn" style="" id="registered-company-name">
+                  
                 </h2>
                 <h3>
                   Select a subscription plan
@@ -21,17 +48,17 @@
 
     <div class="block">
       
-      <button class="button-medium button button-fill pay-btn" type="button">Basic - NGN1,000 monthly</button>
+      <button class="button-medium button button-fill pay-btn" type="button" id="one-k-subscription-button">Basic - NGN<span id="basic-plan-price"></span> monthly</button>
       
       <br><br>
 
-      <button class="button-medium button button-fill pay-btn" type="button">Standard - NGN10,000 yearly</button>
+      <button class="button-medium button button-fill pay-btn" type="button" id="ten-k-subscription-button">Standard - NGN<span id="standard-plan-price"></span> yearly</button>
 
 
        <br><br>
        
-        <button class="button-medium button button-outline" type="button" id="free-trial-btn">
-            Free trial - 3 invoices
+        <button class="button-medium button button-outline" type="button" id="free-trial-button">
+            Free trial - 1 month
           </button>
       
 
@@ -69,42 +96,86 @@
 
 
 
- <div class="sheet-modal demo-sheet-swipe-to-step pay-sheet" style="height:auto">
+ <div class="pay-plan-sheet sheet-modal demo-sheet-swipe-to-step" style="height:auto">
                 <div class="sheet-modal-inner">
                   <div class="swipe-handler keystone-handler"></div>
                   <div class="sheet-modal-swipe-step">
                     <div class="padding-horizontal padding-bottom">
+                      <form onsubmit="return false" id="auditbar-payment-form" method="post">
+                      <div class="block-title"><h2>Card details</h2></div>
                         
-                         <div class="list no-hairlines-md color-theme-gray">
+                         <div class="list no-hairlines-md no-hairlines-ios color-theme-gray">
                           <ul>
+
                             <li class="item-content item-input">
                               <div class="item-inner">
-                                <div class="item-title item-label">Recharge Amount</div>
                                 <div class="item-input-wrap">
-                                  <input type="tel" placeholder="Enter Amount (NGN)" maxlength="6" id="keystone-airtime-self-amount">
+                                  <input type="tel" placeholder="Card Number" maxlength="24" data-paystack="number" id="card-number">
                                   <span class="input-clear-button"></span>
                                 </div>
                               </div>
                             </li>
+
+
+
+
+
+
+                            <div class="row">
+
+                              <div class="col-50">
+
+
+
+                                <li class="item-content item-input">
+                              <div class="item-inner">
+                                
+                                <div class="item-input-wrap">
+                                  <input type="tel" placeholder="Expiry Date" id="payment-expiry-date" maxlength="7">
+                                  <span class="input-clear-button"></span>
+                                </div>
+                              </div>
+                            </li>
+
+
+
+                              </div>
+
+
+                              <div class="col-50">
+
+                                <li class="item-content item-input">
+                              <div class="item-inner">
+                              
+                                <div class="item-input-wrap">
+                                  <input type="tel" placeholder="CVV" maxlength="3" id="payment-cvv" data-paystack="cvv">
+                                  <span class="input-clear-button"></span>
+                                </div>
+                              </div>
+                            </li>
+                            
+                              </div>
+
+                            </div>
+
+
                           </ul>
                         </div>
 
-              
-                        <a class="button button-large button-fill" id="keystone-airtime-self-btn" style="background-color:#133f77;">Buy Airtime (Self)</a>
-                        <div class="margin-top text-align-center" id="expand-keystone-airtime-self">
-                          <i class="icon f7-icons">info_round</i>&nbsp;About Airtime (Self)
-                        </div>
+                        <input type="hidden" id="expiry-month" value="" data-paystack="expiryMonth">
+                         <input type="hidden" id="expiry-year" value="" data-paystack="expiryYear">
+
+                        <button class="button button-large button-fill color-blue" type="submit" id="regchooseplan-play-button" data-paystack="submit">PAY</button>
+                       
+                       </form>
                       </div>
                     </div>
-                    <div class="block-title block-title-medium margin-top">Airtime (Self):</div>
-                    <div class="block">
-                      <p>Buy Airtime for your phone. Please note this has to be the phone number linked to your bank account.</p>
-                    </div>
-                  </div>
+                    
                 </div>
 
 
 
+           </div>
 
 
 
@@ -114,6 +185,96 @@
 
 
 
+
+
+
+           <div class="pin-sheet sheet-modal demo-sheet-swipe-to-step" style="height:auto">
+                <div class="sheet-modal-inner">
+                  <div class="swipe-handler keystone-handler"></div>
+                  <div class="sheet-modal-swipe-step">
+                    <div class="padding-horizontal padding-bottom">
+                      <div class="block-title"><h2>Enter card PIN</h2></div>
+                        
+                         <div class="list no-hairlines-md no-hairlines-ios color-theme-gray">
+                          <ul>
+
+                            <li class="item-content item-input">
+                              <div class="item-inner">
+                                <div class="item-input-wrap">
+                                  <input type="tel" placeholder="PIN" maxlength="16" id="card-pin">
+                                  <span class="input-clear-button"></span>
+                                </div>
+                              </div>
+                            </li>
+
+
+
+                          </ul>
+                        </div>
+
+                       
+
+                        <button class="button button-large button-fill color-blue" type="button" id="confirm-pin-button" data-paystack="submit">Confirm PIN</button>
+                       
+                       </form>
+                      </div>
+                    </div>
+                    
+                </div>
+
+
+
+           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="otp-sheet sheet-modal demo-sheet-swipe-to-step" style="height:auto">
+                <div class="sheet-modal-inner">
+                  <div class="swipe-handler keystone-handler"></div>
+                  <div class="sheet-modal-swipe-step">
+                    <div class="padding-horizontal padding-bottom">
+                      <div class="block-title"><h2>Enter OTP <small>(Sent to your phone)</small></h2></div>
+                        
+                         <div class="list no-hairlines-md no-hairlines-ios color-theme-gray">
+                          <ul>
+
+                            <li class="item-content item-input">
+                              <div class="item-inner">
+                                <div class="item-input-wrap">
+                                  <input type="tel" placeholder="OTP" maxlength="10" id="card-otp">
+                                  <span class="input-clear-button"></span>
+                                </div>
+                              </div>
+                            </li>
+
+
+
+                          </ul>
+                        </div>
+
+                       
+
+                        <button class="button button-large button-fill color-blue" type="button" id="confirm-otp-button" data-paystack="submit">Confirm OTP</button>
+                       
+                       </form>
+                      </div>
+                    </div>
+                    
+                </div>
 
 
 
@@ -122,3 +283,8 @@
 
        
 
+
+
+
+
+</div>

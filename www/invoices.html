@@ -1,6 +1,10 @@
 <div class="page" data-name="invoices">
 
-  
+  <div class="fab fab-right-bottom" style="margin-bottom: 42px;"> 
+    <a href="/createinvoice/" class="link">
+      <i class="icon f7-icons">add</i>
+    </a>
+  </div>
 
 
   <div class="toolbar tabbar tabbar-labels toolbar-bottom bg-color-white">
@@ -19,9 +23,9 @@
         </a>
 
 
-        <a href="#" class="tab-link text-color-gray ac-6">
-          <i class="icon f7-icons">bars_chart_round</i>
-          <span class="tabbar-label">Expenses</span>
+        <a href="/contacts/" class="tab-link text-color-gray ac-6">
+          <i class="icon f7-icons">person_round</i>
+          <span class="tabbar-label">Customers</span>
         </a>
 
         
@@ -70,7 +74,7 @@
     <div class="toolbar-inner">
       <a href="#tab-1" class="tab-link tab-link-active">All</a>
       <a href="#tab-2" class="tab-link">Paid</a>
-      <a href="#tab-3" class="tab-link">Sent</a>
+      <a href="#tab-3" class="tab-link">Unpaid</a>
       <a href="#tab-4" class="tab-link">Overdue</a>     
     </div>
   </div>
@@ -79,10 +83,7 @@
 <div class="tabs-swipeable-wrap ptr-content" data-ptr-distance="55" style="padding-bottom:40px;">
 
 
-    <div class="tabs">
-
-
-      <div id="tab-1" class="page-content tab tab-active">
+   
 
 
         
@@ -214,7 +215,7 @@
       <div class="page">
 
         <div class="fab fab-right-bottom" style="margin-bottom: 42px;"> 
-          <a href="#" class="popup-open" data-popup=".add-expense-popup">
+          <a href="#" class="popup-open" data-popup=".add-expenses-popup">
             <i class="icon f7-icons">add</i>
           </a>
         </div>
@@ -271,7 +272,7 @@
       <div class="page">
 
         <div class="fab fab-right-bottom" style="margin-bottom: 42px;"> 
-          <a href="#" class="popup-open" data-popup=".add-payin-popup">
+          <a href="#" class="popup-open" data-popup=".add-payins-popup">
             <i class="icon f7-icons">add</i>
           </a>
         </div>
@@ -315,23 +316,239 @@
         </div>
       </div>
     </div>
-  
 
-      <div class="ptr-preloader">
-      <div class="preloader"></div>
-      <div class="ptr-arrow"></div>
+
+
+
+
+
+
+
+    <div class="popup add-payins-popup">
+      <div class="page">
+
+
+        <div class="block row">
+
+          <div class="col-33">
+          <a href="#" class="popup-close link" data-popup=".add-payins-popup">
+            <i class="icon f7-icons" style="font-size: 32px;">close</i>
+          </a>
+        </div>
+
+          
+
+          </div>
+
+       
+       <div class="block">
+
+      <h1 class="text-center">
+        <i class="icon f7-icons">card</i>
+        <br>
+        Add invoice payment
+      </h1>
+      
+
+
+      <form class="list no-hairlines-md no-hairlines-ios" style="margin-top: 0px;" method="post" id="add-payin-form">
+
+        
+
+      <ul style="margin-top: 0px;">
+
+      
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Amount(<span id="invoice-payin-currency"></span>)</div>
+            <div class="item-input-wrap">
+              <input type="tel" placeholder="" id="payin-amount" maxlength="40">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+
+          <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Payment Description</div>
+            <div class="item-input-wrap">
+              <textarea placeholder="" rows="2" id="payin-description"></textarea>
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Payment Date</div>
+            <div class="item-input-wrap">
+              <input type="text" placeholder="" id="payin-date" maxlength="11" readonly>
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        
+
+
+
+      </ul>
+
+
+
+        <div class="block" style="margin-top:10px;">
+       
+      <button type="button" class="col button button-fill color-blue button-large" id="payin-button">Add payment</button>
       </div>
 
-   
+
+    </form>
 
 
+
+  </div>
+
+          
+     
+          
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+      <div class="popup add-expenses-popup">
+      <div class="page">
+
+
+        <div class="block row">
+
+          <div class="col-33">
+          <a href="#" class="popup-close link" data-popup=".add-expenses-popup">
+            <i class="icon f7-icons" style="font-size: 32px;">close</i>
+          </a>
+        </div>
+
+          
+
+          </div>
+
+       
+       <div class="block">
+
+      <h1 class="text-center">
+        <i class="icon f7-icons">card</i>
+        <br>
+        Add expenses
+      </h1>
+      
+
+
+      <form class="list no-hairlines-md no-hairlines-ios" style="margin-top: 0px;" method="post" id="add-expense-form">
+
+        
+
+      <ul style="margin-top: 0px;">
+
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Expense Category</div>
+            <div class="item-input-wrap">
+              <input type="tel" placeholder="" id="expense-category" maxlength="40">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+      
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Amount(<span id="invoice-expense-currency"></span>)</div>
+            <div class="item-input-wrap">
+              <input type="tel" placeholder="" id="expense-amount" maxlength="40">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+
+          <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Payment Description</div>
+            <div class="item-input-wrap">
+              <textarea placeholder="" rows="2" id="expense-description"></textarea>
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            <div class="item-title item-floating-label">Payment Date</div>
+            <div class="item-input-wrap">
+              <input type="text" placeholder="" id="expense-date" maxlength="11" readonly>
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        
+
+
+
+      </ul>
+
+
+
+        <div class="block" style="margin-top:10px;">
+       
+      <button type="button" class="col button button-fill color-blue button-large" id="expense-button">Add payment</button>
+      </div>
+
+
+    </form>
+
+
+
+  </div>
+
+          
+     
+          
+        </div>
+      </div>
+    
+
+
+
+
+  
+ <div class="tabs">
+    
+
+    <div id="tab-1" class="page-content tab tab-active">
 
    
     <div class="block">
          
-
-
-
 
       <div class="list no-hairlines-md no-hairlines-ios" id="all-invoices-list">
       <ul class="skeleton-effect-blink">
@@ -383,35 +600,260 @@
     </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-     
-
-
-      
     </div>
-
-
-
-
-
-
-
-    
-
 
 
 
               </div>
 
+
+
+
+
+              <div id="tab-2" class="page-content tab">
+
+   
+    <div class="block">
+         
+
+      <div class="list no-hairlines-md no-hairlines-ios" id="all-paid-invoices-list">
+      <ul class="skeleton-effect-blink">
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+
+<li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+        
+      </ul>
+    </div>
+
+
+    </div>
+
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+    <div id="tab-3" class="page-content tab">
+
+   
+    <div class="block">
+         
+
+      <div class="list no-hairlines-md no-hairlines-ios" id="all-unpaid-invoices-list">
+      <ul class="skeleton-effect-blink">
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+
+<li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+        
+      </ul>
+    </div>
+
+
+    </div>
+
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+      <div id="tab-4" class="page-content tab">
+
+   
+    <div class="block">
+         
+
+      <div class="list no-hairlines-md no-hairlines-ios" id="all-overdue-invoices-list">
+      <ul class="skeleton-effect-blink">
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+
+<li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+        
+      </ul>
+    </div>
+
+
+    </div>
+
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
            </div>
 
+</div>
+
+</div>
