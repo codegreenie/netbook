@@ -1,5 +1,5 @@
 // Declare Global variables
-var getLogo, messenger, shift, selectCompany, grabCompanySummary, resetDashboard, resetDateRange, changeCurrency, refreshInvoiceList, invoicePageRefreshList, deleteInvoiceItem, uploadCompanyLogo, storeChosenContact, openInvoice, openInvoiceExpenses, openInvoicePayins, deleteChosenContact, editChosenContact;
+var getLogo, messenger, shift, selectCompany, grabCompanySummary, resetDashboard, resetDateRange, changeCurrency, refreshInvoiceList, invoicePageRefreshList, deleteInvoiceItem, uploadCompanyLogo, storeChosenContact, openInvoice, openInvoiceExpenses, openInvoicePayins, deleteChosenContact, editChosenContact, taxSubscribe, myLineCanvas, CanvasBackground, XValues, YValues, gridLineColor, gridNumeralColor, GridNumeralDecimals, gridLineFrecuency, lineStroke, lineColor, ChartAvarage;
 
 
 // Dom7
@@ -48,7 +48,7 @@ messenger = function(theMessage, theChannel, theEmail, thePhone, theSubject){
              "the_subject" : theSubject
            },
              function (data) {
-
+              console.log(data);
               data = JSON.parse(data);
 
                 if (data.status == "message sent") {
@@ -124,7 +124,7 @@ function deviceIsReady(){
   document.addEventListener("backbutton", function (){
     
     var currentPage = mainView.router.currentRoute.name;
-    
+    app.popup.close();
     //Re-route to Dashboard
     if(currentPage == "dashboard" || currentPage == "login" || currentPage == "slides" || currentPage == "signup"){
 
@@ -462,9 +462,32 @@ $$(document).on('page:init', '.page[data-name="signup"]', function (e){
 
             tempStorage = JSON.stringify(tempStorage);
             window.localStorage.setItem("temporaryReg", tempStorage);
+
+
+            app.request.post('https://nairasurvey.com/auditbar_backend/generate_code.php', 
+            
+             function (data) {
+
+              var data = JSON.parse(data);
+
+                window.localStorage.setItem("activation_code", data.status);
+                console.log(data);
+                var welcomeMsg = "<h2>Hi " + $$("#new-user-full-name").val() + "!</h2> Thank you for signing up and Welcome to Auditbar. Your verification code is " + data.status;
+
+              // call on messenger
+                messenger(welcomeMsg, "email", $$("#new-user-email").val(), "", "Welcome to Auditbar");
+
+
+             },
+             function(){
+
+              console.log("We got dismissed!");
+
+             });
+
             window.setTimeout(function(){
               $$(this).html("Create account").prop("disabled", false);
-              mainView.router.navigate("/regcompany/");
+              mainView.router.navigate("/enterotp/");
             }, 3000);
 
         }
@@ -685,7 +708,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
                 var tempStorage = window.localStorage.getItem("temporaryReg");
                 tempStorage = JSON.parse(tempStorage);
 
-                var tempRegInputs = ["userSerial", "companys"];
+                var tempRegInputs = ["user_serial", "companys"];
                 var tempRegArray = [data.user_serial, data.companys];
 
                 for (var i = 0; i < tempRegInputs.length; i++) {
@@ -1447,6 +1470,9 @@ $$(document).on('page:init', '.page[data-name="newpassword"]', function (e){
 
 
 
+
+
+
 $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
 
   var permanentReg = window.localStorage.getItem("permanentReg");
@@ -1456,7 +1482,99 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
     el : ".add-business-popup"
   });
 
- 
+
+    getData = function() {
+      return [
+         { "group_name": "Income", "name": "24 Jan, 2020", "value": 38367 },
+         { "group_name": "Income", "name": "Feb", "value": 32684 },
+         { "group_name": "Income", "name": "Mar", "value": 28236 },
+         { "group_name": "Income", "name": "Apr", "value": 44205 },
+         { "group_name": "Income", "name": "May", "value": 3357 },
+         { "group_name": "Income", "name": "Jun", "value": 3511 },
+         { "group_name": "Income", "name": "Jul", "value": 10372 },
+         { "group_name": "Income", "name": "Aug", "value": 15565 },
+         { "group_name": "Income", "name": "Sep", "value": 23752 },
+         
+         { "group_name": "Expenses", "name": "24 Jan, 2020", "value": 28827 },
+         { "group_name": "Expenses", "name": "Feb", "value": 13671 },
+         { "group_name": "Expenses", "name": "Mar", "value": 27670 },
+         { "group_name": "Expenses", "name": "Apr", "value": 6274 },
+         { "group_name": "Expenses", "name": "May", "value": 12563 },
+         { "group_name": "Expenses", "name": "Jun", "value": 31263 },
+         { "group_name": "Expenses", "name": "Jul", "value": 24848 },
+         { "group_name": "Expenses", "name": "Aug", "value": 41199 },
+         { "group_name": "Expenses", "name": "Sep", "value": 18952 },
+         
+
+       
+      ];
+   }
+
+   function newData(){
+    return [ 
+         { "group_name": "Expenses", "name": "24 Jan, 2020", "value": 28827 },
+         { "group_name": "Expenses", "name": "Feb", "value": 13671 },
+         { "group_name": "Expenses", "name": "Mar", "value": 27670 },
+         { "group_name": "Expenses", "name": "Apr", "value": 6274 },
+         { "group_name": "Expenses", "name": "May", "value": 12563 },
+         { "group_name": "Expenses", "name": "Jun", "value": 31263 },
+         { "group_name": "Expenses", "name": "Jul", "value": 24848 },
+         { "group_name": "Expenses", "name": "Aug", "value": 41199 },
+         { "group_name": "Expenses", "name": "Sep", "value": 18952 },       
+      ]; 
+   }
+
+/*
+window.setTimeout(function(){
+  $('#chtAnimatedBarChart').updateChart({ 
+      data: newData()
+  });
+}, 7000);
+   */
+
+
+
+   var chart_data = getData();
+   $('#chtAnimatedBarChart').animatedBarChart({ 
+    data: chart_data,
+
+    number_format: {
+    format: ',.2f', // default number format
+    decimal: '.', // decimal symbol
+    thousands : ',', // thousand separator symbol
+    grouping: [3], // thousand separator grouping
+    currency: ['NGN'] // currency symbol
+   },
+
+
+   legend: {
+    position: LegendPosition.top, // legend position (bottom/top/right/left)
+    width: 200 // legend width in pixels for left/right
+  },
+
+  rotate_x_axis_labels: { 
+    process: true, // process xaxis label rotation
+    minimun_resolution: 720, // minimun_resolution for label rotating
+    bottom_margin: 15, // bottom margin for label rotation
+    rotating_angle: 90, // angle for rotation,
+    x_position: 10, // label x position after rotation
+    y_position: -3 // label y position after rotation
+  },
+
+
+   bars: { 
+    padding: 0.2, // padding between bars
+    opacity: 0.7, // default bar opacity
+    opacity_hover: 0.45, // default bar opacity on mouse hover
+    disable_hover: false, // disable animation and legend on hover
+    hover_name_text: 'name', // text for name column for label displayed on bar hover
+    hover_value_text: 'value', // text for value column for label displayed on bar hover
+  },
+
+  });
+
+
+
 
   var theChosenCompany = window.localStorage.getItem("chosenCompany");
   theChosenCompany = JSON.parse(theChosenCompany);
@@ -1481,33 +1599,35 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
 
 
 
-  $$("#create-invoice-btn").click(function(){
+  $$("#dashboard-create-invoice-btn").click(function(){
 
-    $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
+    app.dialog.preloader("Please wait...");
 
     //check if i am admin of company,
-    //check if there are contacts for my account
+    //check if company has an active subscription
 
     if (theChosenCompany.company_access == "administrator") {
         
     
-     app.request.post("https://nairasurvey.com/auditbar_backend/find_contact.php",
+     app.request.post("https://nairasurvey.com/auditbar_backend/check_subscription.php",
           {
-            "my_id" : permanentReg.user_serial
+            "company_id" : chosen_company_id
           },
             function(data){
+              console.log(data);
               data = JSON.parse(data); 
-              console.log(data[0].status);
-              if (data[0].status == "Contact found") {
+              console.log(data.status);
+              if (data.status == "found") {
+
                   mainView.router.navigate("/createinvoice/");
-                  addBusinessPopup.close();
-                  $$("#create-invoice-btn").html("Create invoice").prop("disabled", false);
+                  app.dialog.close();
               }
               else{
 
-                toastMe("Please add a contact before creating invoice");
-                addBusinessPopup.close();
-                $$("#create-invoice-btn").html("Create invoice").prop("disabled", false);
+                toastMe("Subscription expired");
+                app.dialog.close();
+                mainView.router.navigate("/chooseplan/");
+                
 
               }
           }, function(){
@@ -1756,7 +1876,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
                   endDay = "0" + endDate.getDate();
                 }
                 else{
-                  endDay = fromDate.getDate();
+                  endDay = endDate.getDate();
                 }
 
                 var endMonth;
@@ -1782,6 +1902,10 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
               }
             }
           });
+
+
+
+       
 
 
 
@@ -2042,6 +2166,8 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
 
     $$("#preview-invoice-button").click(function(){
 
+      $$("#send-invoice-button").hide();
+
       var invoiceList = window.localStorage.getItem("invoiceList");
       invoiceList = JSON.parse(invoiceList);
 
@@ -2112,10 +2238,17 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
               window.setTimeout(function(){
                 $("#preview-invoice").load(invoicePreviewURL);
               }, 7000);
+
+              window.setTimeout(function(){
+                $$("#send-invoice-button").show();
+                $$("#waiting-to-send-invoice-loader").hide();
+              }, 10000);
               
 
              },
              function(){
+                $$("#send-invoice-button").hide();
+                $$("#waiting-to-send-invoice-loader").show();
                 toastMe("Network error. Try again later");
                 previewInvoicePopup.close();
              });
@@ -2129,15 +2262,17 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
 
 
 
-
     $$("#send-invoice-button").click(function(){
+
+      toastMe("sending invoice...");
+      var theChosenContact = JSON.parse(window.localStorage.getItem("chosenContact"));
 
       $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
       
 
           app.request.post("https://nairasurvey.com/auditbar_backend/create_invoice.php",
           {
-            
+            "company_name" :  chosenCompany.company_name,
             "invoice_owner" : chosenCompany.company_id,
             "biller_name" : $$("#biller").val(),
             "biller_email" : $$("#biller-email").val(),
@@ -2158,9 +2293,11 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
               console.log(data);
               data = JSON.parse(data);
               if (data.status == "successful") {
-                toastMe("Invoice Sent!");
-                $$("#sent-to-company-name").text(chosenCompany.company_name)
+                
+                $$("#sent-to-company-name").text(theChosenContact.contact_name);
                 invoiceSentPopup.open();
+                window.localStorage.removeItem("chosenContact");
+                window.localStorage.removeItem("invoiceList");
 
               }
               else{
@@ -2314,20 +2451,20 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
               dataRec = JSON.parse(data);
               if (dataRec.status == "Contact added") {
                 
-                toastMe(dataRec.status);
+                
                 addContactPopup.open();
 
               }
               else{
 
                 toastMe(dataRec.status);
-                $$("#add-contact-button").html("Add contact").prop("disbled", false);
+                $$("#add-contact-button").html("Add customer").prop("disbled", false);
 
               }
               
 
           }, function(){
-              $$("#add-contact-button").html("Add contact").prop("disbled", false);
+              $$("#add-contact-button").html("Add customer").prop("disbled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -2420,18 +2557,23 @@ $$(document).on('page:init', '.page[data-name="contactsearch"]', function (e){
 
         if(allContacts[p]['contact_sn'] == contactSN){
 
+            var chosenContactSN = allContacts[p]['contact_sn'];
             var chosenContactName = allContacts[p]['contact_name'];
             var chosenContactEmail = allContacts[p]['contact_email'];
             var chosenContactPhone = allContacts[p]['contact_phone'];
             var chosenContactAddress = allContacts[p]['contact_address'];
 
             window.localStorage.setItem("chosenContact", JSON.stringify({
+              "contact_sn" : chosenContactSN,
               "contact_name" : chosenContactName,
               "contact_email" : chosenContactEmail,
               "contact_phone" : chosenContactPhone,
               "contact_address" : chosenContactAddress
             }));
-            mainView.router.navigate("/createinvoice/");
+            
+              mainView.router.navigate(mainView.router.previousRoute.url);
+         
+            
             break;
         }
 
@@ -2495,6 +2637,56 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
       el : '.add-expenses-popup'
   });
   
+
+
+
+
+
+  $$("#invoice-page-create-invoice-button").click(function(){
+
+    app.dialog.preloader("Please wait...");
+
+    //check if i am admin of company,
+    //check if company has an active subscription
+
+    if (chosenCompany.company_access == "administrator") {
+        
+    
+     app.request.post("https://nairasurvey.com/auditbar_backend/check_subscription.php",
+          {
+            "company_id" : chosenCompany.company_id
+          },
+            function(data){
+              console.log(data);
+              data = JSON.parse(data); 
+              console.log(data.status);
+              if (data.status == "found") {
+
+                  mainView.router.navigate("/createinvoice/");
+                  app.dialog.close();
+              }
+              else{
+
+                toastMe("Subscription expired");
+                app.dialog.close();
+                mainView.router.navigate("/chooseplan/");
+                
+
+              }
+          }, function(){
+
+              $$("#add-contact-button").html("Add contact").prop("disbled", false);
+              toastMe("Network error. Try again later");
+
+          });
+   }
+   else{
+
+      toastMe("Only administrators can create an invoice");
+      app.dialog.close();
+    }
+    
+  });
   
 
 
@@ -2664,7 +2856,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
                   case "paid" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-green col'>Paid</button>"; break;
 
-                  default : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-red'>Overdue</button>"; break;
+                  default : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-teal'>Partial</button>"; break;
 
                 }
             allInvoicesPlate += "<li onclick=openInvoice('" + i + "','loadedInvoices')><div class='item-content'><div class='item-inner'><div class='item-title'>" + data[i]["biller"] + "<br>" + data[i]["invoice_date"].split(" ")[0] + "</div><div class='item-after'>" + data[i]["currency"] + "" + grandTotalAmount + "&nbsp;&nbsp;" + invoicePaymentStatus +"</div></div></div></li>";
@@ -2881,6 +3073,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
     console.log(loadedInvoice);
 
     var selectedInvoice = loadedInvoice[window.localStorage.getItem("invoiceCurrentlyOn")];
+    var thisInvoiceGrandTotalAmount = selectedInvoice.grand_total_amount;
     
 
       if ($$("#payin-amount").val().trim() == "" || $$("#payin-description").val().trim() == "" || $$("#payin-date").val().trim() == "") {
@@ -2897,7 +3090,8 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
             "invoice_id" : selectedInvoice["invoice_sn"],
             "payin_description" : $$("#payin-description").val(),
             "amount" : $$("#payin-amount").val(),
-            "payin_date" : $$("#payin-date").val()
+            "payin_date" : $$("#payin-date").val(),
+            "this_invoice_grand_total_amount" : thisInvoiceGrandTotalAmount
 
           },
             function(data){
@@ -2934,41 +3128,16 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
 
 
-
-
-
-
-   $$("#expense-button").click(function(){
-
-    var loadedInvoiceType = window.localStorage.getItem("invoiceTypeCurrentlyOn");
-
-    loadedInvoice = window.localStorage.getItem(loadedInvoiceType);
-    loadedInvoice = JSON.parse(loadedInvoice);
-    console.log(loadedInvoice);
-
-    var selectedInvoice = loadedInvoice[window.localStorage.getItem("invoiceCurrentlyOn")];
-    
-
-      if ($$("#expense-amount").val().trim() == "" || $$("#expense-description").val().trim() == "" || $$("#expense-date").val().trim() == "") {
-
-          toastMe("Please complete the form!");
-
-      } else{
-
-          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
-
-          app.request.post("https://nairasurvey.com/auditbar_backend/push_expenses.php",
-          {
+  /* $("#upload-company-logo-form").ajaxSubmit({
             
-            "invoice_id" : selectedInvoice["invoice_sn"],
-            "expense_category" : $$("#expense-category").val(),
-            "expense_description" : $$("#expense-description").val(),
-            "expense_amount" : $$("#expense-amount").val(),
-            "expense_date" : $$("#expense-date").val()
-
-          },
-            function(data){
-              dataRec = JSON.parse(data);
+            beforeSend : function(){
+                
+                //$("#registration-btn").html("<i class='fa fa-spinner fa-spin'></i>").prop("disabled", "disabled");
+            
+            },
+            success : (data) => {
+                
+                dataRec = JSON.parse(data);
               console.log(data); 
               if (dataRec.status == "successful") {
 
@@ -2987,13 +3156,75 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
               }    
               console.log(data);
+                  
+             },
 
-          }, function(){
-              
+            error : (jqXHR, error, status) => {
+                  
               $$("#expense-button").html("Add payment").prop("disbled", false);
               toastMe("Network error. Try again later");
 
-          });
+            }
+        });
+*/
+
+
+
+
+
+
+   $$("#expense-button").click(function(){
+
+    var loadedInvoiceType = window.localStorage.getItem("invoiceTypeCurrentlyOn");
+
+    loadedInvoice = window.localStorage.getItem(loadedInvoiceType);
+    loadedInvoice = JSON.parse(loadedInvoice);
+    console.log(loadedInvoice);
+
+    var selectedInvoice = loadedInvoice[window.localStorage.getItem("invoiceCurrentlyOn")];
+    $$("#invoice-id").val(selectedInvoice.invoice_sn);
+    console.log(selectedInvoice);
+    
+
+      if ($$("#expense-amount").val().trim() == "" || $$("#expense-description").val().trim() == "" || $$("#expense-date").val().trim() == "") {
+
+          toastMe("Please complete the form!");
+
+      } else{
+
+          $$("#expense-button").html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
+          $("#add-expense-form").ajaxSubmit({
+            success : (data) => {
+                
+                dataRec = JSON.parse(data);
+              console.log(data); 
+              if (dataRec.status == "successful") {
+
+                  toastMe("Payin successful!");
+                  addExpensesPopup.close();
+                  openExpensesPopup.close();
+
+                  $$("#expense-button").html("Add payment").prop("disbled", false);
+                  $$("#add-expense-form").trigger("reset");
+
+
+              }else{
+
+                toastMe(dataRec.status);
+                $$("#expense-button").html("Add payment").prop("disbled", false);
+
+              }    
+              console.log(data);
+                  
+             },
+
+            error : (jqXHR, error, status) => {
+                  
+              $$("#expense-button").html("Add payment").prop("disbled", false);
+              toastMe("Network error. Try again later");
+
+            }
+        });
       }
 
 
@@ -3050,6 +3281,142 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 });
 
 
+
+
+
+
+
+
+
+$$(document).on('page:init', '.page[data-name="enterotp"]', function (e){
+
+   $$("#resend-btn").hide();
+
+   function runTimer(){
+
+    var timer = 60;
+    var countDown = window.setInterval(function(){
+        timer = timer - 1;
+        $$("#countdown-btn").text("00 : " + timer);
+        if (timer == 0) { window.clearInterval(countDown); 
+            $$("#countdown-btn").hide();
+            $$("#resend-btn").show();
+        }
+        
+    },1000);
+  }
+
+  runTimer();
+
+
+
+    $$("#otp-1").keydown(function(){ 
+
+      var key = event.keyCode || event.charCode;
+      setTimeout(function(){
+          shift("otp-1", key);
+      },50);
+      
+      
+    });
+
+
+    $$("#otp-2").keydown(function(){ 
+
+      var key = event.keyCode || event.charCode;
+      setTimeout(function(){
+          shift("otp-2", key);
+      },50);
+      
+      
+    });
+
+
+    $$("#otp-3").keydown(function(){ 
+
+      var key = event.keyCode || event.charCode;
+      setTimeout(function(){
+          shift("otp-3", key);
+      },50);
+      
+      
+    });
+
+
+    $$("#otp-4").keydown(function(){ 
+
+      var key = event.keyCode || event.charCode;
+      setTimeout(function(){
+          shift("otp-4", key);
+      },50);
+
+    });
+
+
+
+    var temporaryreg = window.localStorage.getItem("temporaryReg");
+    temporaryreg = JSON.parse(temporaryreg);
+
+
+
+
+
+    $$("#resend-btn").click(function(){
+
+       var welcomeMsg = "<h1>Hi " + temporaryreg.first_name + "!</h1> Thank you for signing up and Welcome to Auditbar. Your verification code is " + window.localStorage.getItem("activation_code");
+
+             
+
+                
+
+      $$("#countdown-btn").show();
+      $$("#resend-btn").hide();
+      runTimer();
+      toastMe("Sending OTP...");
+      
+      // call on messenger
+      messenger(welcomeMsg, "email", temporaryreg.user_email, "", "Welcome to Auditbar");
+
+    });
+
+
+
+    $$("#verify-btn").click(function(){
+
+      if($$("#otp-1").val().trim() == "" || $$("#otp-2").val().trim() == "" || $$("#otp-3").val().trim() == "" || $$("#otp-4").val().trim() == ""){
+
+          toastMe("Please enter your otp");
+      }
+      else{
+
+        toastMe("Verifying code...");
+        var userRecoveryInput = $$("#otp-1").val() + $$("#otp-2").val() + $$("#otp-3").val() + $$("#otp-4").val();
+        
+        if (window.localStorage.getItem("activation_code") == userRecoveryInput) {
+
+            
+              
+              $$("#verify-btn").text("Verify").prop("disabled", false);
+             mainView.router.navigate("/regcompany/");
+
+        }
+        else{
+
+
+            $$("#verify-btn").text("Verify").prop("disabled", false);
+            toastMe("Wrong recovery code!");
+            $$("#recovery-code-div").addClass("shake");
+            window.setTimeout(function(){
+              $$("#recovery-code-div").removeClass("shake");
+            }, 2500);
+
+        }
+
+      }
+
+    });
+
+});
 
 
 

@@ -108,5 +108,35 @@ var routes = [
     name: 'addemployee',
     path: '/addemployee/',
     url: './addemployee.html'
+    },
+    {
+    name: 'enterotp',
+    path: '/enterotp/',
+    url: './enterotp.html'
+    },
+    {
+    name: 'chooseplan',
+    path: '/chooseplan/',
+    url: './chooseplan.html'
+    },
+    {
+    name: 'about',
+    path: '/about/',
+    url: './about.html'
+    },
+    {
+    name: 'terms',
+    path: '/terms/',
+    url: './terms.html'
+    },
+    {
+    name: 'accountstatement',
+    path: '/accountstatement/',
+    url: './accountstatement.html'
+    },
+    {
+    name: 'taxcompliance',
+    path: '/taxcompliance/',
+    url: './taxcompliance.html'
     }
 ];
