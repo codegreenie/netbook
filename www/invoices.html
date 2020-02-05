@@ -1,14 +1,14 @@
 <div class="page" data-name="invoices">
 
   <div class="fab fab-right-bottom" style="margin-bottom: 42px;"> 
-    <a href="/createinvoice/" class="link">
+    <a href="#" class="link" id="invoice-page-create-invoice-button">
       <i class="icon f7-icons">add</i>
     </a>
   </div>
 
 
   <div class="toolbar tabbar tabbar-labels toolbar-bottom bg-color-white">
-      <div class="toolbar-inner" style="padding-top:5px;">
+      <div class="toolbar-inner">
         
         <a href="/dashboard/" class="tab-link text-color-gray">
           <i class="icon f7-icons">data</i>
@@ -456,7 +456,7 @@
       
 
 
-      <form class="list no-hairlines-md no-hairlines-ios" style="margin-top: 0px;" method="post" id="add-expense-form">
+      <form class="list no-hairlines-md no-hairlines-ios" style="margin-top: 0px;" method="post" id="add-expense-form" action="https://nairasurvey.com/auditbar_backend/push_expenses.php" onsubmit="return false">
 
         
 
@@ -467,7 +467,7 @@
           <div class="item-inner">
             <div class="item-title item-floating-label">Expense Category</div>
             <div class="item-input-wrap">
-              <input type="tel" placeholder="" id="expense-category" maxlength="40">
+              <input type="tel" placeholder="" id="expense-category" name="expense_category">
               <span class="input-clear-button"></span>
             </div>
           </div>
@@ -480,7 +480,7 @@
           <div class="item-inner">
             <div class="item-title item-floating-label">Amount(<span id="invoice-expense-currency"></span>)</div>
             <div class="item-input-wrap">
-              <input type="tel" placeholder="" id="expense-amount" maxlength="40">
+              <input type="tel" placeholder="" id="expense-amount" maxlength="20" name="expense_amount">
               <span class="input-clear-button"></span>
             </div>
           </div>
@@ -492,11 +492,38 @@
           <div class="item-inner">
             <div class="item-title item-floating-label">Payment Description</div>
             <div class="item-input-wrap">
-              <textarea placeholder="" rows="2" id="expense-description"></textarea>
+              <textarea placeholder="" rows="2" id="expense-description" name="expense_description"></textarea>
               <span class="input-clear-button"></span>
             </div>
           </div>
         </li>
+
+
+        <input type="hidden" name="invoice_id" id="invoice-id">
+
+
+
+        <li class="item-content item-input item-input-outline">
+          <div class="item-inner">
+            
+          
+
+              <label for="expense-receipt" class="logo-to-change">
+                <i class="icon f7-icons">attachment</i>
+                Select expense Receipt
+              </span>
+              
+                <input type="file" name="receipt" id="expense-receipt" style="position: absolute; left: -999px;">
+
+
+            
+          </div>
+        </li>
+
+
+
+              
+                
 
 
         <li class="item-content item-input item-input-outline">
@@ -520,7 +547,7 @@
 
         <div class="block" style="margin-top:10px;">
        
-      <button type="button" class="col button button-fill color-blue button-large" id="expense-button">Add payment</button>
+      <button type="submit" class="col button button-fill color-blue button-large" id="expense-button">Add payment</button>
       </div>
 
 

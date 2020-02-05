@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/ussd.css">
   <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/bar.chart.min.css">
   
   
     
@@ -37,15 +38,18 @@
 </div>
 <script src="cordova.js"></script>
 <script src="js/framework7.min.js"></script>
+<script src="https://js.paystack.co/v1/paystack.js" async></script>
 <script src="js/routes.js"></script>
 <script src="js/jquery.js"></script>
+<script src='js/dj3s.js'></script>
+<script src="js/jquery.bar.chart.min.js"></script>
 <script src="js/jquery.form.min.js"></script>
-<script src="https://js.paystack.co/v1/paystack.js" async></script>
 <script src="js/app.js"></script>
 <script src="js/app2.js"></script>
+<script src="js/app3.js"></script>
 <script type="text/javascript">
   
-  if (!window.localStorage.getItem("permanentReg")) {
+ if (!window.localStorage.getItem("permanentReg")) {
     	console.log("No user has logged in yet!");
       window.setTimeout(function(){
       mainView.router.navigate("/slides/");
@@ -57,11 +61,13 @@
     }, 2000);
   }
   
+  
+  
 
 
-
-  /* window.setTimeout(function(){
-      mainView.router.navigate("/regchooseplan/");
+/*
+   window.setTimeout(function(){
+      mainView.router.navigate("/taxcompliance/");
     }, 2000);*/
 
 
