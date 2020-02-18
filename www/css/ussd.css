@@ -22,6 +22,56 @@
 	-o-user-select: none;
 	user-select: none;
 }
+
+/* Build custom CSS for Devices mainly iOS and Android */
+.ios {
+  --f7-picker-column-font-size: 16px;
+
+  --f7-navbar-font-size: 16px;
+
+  --f7-list-font-size: 14px;
+
+  --f7-toolbar-font-size: 16px;
+
+  --f7-tabbar-icon-size: 22px;
+
+  --f7-dialog-font-size: 12px;
+
+  --f7-dialog-preloader-size: 24px;
+
+  --f7-dialog-title-font-size: 20px;
+
+  --f7-dialog-width: 250px;
+}
+
+
+
+.md {
+  --f7-picker-column-font-size: 16px;
+
+  --f7-navbar-font-size: 14px;
+
+  --f7-list-font-size: 14px;
+
+  --f7-toolbar-font-size: 11px;
+
+  --f7-tabbar-icon-size: 20px;
+
+  --f7-dialog-font-size: 10px;
+
+  --f7-dialog-preloader-size: 24px;
+
+  --f7-dialog-title-font-size: 20px;
+
+  --f7-dialog-width: 200px;
+}
+
+
+
+
+
+
+
 body{
 	font-size: 12px;
 }
@@ -45,4 +95,21 @@ div.invoice-item::before{
 .popup{
 	background-color: #fff;
 }
+#chtAnimatedBarChart2 rect.bar_item{
+	fill: #e4291c !important;
+}
 
+#chtAnimatedBarChart2 text.title-text{
+	fill: #e4291c !important;
+}
+
+#chtAnimatedBarChart2 li div{
+	background-color: #e4291c !important;
+}
+.popover-inner .list ul li a span{
+	font-size: 14px !important;
+}
+
+.three-buttons{
+	font-size: 9px !important;
+}
