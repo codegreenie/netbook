@@ -1,0 +1,214 @@
+<div class="page" data-name="addbusiness">
+
+
+
+      <div class="navbar no-hairlines-md no-hairlines-ios">
+              <div class="navbar-inner bg-color-white no-hairlines-md no-hairlines-ios">
+
+                <div class="left">
+                  <a href="#" class="link back text-color-gray">
+                  <i class="icon f7-icons">arrow_left</i>
+                  </a>
+                </div>
+
+               
+
+                <div class="title">&nbsp;</div>
+
+      
+
+                
+                
+                <div class="right">
+                  &nbsp;
+                </div>
+
+                
+
+               
+             
+              </div>
+            </div>
+  
+
+
+  <div class="page-content" style="padding-bottom:40px;">
+
+
+    <div class="popup business-added-popup">
+      <div class="page">
+        <div class="page-content">
+
+          <div class="block text-center">
+                
+            <img src="imgs/assets/check.png" style="margin:200px auto 0px; display: block; max-width: 80px;">
+            <h2>Business successfully added</h2>
+
+
+            <br><br>
+
+          <button class="col button button-large button-raised button-fill" id="business-added-button">
+             Done
+          </button>
+
+
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+   
+    <div class="block">
+
+    
+                <h1 class="animated fadeIn text-center" style="margin-bottom: 0px;">Add a Business</h1>
+                <h4 style="margin-top:5px;" class="text-center">Tell us about your business</h4>
+      
+ <form method="post" enctype="multipart/form-data" id="add-business-form" action="https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/add_business.php" onsubmit="return false">
+
+           <div class="list no-hairlines-md no-hairlines-ios" style="margin-bottom: 0px; margin-top:10px;">
+      <ul>
+
+
+        <li class="item-content item-input">
+          <div class="item-media">
+            <i class="icon f7-icons">business</i>
+          </div>
+          <div class="item-inner">
+            <div class="item-input-wrap">
+              <input type="text" placeholder="Business Name" id="business-name" maxlength="40" class="keyboard-open" name="company_name">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        <li class="item-content item-input">
+          <div class="item-media">
+            <i class="icon f7-icons">email</i>
+          </div>
+          <div class="item-inner">
+            <div class="item-input-wrap">
+              <input type="email" placeholder="Business Email" id="business-email" maxlength="40" class="keyboard-open" name="company_email">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+        <li class="item-content item-input">
+          <div class="item-media">
+            <i class="icon f7-icons">phone_portrait</i>
+          </div>
+          <div class="item-inner">
+            <div class="item-input-wrap">
+              <input type="tel" placeholder="Business Phone" id="business-phone" maxlength="11" class="keyboard-open" name="company_phone">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+
+        <li class="item-content item-input">
+          <div class="item-media">
+<!--             <i class="icon f7-icons ios-only">info_round</i>
+            <i class="icon f7-icons md-only">info_outline</i> -->
+          </div>
+          <div class="item-inner">
+            <div class="item-input-wrap">
+              <textarea placeholder="Business Address(optional)" id="business-address" class="keyboard-open" name="company_address" rows="1"></textarea>
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+        
+
+
+        <li class="item-content item-input">
+          <div class="item-media">
+<!--             <i class="icon f7-icons ios-only">info_round</i>
+            <i class="icon f7-icons md-only">info_outline</i> -->
+          </div>
+          <div class="item-inner">
+            <div class="item-input-wrap">
+              <textarea placeholder="Business Description(optional)" id="business-description" class="keyboard-open" rows="1" name="company_description"></textarea>
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>
+
+
+
+          <li class="item-content item-input">
+            <label for="company-logo" class="logo-to-change">
+                <i class="icon f7-icons">attachment</i>
+                Select company logo
+              </span>
+            </label>
+
+                <input type="file" name="the_uploaded_logo" id="company-logo" style="position: absolute; left: -999px;" value="">
+
+          </li>
+
+          <input type="hidden" name="user_id" id="user-id" value="">
+        
+       
+      </ul>
+    </div>
+
+
+
+
+
+
+
+    <div class="block" style="margin-top:15px;">
+      
+      <br><br>
+      <button class="button button-large button-raised button-fill" id="add-business-btn" type="submit">Continue</button>
+
+    </div>
+
+    </form>
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+    
+
+
+
+
+              </div>
+
+           </div>
+

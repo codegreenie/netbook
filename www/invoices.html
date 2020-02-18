@@ -1,5 +1,110 @@
 <div class="page" data-name="invoices">
 
+ <div class="popover invoice-popover-currency-change" style="width: 80px;">
+    <div class="popover-inner">
+      <div class="list">
+        <ul id="">
+
+          <li onclick = "changeCurrency('NGN')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              NGN
+            </span>
+           </a>
+          </li>
+
+
+
+          <li onclick = "changeCurrency('£')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              £
+            </span>
+           </a>
+          </li>
+
+
+           <li onclick = "changeCurrency('€')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              €
+            </span>
+           </a>
+          </li>
+
+
+
+          <li onclick = "changeCurrency('$')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              $
+            </span>
+           </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="popover invoice-time-frame-change" style="width: 160px;">
+    <div class="popover-inner">
+      <div class="list">
+        <ul id="">
+
+          <li onclick = "changeTimeFrame('today')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              Today
+            </span>
+           </a>
+          </li>
+
+
+
+          <li onclick = "changeTimeFrame('this_week')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              This week
+            </span>
+           </a>
+          </li>
+
+
+           <li onclick = "changeTimeFrame('this_month')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              This month
+            </span>
+           </a>
+          </li>
+
+
+
+          <li onclick = "changeTimeFrame('this_year')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              This year
+            </span>
+           </a>
+          </li>
+
+
+
+           <li>
+            <a class='list-button item-link invoice-calendar-modal' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              Custom Date
+            </span>
+           </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
   <div class="fab fab-right-bottom" style="margin-bottom: 42px;"> 
     <a href="#" class="link" id="invoice-page-create-invoice-button">
       <i class="icon f7-icons">add</i>
@@ -46,7 +151,7 @@
 
 
 
-                <div class="title">
+                <div class="left">
                   <img src="" class="company-logo lazy-load" style="max-width: 20px; min-width: 20px; max-height: 20px; min-height: 20px; float:left;">
                   &nbsp;
 
@@ -54,6 +159,30 @@
 
                  <span class="text-color-white"> - Invoices</span>
         
+
+                </div>
+
+
+                <div class="title"></div>
+
+
+
+
+                <div class="right text-color-white">
+                 
+                
+                  <a class="link popover-open text-color-white" href="#" data-popover=".invoice-popover-currency-change">
+                  <span id="invoice-currency-plate">
+                    NGN
+                  </span>
+                </a>
+
+
+
+                 <a href="#" class="popover-open text-color-white" data-popover=".invoice-time-frame-change">
+                    <i class="icon f7-icons">calendar</i>
+                  </a>
+                <span class="md-only">&nbsp;</span>
 
                 </div>
 
@@ -76,11 +205,12 @@
       <a href="#tab-2" class="tab-link">Paid</a>
       <a href="#tab-3" class="tab-link">Unpaid</a>
       <a href="#tab-4" class="tab-link">Overdue</a>     
+      <a href="#tab-5" class="tab-link">Partial</a>
     </div>
   </div>
   
 
-<div class="tabs-swipeable-wrap ptr-content" data-ptr-distance="55" style="padding-bottom:40px;">
+<div class="tabs-swipeable-wrap" style="padding-bottom:40px;">
 
 
    
@@ -91,26 +221,28 @@
       <div class="page">
         <div class="page-content">
 
-          <div class="block row">
-
-          <div class="col-33">
-          <a href="#" class="popup-close link" data-popup=".open-invoice-popup">
-            <i class="icon f7-icons" style="font-size: 32px;">close</i>
-          </a>
-        </div>
+          <div class="block">
 
           
-          <div class="col-33">
-            <button type='button' class='button button-outline button-small color-teal' id='open-invoice-payins'>
-            Payments
-           </button>
-          </div>
+          <a href="#" class="popup-close link" data-popup=".open-invoice-popup">
+            <i class="icon f7-icons" style="font-size: 32px;">arrow_left</i>
+          </a>
+        
 
-          <div class="col-33">
-            <button type='button' class='button button-outline button-small color-orange' id='open-invoice-expenses'>
+            <p class="row">
+            <button type='button' class='three-buttons col button button-outline button-medium color-blue' id='open-invoice-payins'>
+            Deposits
+            </button>
+         
+            <button type='button' class='three-buttons col button button-outline button-medium color-orange' id='open-invoice-expenses'>
             Expenses
            </button>
-          </div>
+          
+            <button type='button' class='three-buttons col button button-outline button-medium color-teal' id='mark-as-paid-btn'>
+            Mark paid
+           </button>
+            </p>
+          
           
           
 
@@ -124,14 +256,14 @@
 
           
             <div class="list no-hairlines-md no-hairlines-ios">
-            <ul id="invoice-details-list">
+            <ul id="invoice-details-list" class="text-color-black">
 
 
             <li>
               <div class='item-content'>
                 <div class='item-inner'>
                 <div class='item-title'>Biller</div>
-                <div class='item-after' id='open-invoice-biller'></div>
+                <div class='item-after text-color-black' id='open-invoice-biller'></div>
               </div>
               </div>
             </li>
@@ -140,7 +272,7 @@
               <div class='item-content'>
                 <div class='item-inner'>
                 <div class='item-title'>Biller address</div>
-                <div class='item-after' id='open-invoice-biller-address'></div>
+                <div class='item-after text-color-black' id='open-invoice-biller-address'></div>
               </div>
               </div>
             </li>
@@ -150,7 +282,7 @@
               <div class='item-content'>
                 <div class='item-inner'>
                 <div class='item-title'>Total amount</div>
-                <div class='item-after' id='open-invoice-total-amount'></div>
+                <div class='item-after text-color-black' id='open-invoice-total-amount'></div>
               </div>
               </div>
             </li>
@@ -160,7 +292,7 @@
               <div class='item-content'>
                 <div class='item-inner'>
                 <div class='item-title'>VAT</div>
-                <div class='item-after' id='open-invoice-vat'></div>
+                <div class='item-after text-color-black' id='open-invoice-vat'></div>
               </div>
               </div>
             </li>
@@ -170,17 +302,31 @@
               <div class='item-content'>
                 <div class='item-inner'>
                 <div class='item-title'>Grand total amount</div>
-                <div class='item-after' id='open-invoice-grand-total-amount'></div>
+                <div class='item-after text-color-black' id='open-invoice-grand-total-amount'></div>
               </div>
               </div>
             </li>
+
+
+
+
+             <li>
+              <div class='item-content'>
+                <div class='item-inner'>
+                <div class='item-title'>Amount paid</div>
+                <div class='item-after text-color-black' id='open-invoice-amount-paid'></div>
+              </div>
+              </div>
+            </li>
+
+
 
 
             <li>
               <div class='item-content'>
                 <div class='item-inner'>
                 <div class='item-title'>Invoice date</div>
-                <div class='item-after' id='open-invoice-date'></div>
+                <div class='item-after text-color-black' id='open-invoice-date'></div>
               </div>
               </div>
             </li>
@@ -190,7 +336,7 @@
               <div class='item-content'>
                 <div class='item-inner'>
                 <div class='item-title'>Invoice due date</div>
-                <div class='item-after' id='open-invoice-due-date'></div>
+                <div class='item-after text-color-black' id='open-invoice-due-date'></div>
               </div>
               </div>
             </li>
@@ -227,7 +373,7 @@
 
           <div class="col-33">
           <a href="#" class="popup-close link" data-popup=".open-expenses-popup">
-            <i class="icon f7-icons" style="font-size: 32px;">close</i>
+            <i class="icon f7-icons" style="font-size: 32px;">arrow_left</i>
           </a>
         </div>
 
@@ -238,8 +384,8 @@
           </div>
 
           <div class="block">
-          <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: 50px; margin-top: 0px; margin-bottom:0px;">
-          <h3>Invoice Expsneses - <span class="open-invoice-number"></span></h3>
+          <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: auto; margin-top: 0px; margin-bottom:0px; padding:10px 5px;">
+          <h3>Invoice Expenses - <span class="open-invoice-number"></span></h3>
           </div>
         </div>
 
@@ -284,7 +430,7 @@
 
           <div class="col-33">
           <a href="#" class="popup-close link" data-popup=".open-payins-popup">
-            <i class="icon f7-icons" style="font-size: 32px;">close</i>
+            <i class="icon f7-icons" style="font-size: 32px;">arrow_left</i>
           </a>
         </div>
 
@@ -295,7 +441,7 @@
           </div>
 
           <div class="block">
-          <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: 50px; margin-top: 0px; margin-bottom:0px;">
+          <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px; height: auto; margin-top: 0px; margin-bottom:0px; padding: 10px 5px;">
           <h3>Invoice Payins - <span class="open-invoice-number"></span></h3>
           </div>
         </div>
@@ -332,7 +478,7 @@
 
           <div class="col-33">
           <a href="#" class="popup-close link" data-popup=".add-payins-popup">
-            <i class="icon f7-icons" style="font-size: 32px;">close</i>
+            <i class="icon f7-icons" style="font-size: 32px;">arrow_left</i>
           </a>
         </div>
 
@@ -343,11 +489,11 @@
        
        <div class="block">
 
-      <h1 class="text-center">
+      <h2 class="text-center">
         <i class="icon f7-icons">card</i>
         <br>
         Add invoice payment
-      </h1>
+      </h2>
       
 
 
@@ -437,7 +583,7 @@
 
           <div class="col-33">
           <a href="#" class="popup-close link" data-popup=".add-expenses-popup">
-            <i class="icon f7-icons" style="font-size: 32px;">close</i>
+            <i class="icon f7-icons" style="font-size: 32px;">arrow_left</i>
           </a>
         </div>
 
@@ -456,7 +602,7 @@
       
 
 
-      <form class="list no-hairlines-md no-hairlines-ios" style="margin-top: 0px;" method="post" id="add-expense-form" action="https://nairasurvey.com/auditbar_backend/push_expenses.php" onsubmit="return false">
+      <form class="list no-hairlines-md no-hairlines-ios" style="margin-top: 0px;" method="post" id="add-expense-form" action="https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/push_expenses.php" onsubmit="return false">
 
         
 
@@ -512,6 +658,7 @@
                 <i class="icon f7-icons">attachment</i>
                 Select expense Receipt
               </span>
+            </label>
               
                 <input type="file" name="receipt" id="expense-receipt" style="position: absolute; left: -999px;">
 
@@ -786,6 +933,76 @@
          
 
       <div class="list no-hairlines-md no-hairlines-ios" id="all-overdue-invoices-list">
+      <ul class="skeleton-effect-blink">
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+
+<li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+
+        <li>
+          <div class="item-content">
+            <div class="item-inner">
+              <div class="item-title skeleton-text">Total invoice <br> ADB-INV10020 <br> 2020-01-01</div>
+              <div class="item-after skeleton-text">NGN1,000</div>
+            </div>
+          </div>
+        </li>
+
+
+        
+      </ul>
+    </div>
+
+
+    </div>
+
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+               <div id="tab-5" class="page-content tab">
+
+   
+    <div class="block">
+         
+
+      <div class="list no-hairlines-md no-hairlines-ios" id="all-partial-invoices-list">
       <ul class="skeleton-effect-blink">
 
         <li>

@@ -1,6 +1,114 @@
 <div class="page" data-name="dashboard">
 
 
+  <div class="popover popover-currency-change" style="width: 80px;">
+    <div class="popover-inner">
+      <div class="list">
+        <ul id="">
+
+          <li onclick = "changeCurrency('NGN')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              NGN
+            </span>
+           </a>
+          </li>
+
+
+
+          <li onclick = "changeCurrency('£')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              £
+            </span>
+           </a>
+          </li>
+
+
+           <li onclick = "changeCurrency('€')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              €
+            </span>
+           </a>
+          </li>
+
+
+
+          <li onclick = "changeCurrency('$')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              $
+            </span>
+           </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="popover time-frame-change" style="width: 160px;">
+    <div class="popover-inner">
+      <div class="list">
+        <ul id="">
+
+          <li onclick = "changeTimeFrame('today')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              Today
+            </span>
+           </a>
+          </li>
+
+
+
+          <li onclick = "changeTimeFrame('this_week')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              This week
+            </span>
+           </a>
+          </li>
+
+
+           <li onclick = "changeTimeFrame('this_month')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              This month
+            </span>
+           </a>
+          </li>
+
+
+
+          <li onclick = "changeTimeFrame('this_year')">
+            <a class='list-button item-link' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              This year
+            </span>
+           </a>
+          </li>
+
+
+
+           <li>
+            <a class='list-button item-link demo-calendar-modal' href='#'>
+            <span style="font-weight: bold; font-size: 18px; margin-left:5px;">
+              Custom Date
+            </span>
+           </a>
+          </li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+
   <div class="fab fab-right-bottom" style="margin-bottom: 42px;"> 
     <a href="#" id="dashboard-create-invoice-btn">
       <i class="icon f7-icons">add</i>
@@ -65,12 +173,22 @@
 
                 <div class="title"></div>
 
-                <div class="right text-color-gray ios-only">
-                  <i class="icon f7-icons demo-calendar-modal">calendar</i>
-                </div>
+                <div class="right text-color-gray">
+                 
+                
+                  <a class="link popover-open text-color-black" href="#" data-popover=".popover-currency-change">
+                  <span id="currency-plate">
+                    NGN
+                  </span>
+                </a>
 
-                <div class="right text-color-gray md-only">
-                  <i class="icon f7-icons demo-calendar-modal">calendar</i>&nbsp;
+
+
+                 <a href="#" class="popover-open text-color-black" data-popover=".time-frame-change">
+                    <i class="icon f7-icons">calendar</i>
+                  </a>
+                <span class="md-only">&nbsp;</span>
+
                 </div>
 
                
@@ -87,40 +205,6 @@
       <div class="ptr-arrow"></div>
       </div>
 
-    <!-- <div class="popup add-business-popup">
-      <div class="page">
-        <div class="page-content">
-
-          <div class="block">
-          <a href="#" class="popup-close link">
-            <i class="icon f7-icons" style="font-size: 32px;">close</i>
-          </a>
-          </div>
-
-          <div class="block text-center">
-                  <img src="imgs/assets/box.png" style="display: block; margin: 0 auto; max-width: 100px; margin-top: 100px;">
-                  <h2 style="margin-bottom: 0px;">Create & send invoice or add contacts to your business.</h2>
-                  <h5 style="margin-top: 0px;">Monitor and record business transactions with your Auditbar account</h5>
-                  
-                  <div class="row">
-
-                  <button class="col button button-large button-raised button-fill" id="create-invoice-btn" type="button">
-                    Create invoice
-                  </button>
-
-                <button class="col button button-large button-raised button-fill" id="add-contact-btn" type="button">
-                  Add Customer
-                  </button>
-
-
-                  </div>
-                  
-
-          </div>
-        </div>
-      </div>
-    </div>
- -->
 
       <div class="text-center" style="margin-top: 10px;">
         <a class="link popover-open text-color-black" href="#" data-popover=".popover-company-list">
@@ -131,43 +215,56 @@
         </a>
       </div>
 
-      <div id="chtAnimatedBarChart" class="bcBar" style="width:100%; margin-top:10px;"></div>
+
+
+
+
+
+                <div data-pagination='{"el": ".swiper-pagination"}' data-navigation='{"nextEl": ".swiper-button-next", "prevEl": ".swiper-button-prev"}' data-parallax="true" data-speed="600" class="swiper-container swiper-init demo-swiper" style="height:auto; margin:0px;">
+          
+    
+
+   
+    <div class="swiper-wrapper">
+        <!-- Slides -->
+
+
+
+         <div class="swiper-slide" style="width: 100%; height: auto;">
+
+            <div id="chtAnimatedBarChart" class="bcBar" style="width:100%; margin-top:10px;"></div>
+
+        </div>
+
+
+
+
+         <div class="swiper-slide" style="width: 100%; height: auto;">
+
+            <div id="chtAnimatedBarChart2" class="bcBar" style="width:100%; margin-top:10px;"></div>
+
+        </div>
+
+
+
+
+
+      </div><!-- Swiper wrapper -->
+
+
+    </div><!-- Swiper container -->
+
+
+
+      
    
     <div class="block">
-
-      
-
-      
-<!--       <div class="text-center">
-      <div class="gauge my-gauge"></div>
-      <br><br>
-
-      <div class="row">
-
-        <div class="col-50">
-          <i class="icon f7-icons" style="color:#069;font-size: 12px;">circle_fill</i>
-          &nbsp;
-          <span>Income</span>
-        </div>
-
-         <div class="col-50">
-          <i class="icon f7-icons" style="color:#f00;font-size: 12px;">circle_fill</i>
-          &nbsp;
-          <span>Expenses</span>
-        </div>
-
-      </div>
-
-      </div>
- -->
-     
-
 
 
       <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px;">
         <span>Net Profit</span>
         <br>
-        <span id="net-profit" style="font-size:30px;">NGN0</span>
+        <span id="net-profit" style="font-size:22px;">NGN0</span>
       </div>
 
 
@@ -212,7 +309,7 @@
 
 
       <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px;">
-        <h2>Invoices</h2>
+        <h3>Invoices</h3>
       </div>
 
 
@@ -250,7 +347,7 @@
 
 
       <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px;">
-        <h2>Expenses</h2>
+        <h3>Expenses</h3>
       </div>
 
 
