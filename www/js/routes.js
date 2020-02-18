@@ -138,5 +138,40 @@ var routes = [
     name: 'taxcompliance',
     path: '/taxcompliance/',
     url: './taxcompliance.html'
+    },
+    {
+    name: 'addbusiness',
+    path: '/addbusiness/',
+    url: './addbusiness.html'
+    },
+    {
+    name: 'profile',
+    path: '/profile/',
+    url: './profile.html'
+    },
+    {
+    name: 'updateprofile',
+    path: '/updateprofile/',
+    url: './updateprofile.html'
+    },
+    {
+    name: 'updateemail',
+    path: '/updateemail/',
+    url: './updateemail.html'
+    },
+    {
+    name: 'emailupdateotp',
+    path: '/emailupdateotp/',
+    url: './emailupdateotp.html'
+    },
+    {
+    name: 'updatepassword',
+    path: '/updatepassword/',
+    url: './updatepassword.html'
+    },
+    {
+    name: 'support',
+    path: '/support/',
+    url: './support.html'
     }
 ];

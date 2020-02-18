@@ -6,7 +6,7 @@ var permanentReg = window.localStorage.getItem("permanentReg");
 permanentReg = JSON.parse(permanentReg);
 
 
-    app.request.post("https://nairasurvey.com/auditbar_backend/find_contact.php",
+    app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/find_contact.php",
           {
             
             "my_id" : permanentReg.user_serial
@@ -67,7 +67,7 @@ permanentReg = JSON.parse(permanentReg);
 
 	        if(allContacts[p]['contact_sn'] == contactSN){
 
-              app.request.post("https://nairasurvey.com/auditbar_backend/delete_contact.php",
+              app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/delete_contact.php",
                   {
                     
                     "my_id" : permanentReg.user_serial,
@@ -202,7 +202,7 @@ $$(document).on('page:init', '.page[data-name="editcontact"]', function (e){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/update_contact.php",
+          app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/update_contact.php",
           {
             
             "edit_contact_name" : $$("#edit-contact-name").val(),
@@ -264,7 +264,7 @@ var permanentReg = window.localStorage.getItem("permanentReg");
 permanentReg = JSON.parse(permanentReg);
 
 
-    app.request.post("https://nairasurvey.com/auditbar_backend/list_employees.php",
+    app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_employees.php",
           {
             
             "my_id" : permanentReg.user_serial
@@ -316,7 +316,7 @@ permanentReg = JSON.parse(permanentReg);
 
           if(allEmployees[p]['user_serial'] == employeeSN){
 
-              app.request.post("https://nairasurvey.com/auditbar_backend/remove_employee.php",
+              app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/remove_employee.php",
                   {
                     
                     "my_id" : permanentReg.user_serial,
@@ -334,7 +334,7 @@ permanentReg = JSON.parse(permanentReg);
                         toastMe(data.status);
                         console.log(data);
                         app.dialog.close();
-                        //mainView.router.reload();
+                        mainView.router.refreshPage();
                       
                       }
                       else{
@@ -464,7 +464,7 @@ $$(document).on('page:init', '.page[data-name="addemployee"]', function (e){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/add_employee.php",
+          app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/add_employee.php",
           {
             
             
@@ -779,7 +779,7 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
 
       function subscribe(subscriptionID){
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/init_transaction.php',
+      app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/init_transaction.php',
               {
 
                "subscription_id" : subscriptionID,
@@ -821,7 +821,7 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
             
             pushedData = JSON.parse(pushedData);
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/paystack/paystack_init.php",
+            app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/paystack/paystack_init.php",
                         {
                           "buyer_email" : permanentReg.user_email,
                           "amount_2_pay" : pushedData.subscription_price * 100,
@@ -863,7 +863,7 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
 
 
           //fetch prices and add them to button
-          app.request.post('https://nairasurvey.com/auditbar_backend/fetch_prices.php',
+          app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/fetch_prices.php',
               
                function (data) {
                 
@@ -894,7 +894,7 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
            function confirmPayment(transactionID){
 
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/paystack/verify_payment.php",
+            app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/paystack/verify_payment.php",
                         {
                           
                           "transaction_id" : transactionID                         
@@ -1081,7 +1081,7 @@ $$(document).on('page:init', '.page[data-name="accountstatement"]', function (e)
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/account_statement_request.php",
+          app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/account_statement_request.php",
           {
             
             
@@ -1154,7 +1154,7 @@ $$(document).on('page:init', '.page[data-name="accountstatement"]', function (e)
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/customer_account_statement_request.php",
+          app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/customer_account_statement_request.php",
           {
             
             "customer_id" : $$("#customer-id").val(),

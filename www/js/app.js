@@ -1,5 +1,5 @@
 // Declare Global variables
-var getLogo, messenger, shift, selectCompany, grabCompanySummary, resetDashboard, resetDateRange, changeCurrency, refreshInvoiceList, invoicePageRefreshList, deleteInvoiceItem, uploadCompanyLogo, storeChosenContact, openInvoice, openInvoiceExpenses, openInvoicePayins, deleteChosenContact, editChosenContact, taxSubscribe, myLineCanvas, CanvasBackground, XValues, YValues, gridLineColor, gridNumeralColor, GridNumeralDecimals, gridLineFrecuency, lineStroke, lineColor, ChartAvarage;
+var getLogo, messenger, shift, selectCompany, grabCompanySummary, resetDashboard, resetDateRange, changeCurrency, refreshInvoiceList, invoicePageRefreshList, deleteInvoiceItem, uploadCompanyLogo, storeChosenContact, openInvoice, openInvoiceExpenses, openInvoicePayins, deleteChosenContact, editChosenContact, taxSubscribe, myLineCanvas, CanvasBackground, XValues, YValues, gridLineColor, gridNumeralColor, GridNumeralDecimals, gridLineFrecuency, lineStroke, lineColor, ChartAvarage, shareAuditbar, pushChart, pushChart2, changeTimeFrame;
 
 
 // Dom7
@@ -39,7 +39,7 @@ toastMe = function(toastMessage){
 
 messenger = function(theMessage, theChannel, theEmail, thePhone, theSubject){
 
-  app.request.post('https://nairasurvey.com/auditbar_backend/messenger.php', 
+  app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/messenger.php', 
             {
              "the_message" : theMessage,
              "the_channel" : theChannel,
@@ -119,6 +119,31 @@ document.addEventListener("deviceready", deviceIsReady, false);
 function deviceIsReady(){
 
 
+  shareAuditbar = function(){
+
+// this is the complete list of currently supported params you can pass to the plugin (all optional)
+var options = {
+
+  message: 'Accounting and Invoicing app in your pocket. Auditbar', 
+  subject: 'Auditbar', // fi. for email
+  files: [], // an array of filenames either locally or remotely
+  url: 'https://play.google.com/store/apps/details?id=com.codegreenie.quickbankcodes',
+  chooserTitle: 'Share via'
+};
+
+var onSuccess = function(result) {
+  //console.log("Share was successful");
+};
+
+var onError = function(msg) {
+  //console.log("Sharing Failed!");
+};
+
+window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+
+}
+
+
   StatusBar.backgroundColorByHexString("#ffffff");
 
   document.addEventListener("backbutton", function (){
@@ -129,6 +154,12 @@ function deviceIsReady(){
     if(currentPage == "dashboard" || currentPage == "login" || currentPage == "slides" || currentPage == "signup"){
 
         navigator.app.exitApp();
+    }
+    else if (currentPage == "more" || currentPage == "invoices") {
+       mainView.router.navigate("/dashboard/");
+    }
+    else if (app.popup.opened == true) {
+        app.popup.close();
     }
     else{
       
@@ -334,7 +365,7 @@ $$(document).on('page:init', '.page[data-name="login"]', function (e){
           $$("#login-btn").html("Logging in...").prop("disabled", true);
             
           
-            app.request.post('https://nairasurvey.com/auditbar_backend/user_login.php', 
+            app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/user_login.php', 
             {
              "user_email" : $$("#user-email").val(),
              "user_password" : $$("#user-password").val()
@@ -464,7 +495,7 @@ $$(document).on('page:init', '.page[data-name="signup"]', function (e){
             window.localStorage.setItem("temporaryReg", tempStorage);
 
 
-            app.request.post('https://nairasurvey.com/auditbar_backend/generate_code.php', 
+            app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/generate_code.php', 
             
              function (data) {
 
@@ -577,7 +608,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
 
 
 
-             app.request.post('https://nairasurvey.com/auditbar_backend/user_registration.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/user_registration.php', 
             {
              "new_user_first_name" : tempStorage.first_name,
              "new_user_last_name" : tempStorage.last_name,
@@ -676,7 +707,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
             tempStorage = JSON.parse(tempStorage);
 
 
-             app.request.post('https://nairasurvey.com/auditbar_backend/user_registration.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/user_registration.php', 
             {
              "new_user_first_name" : tempStorage.first_name,
              "new_user_last_name" : tempStorage.last_name,
@@ -1034,7 +1065,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
 
       function subscribe(subscriptionID){
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/init_transaction.php',
+      app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/init_transaction.php',
               {
 
                "subscription_id" : subscriptionID,
@@ -1076,7 +1107,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
             
             pushedData = JSON.parse(pushedData);
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/paystack/paystack_init.php",
+            app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/paystack/paystack_init.php",
                         {
                           "buyer_email" : permanentReg.user_email,
                           "amount_2_pay" : pushedData.subscription_price * 100,
@@ -1118,7 +1149,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
 
 
           //fetch prices and add them to button
-          app.request.post('https://nairasurvey.com/auditbar_backend/fetch_prices.php',
+          app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/fetch_prices.php',
               
                function (data) {
                 
@@ -1149,7 +1180,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
            function confirmPayment(transactionID){
 
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/paystack/verify_payment.php",
+            app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/paystack/verify_payment.php",
                         {
                           
                           "transaction_id" : transactionID                         
@@ -1207,7 +1238,7 @@ $$(document).on('page:init', '.page[data-name="recovery"]', function (e){
         else{
 
             $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-             app.request.post('https://nairasurvey.com/auditbar_backend/recover_account.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/recover_account.php', 
             {
              "user_email" : $$("#recovery-email").val(),
            },
@@ -1419,7 +1450,7 @@ $$(document).on('page:init', '.page[data-name="newpassword"]', function (e){
         else{
 
             $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-             app.request.post('https://nairasurvey.com/auditbar_backend/set_new_password.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/set_new_password.php', 
             {
             "user_serial_no" : recoveryProps.user_serial_no,
              "user_email" : recoveryProps.recovery_email,
@@ -1475,104 +1506,271 @@ $$(document).on('page:init', '.page[data-name="newpassword"]', function (e){
 
 $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
 
+
+  var graphSlider = app.swiper.create({
+          'el' : '.swiper-container',
+          
+    });
+
+  window.setTimeout(function(){
+    graphSlider.slideNext();
+  }, 4000);
+
   var permanentReg = window.localStorage.getItem("permanentReg");
   permanentReg = JSON.parse(permanentReg);
 
-  var addBusinessPopup = app.popup.create({
-    el : ".add-business-popup"
-  });
+  if (!window.localStorage.getItem("dashboard_currency")) {
+    window.localStorage.setItem("dashboard_currency", "NGN");
+    $$("#currency-plate").text("NGN");
+  }
+  else{
+    $$("#currency-plate").text(window.localStorage.getItem("dashboard_currency"));
+  }
 
 
-    getData = function() {
-      return [
-         { "group_name": "Income", "name": "24 Jan, 2020", "value": 38367 },
-         { "group_name": "Income", "name": "Feb", "value": 32684 },
-         { "group_name": "Income", "name": "Mar", "value": 28236 },
-         { "group_name": "Income", "name": "Apr", "value": 44205 },
-         { "group_name": "Income", "name": "May", "value": 3357 },
-         { "group_name": "Income", "name": "Jun", "value": 3511 },
-         { "group_name": "Income", "name": "Jul", "value": 10372 },
-         { "group_name": "Income", "name": "Aug", "value": 15565 },
-         { "group_name": "Income", "name": "Sep", "value": 23752 },
-         
-         { "group_name": "Expenses", "name": "24 Jan, 2020", "value": 28827 },
-         { "group_name": "Expenses", "name": "Feb", "value": 13671 },
-         { "group_name": "Expenses", "name": "Mar", "value": 27670 },
-         { "group_name": "Expenses", "name": "Apr", "value": 6274 },
-         { "group_name": "Expenses", "name": "May", "value": 12563 },
-         { "group_name": "Expenses", "name": "Jun", "value": 31263 },
-         { "group_name": "Expenses", "name": "Jul", "value": 24848 },
-         { "group_name": "Expenses", "name": "Aug", "value": 41199 },
-         { "group_name": "Expenses", "name": "Sep", "value": 18952 },
-         
+  var timeFramePopover = app.popover.create({
+      el : '.time-frame-change'
+   });
 
+
+
+  changeCurrency = function(theCurrency){
+    $$("#currency-plate").text(theCurrency);
+    window.localStorage.setItem("dashboard_currency", theCurrency);
+    currencyPopover.close();
+    grabCompanySummary(chosen_company_id);
+  }
+
+
+  changeTimeFrame = function(timeFrame){
+
+    app.popover.close();
+
+
+      function addZero(i){
+        if (i < 10) {
+          i = "0" + i;
+        }
+
+        return i;
+      }
+
+
+       var dateRange = window.localStorage.getItem("dateRange");
+        dateRange = JSON.parse(dateRange);
+        var newDate = new Date();
+        console.log(newDate.getDay());
+
+       switch(timeFrame){
+          case "today" : todayNi(); grabCompanySummary(chosen_company_id); break;
+          case "this_month" : thisMonthNi(); grabCompanySummary(chosen_company_id); break;
+          case "this_year" : thisYearNi(); grabCompanySummary(chosen_company_id); break;
+          default : thisWeekNi(); grabCompanySummary(chosen_company_id);
+       }
+
+
+    function todayNi(){
        
-      ];
-   }
+      dateRange["fromDate"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth() + 1) + "-" + addZero(newDate.getDate()) + " " + "00:00:01";
 
-   function newData(){
-    return [ 
-         { "group_name": "Expenses", "name": "24 Jan, 2020", "value": 28827 },
-         { "group_name": "Expenses", "name": "Feb", "value": 13671 },
-         { "group_name": "Expenses", "name": "Mar", "value": 27670 },
-         { "group_name": "Expenses", "name": "Apr", "value": 6274 },
-         { "group_name": "Expenses", "name": "May", "value": 12563 },
-         { "group_name": "Expenses", "name": "Jun", "value": 31263 },
-         { "group_name": "Expenses", "name": "Jul", "value": 24848 },
-         { "group_name": "Expenses", "name": "Aug", "value": 41199 },
-         { "group_name": "Expenses", "name": "Sep", "value": 18952 },       
-      ]; 
-   }
+          dateRange["endDate"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth() + 1) + "-" + addZero(newDate.getDate()) + " " + "23:59:58";
+        
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("dateRange", dateRange);
+    }
 
-/*
-window.setTimeout(function(){
-  $('#chtAnimatedBarChart').updateChart({ 
-      data: newData()
+
+
+    function thisMonthNi(){
+       
+      dateRange["fromDate"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth() + 1) + "-01 " + "00:00:01";
+
+      dateRange["endDate"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth() + 1) + "-31 " + "23:59:58";
+        
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("dateRange", dateRange);
+    }
+
+
+
+
+    function thisYearNi(){
+       
+      dateRange["fromDate"] = newDate.getFullYear() + "-01-01 00:00:01";
+
+      dateRange["endDate"] = newDate.getFullYear() + "-12-31 23:59:58";
+        
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("dateRange", dateRange);
+    }      
+
+     
+
+    function thisWeekNi(){
+       
+      var days = 7; // Days you want to subtract
+      var date = new Date();
+      var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+      var day = last.getDate();
+      var month = last.getMonth()+1;
+      var year = last.getFullYear();
+
+      var lastWeek = year + "-" + addZero(month) + "-" + day + " 00:00:00";
+
+      var todaygangan = newDate.getFullYear() + "-" + addZero(newDate.getMonth() + 1) + "-" + addZero(newDate.getDate()) + " " + "23:59:58";
+
+      console.log(lastWeek, todaygangan);
+
+      dateRange["fromDate"] = lastWeek;
+      dateRange["endDate"] = todaygangan;
+
+        
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("dateRange", dateRange);
+    }
+    
+    
+   
+
+
+    
+  }
+
+  var currencyPopover = app.popover.create({
+      el : '.popover-currency-change'
+   });
+
+
+  $$(".demo-calendar-modal").click(function(){
+    timeFramePopover.close();
   });
-}, 7000);
-   */
+
+  var bigChart,  bigChart2;
+
+  pushChart = function(myData){
+
+      var hugeData = [];
+
+      for(b = 0; b < myData.length; b++){
+
+        var dataToAppend = {
+          "group_name": "Income", "name": myData[b].transaction_date.split(" ")[0], "value": parseInt(myData[b].transaction_amount)
+        }
+
+        hugeData.push(dataToAppend);
+
+      }
+
+      console.log("Huge data is ", hugeData);
+      bigChart.updateChart({ data: hugeData });
+  
+}
 
 
 
-   var chart_data = getData();
-   $('#chtAnimatedBarChart').animatedBarChart({ 
-    data: chart_data,
+pushChart2 = function(myData){
 
+      var hugeData2 = [];
+
+      for(b = 0; b < myData.length; b++){
+
+        var dataToAppend = {
+          "group_name": "Expenses", "name": myData[b].transaction_date.split(" ")[0], "value": parseInt(myData[b].transaction_amount)
+        }
+
+        hugeData2.push(dataToAppend);
+
+      }
+
+      console.log("Huge data 2 is ", hugeData2);
+      bigChart2.updateChart({ data: hugeData2 });
+  
+}
+
+
+
+
+   var zero_data = [
+    { "group_name": "Expenses", "name": "0000-00-00", "value": 0 },
+    { "group_name": "Expenses", "name": "0000-00-00", "value": 0 }
+   ];
+   bigChart2 = $('#chtAnimatedBarChart2').animatedBarChart({ 
+    data: zero_data,
     number_format: {
     format: ',.2f', // default number format
     decimal: '.', // decimal symbol
     thousands : ',', // thousand separator symbol
     grouping: [3], // thousand separator grouping
-    currency: ['NGN'] // currency symbol
+    currency: [window.localStorage.getItem("dashboard_currency")] // currency symbol
    },
 
 
    legend: {
     position: LegendPosition.top, // legend position (bottom/top/right/left)
-    width: 200 // legend width in pixels for left/right
+    width: 500 // legend width in pixels for left/right
   },
 
   rotate_x_axis_labels: { 
     process: true, // process xaxis label rotation
     minimun_resolution: 720, // minimun_resolution for label rotating
-    bottom_margin: 15, // bottom margin for label rotation
-    rotating_angle: 90, // angle for rotation,
+    bottom_margin: 100, // bottom margin for label rotation
+    rotating_angle: 75, // angle for rotation,
     x_position: 10, // label x position after rotation
     y_position: -3 // label y position after rotation
   },
 
 
    bars: { 
-    padding: 0.2, // padding between bars
+    padding: 0.1, // padding between bars
     opacity: 0.7, // default bar opacity
     opacity_hover: 0.45, // default bar opacity on mouse hover
     disable_hover: false, // disable animation and legend on hover
-    hover_name_text: 'name', // text for name column for label displayed on bar hover
-    hover_value_text: 'value', // text for value column for label displayed on bar hover
+    hover_name_text: 'date', // text for name column for label displayed on bar hover
+    hover_value_text: 'amount', // text for value column for label displayed on bar hover
   },
 
   });
 
+
+
+
+   bigChart = $('#chtAnimatedBarChart').animatedBarChart({ 
+    data: zero_data,
+
+	    number_format: {
+	    format: ',.2f', // default number format
+	    decimal: '.', // decimal symbol
+	    thousands : ',', // thousand separator symbol
+	    grouping: [3], // thousand separator grouping
+	    currency: [window.localStorage.getItem("dashboard_currency")] // currency symbol
+	   },
+
+
+	   legend: {
+	    position: LegendPosition.top, // legend position (bottom/top/right/left)
+	    width: 500 // legend width in pixels for left/right
+	  },
+
+	  rotate_x_axis_labels: { 
+	    process: true, // process xaxis label rotation
+	    minimun_resolution: 720, // minimun_resolution for label rotating
+	    bottom_margin: 100, // bottom margin for label rotation
+	    rotating_angle: 75, // angle for rotation,
+	    x_position: 10, // label x position after rotation
+	    y_position: -3 // label y position after rotation
+	  },
+
+
+	   bars: { 
+	    padding: 0.1, // padding between bars
+	    opacity: 0.7, // default bar opacity
+	    opacity_hover: 0.45, // default bar opacity on mouse hover
+	    disable_hover: false, // disable animation and legend on hover
+	    hover_name_text: 'date', // text for name column for label displayed on bar hover
+	    hover_value_text: 'amount', // text for value column for label displayed on bar hover
+	  },
+
+  });
 
 
 
@@ -1593,9 +1791,8 @@ window.setTimeout(function(){
   
   //then load default chosen company summary
   window.setTimeout(function(){
-    resetDateRange();
     grabCompanySummary(chosen_company_id);
-  }, 1500);
+  }, 500);
 
 
 
@@ -1609,7 +1806,7 @@ window.setTimeout(function(){
     if (theChosenCompany.company_access == "administrator") {
         
     
-     app.request.post("https://nairasurvey.com/auditbar_backend/check_subscription.php",
+     app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/check_subscription.php",
           {
             "company_id" : chosen_company_id
           },
@@ -1655,8 +1852,7 @@ window.setTimeout(function(){
   ptr.on("ptr:refresh", function(){
     var theChosenCompany = window.localStorage.getItem("chosenCompany");
     theChosenCompany = JSON.parse(theChosenCompany);
-    resetDateRange();
-    grabCompanySummary(chosen_company_id);
+    grabCompanySummary(theChosenCompany.company_id);
     setTimeout(function(){
       app.ptr.done();
     }, 5000);
@@ -1718,7 +1914,7 @@ window.setTimeout(function(){
 
           chosenCompanyDetails = JSON.stringify(chosenCompanyDetails);
           window.localStorage.setItem("chosenCompany", chosenCompanyDetails);
-          resetDateRange();
+          //resetDateRange();
           grabCompanySummary(theCompanyID);
 
           break;
@@ -1730,16 +1926,20 @@ window.setTimeout(function(){
 
 
 
+
+
+
   grabCompanySummary = function(theCompanyID){
 
     var dateRange = window.localStorage.getItem("dateRange");
     dateRange = JSON.parse(dateRange);
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/company_summary.php', 
+      app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/company_summary.php', 
             {
             "company_serial" : theCompanyID,
              "from_date" : dateRange.fromDate,
-             "to_date" : dateRange.endDate            
+             "to_date" : dateRange.endDate,
+             "currency" :  window.localStorage.getItem("dashboard_currency")         
            },
              function (data) {
 
@@ -1755,19 +1955,16 @@ window.setTimeout(function(){
                   resetDashboard();  
                 }
                 else{
+                  var invoiceCurrency = window.localStorage.getItem("dashboard_currency");
                   for (var i = 0; i < cashIDs.length; i++) {
                   var thisDataView = viewDatas[i];
-                  $$("#" + cashIDs[i]).text("NGN" + parseInt(dataCheck[thisDataView]).toLocaleString());
+                  $$("#" + cashIDs[i]).text(invoiceCurrency + "" + parseInt(dataCheck[thisDataView]).toLocaleString());
                   }
+                  console.log(dataCheck.income_breakdown);
+                  pushChart(dataCheck.income_breakdown);
+                  pushChart2(dataCheck.expenses_breakdown);
 
-                   gauge.update({
-                      value : dataCheck.guage_calculator,
-                      valueText : (parseInt(dataCheck.guage_calculator * 100)) + '%',
-                      borderColor : '#f00',
-                      borderBgColor : '#069',
-                      labelText : 'Expenses',
-                      labelTextColor : '#2f2f2f'
-                    });
+                  
                    
                 }
              },
@@ -1777,6 +1974,10 @@ window.setTimeout(function(){
       }
 
 
+      
+      
+
+
 
 
       resetDashboard = function(){
@@ -1784,50 +1985,44 @@ window.setTimeout(function(){
          var cashIDs = ["total-income", "total-expenses", "gross-profit", "total-invoice-amount", "total-paid-invoice", "total-unpaid-invoice", "inventory", "labour", "rent", "tax", "other", "net-profit"];
 
          for (var i = 0; i < cashIDs.length; i++) {
-            $$("#" + cashIDs[i]).text("NGN0");
+            $$("#" + cashIDs[i]).text(window.localStorage.getItem("dashboard_currency") + "0");
           }
-            gauge.update({
-              value : '0',
-              valueText : '0%',
-              borderColor : 'transparent',
-              borderBgColor : '#eeeeee',
-              labelText : 'Expenses',
-              labelTextColor : '#2f2f2f'
-            });
-
-          resetDateRange(); 
+          var zero_data = [
+            { "group_name": "Income", "name": "0000-00-00", "value": "0" },
+            { "group_name": "Income", "name": "0000-00-00", "value": "0" }
+           ];
+          bigChart.updateChart({ data: zero_data });
+          bigChart2.updateChart({ data: zero_data });
+           
       }
 
+      function addZero(i){
+        if (i < 10) {
+          i = "0" + i;
+        }
 
+        return i;
+      }
 
+/*
       function resetDateRange(){
 
         var dateRange = window.localStorage.getItem("dateRange");
         dateRange = JSON.parse(dateRange);
-        for (var p in dateRange) {
-          dateRange[p] = "";
-        }
+        var newDate = new Date();
+        
+          dateRange["fromDate"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth()) + "-" + addZero(newDate.getDay()) + " " + "00:00:01";
+
+          dateRange["endDate"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth()) + "-" + addZero(newDate.getDay()) + " " + "23:59:58";
+        
         dateRange = JSON.stringify(dateRange);
         window.localStorage.setItem("dateRange", dateRange);
 
-      }
+      }*/
 
   
 
 
-
-        var gauge = app.gauge.create({
-          el: '.gauge',
-          value : '0.0',
-          valueText : '0%',
-          valueTextColor : '#2f2f2f',
-          valueFontSize : '26',
-          labelFontSize: '12',
-          borderBgColor : '#eeeeee',
-          labelText : 'Expenses',
-          labelTextColor : '#2f2f2f',
-          size : '140'
-        });
 
 
         
@@ -1922,6 +2117,10 @@ window.setTimeout(function(){
 
 $$(document).on('page:init', '.page[data-name="more"]', function (e){
 
+  $$("#share-auditbar").click(function(){
+    shareAuditbar();
+  });
+
   var chosenCompany = window.localStorage.getItem("chosenCompany");
   chosenCompany = JSON.parse(chosenCompany);
 
@@ -1988,12 +2187,6 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
    });
 
 
-  var contactsPopover = app.popover.create({
-      el : '.popover-contacts',
-      targetEl : 'input.biller'
-   });
-
-
 
   var addItemPopup = app.popup.create({
       el : '.add-item-popup'
@@ -2030,7 +2223,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
             direction : 'vertical',
             header: true,
             toolbarCloseText : 'Apply',
-            headerPlaceholder : 'Auditbar custom date',
+            headerPlaceholder : 'Invoice due date',
             closeByOutsideClick : false,
             
           });
@@ -2206,7 +2399,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
       $$("#invoice-total-plate").text(totalInvoicePrice);
 
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/generate_invoice_preview.php', 
+      app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/generate_invoice_preview.php', 
             {
               
             "invoice_owner" : chosenCompany.company_id,
@@ -2233,7 +2426,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
              function (data) {
 
               console.log(data);
-              var invoicePreviewURL = "https://nairasurvey.com/auditbar_backend/businesses/" + chosenCompany.company_name + "_" + chosenCompany.company_id + "/invoice.html";
+              var invoicePreviewURL = "https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/businesses/" + chosenCompany.company_name + "_" + chosenCompany.company_id + "/invoice.html";
               invoicePreviewURL = encodeURI(invoicePreviewURL);
               window.setTimeout(function(){
                 $("#preview-invoice").load(invoicePreviewURL);
@@ -2270,7 +2463,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
       $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
       
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/create_invoice.php",
+          app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/create_invoice.php",
           {
             "company_name" :  chosenCompany.company_name,
             "invoice_owner" : chosenCompany.company_id,
@@ -2435,7 +2628,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/add_contact.php",
+          app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/add_contact.php",
           {
             
             "contact_name" : $$("#contact-name").val(),
@@ -2514,7 +2707,7 @@ $$(document).on('page:init', '.page[data-name="contactsearch"]', function (e){
 
 
 
-    app.request.post("https://nairasurvey.com/auditbar_backend/find_contact.php",
+    app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/find_contact.php",
           {
             
             "my_id" : permanentReg.user_serial
@@ -2594,13 +2787,24 @@ $$(document).on('page:init', '.page[data-name="contactsearch"]', function (e){
 
 
 
+$$(document).on('page:beforein', '.page[data-name="invoices"]', function (e){
 
+StatusBar.backgroundColorByHexString("#2196f3");
+StatusBar.styleLightContent();
 
+});
 
+$$(document).on('page:beforeout', '.page[data-name="invoices"]', function (e){
+
+StatusBar.backgroundColorByHexString("#ffffff");
+StatusBar.styleDefault();
+
+});
 
 
 
 $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
+
 
   var chosenCompany = window.localStorage.getItem("chosenCompany");
   chosenCompany = JSON.parse(chosenCompany);
@@ -2612,6 +2816,244 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
   else{
     $$(".company-logo").prop("src", chosenCompany.company_logo).css({'border-radius' : '50%'});
   }
+
+
+
+  if (!window.localStorage.getItem("invoice_currency")) {
+    window.localStorage.setItem("invoice_currency", "NGN");
+    $$("#invoice-currency-plate").text("NGN");
+  }
+  else{
+    $$("#invoice-currency-plate").text(window.localStorage.getItem("invoice_currency"));
+  }
+
+  if (!window.localStorage.getItem("invoiceDateRange")) {
+    var myToday = new Date();
+    function addZero(i){
+        if (i < 10) {
+          i = "0" + i;
+        }
+        return i;
+      }
+    var invoiceDateRange = {
+
+      "from_date" : myToday.getFullYear() + "-" + addZero(myToday.getMonth()) + "-" + addZero(myToday.getDay()) + " 00:00:00",
+      "to_date" : myToday.getFullYear() + "-" + addZero(myToday.getMonth()) + "-" + addZero(myToday.getDay()) + " 00:00:00",
+    }
+
+    invoiceDateRange = JSON.stringify(invoiceDateRange);
+    window.localStorage.setItem("invoiceDateRange", invoiceDateRange);
+  }
+
+
+
+
+  function loodAllGrand(){
+    loadAllInvoices();
+    loadPaidInvoices();
+    loadUnpaidInvoices();
+    loadOverdueInvoices();
+    loadPartialInvoices();
+  }
+
+
+
+
+  changeTimeFrame = function(timeFrame){
+
+    app.popover.close();
+
+
+      function addZero(i){
+        if (i < 10) {
+          i = "0" + i;
+        }
+
+        return i;
+      }
+
+
+       var dateRange = window.localStorage.getItem("invoiceDateRange");
+        dateRange = JSON.parse(dateRange);
+        var newDate = new Date();
+        console.log(newDate.getDay());
+
+       switch(timeFrame){
+          case "today" : todayNi(); loodAllGrand(); break;
+          case "this_month" : thisMonthNi(); loodAllGrand(); break;
+          case "this_year" : thisYearNi(); loodAllGrand(); break;
+          default : thisWeekNi(); loodAllGrand();
+       }
+
+
+    function todayNi(){
+       
+      dateRange["from_date"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth() + 1) + "-" + addZero(newDate.getDate()) + " " + "00:00:01";
+
+          dateRange["to_date"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth() + 1) + "-" + addZero(newDate.getDate()) + " " + "23:59:58";
+        
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("invoiceDateRange", dateRange);
+    }
+
+
+
+    function thisMonthNi(){
+       
+      dateRange["from_date"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth() + 1) + "-01 " + "00:00:01";
+
+      dateRange["to_date"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth() + 1) + "-31 " + "23:59:58";
+        
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("invoiceDateRange", dateRange);
+    }
+
+
+
+
+    function thisYearNi(){
+       
+      dateRange["from_date"] = newDate.getFullYear() + "-01-01 00:00:01";
+
+      dateRange["to_date"] = newDate.getFullYear() + "-12-31 23:59:58";
+        
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("invoiceDateRange", dateRange);
+    }      
+
+     
+
+    function thisWeekNi(){
+       
+      var days = 7; // Days you want to subtract
+      var date = new Date();
+      var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+      var day = last.getDate();
+      var month = last.getMonth()+1;
+      var year = last.getFullYear();
+
+      var lastWeek = year + "-" + addZero(month) + "-" + day + " 00:00:00";
+
+      var todaygangan = newDate.getFullYear() + "-" + addZero(newDate.getMonth() + 1) + "-" + addZero(newDate.getDate()) + " " + "23:59:58";
+
+      console.log(lastWeek, todaygangan);
+
+      dateRange["from_date"] = lastWeek;
+      dateRange["to_date"] = todaygangan;
+
+        
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("invoiceDateRange", dateRange);
+    }
+    
+    
+   
+
+
+    
+  }
+
+
+
+  var invoiceTimeFramePopover = app.popover.create({
+      el : '.invoice-time-frame-change'
+   });
+
+
+
+  changeCurrency = function(theCurrency){
+    $$("#invoice-currency-plate").text(theCurrency);
+    window.localStorage.setItem("invoice_currency", theCurrency);
+    invoiceCurrencyPopover.close();
+                 loadAllInvoices();
+                 loadPaidInvoices();
+                 loadUnpaidInvoices();
+                 loadOverdueInvoices();
+                 loadPartialInvoices();
+  }
+
+  var invoiceCurrencyPopover = app.popover.create({
+      el : '.invoice-popover-currency-change'
+   });
+
+
+  $$(".invoice-calendar-modal").click(function(){
+    invoiceTimeFramePopover.close();
+  });
+
+
+  var calendarModal = app.calendar.create({
+            inputEl: '.invoice-calendar-modal',
+            openIn: 'customModal',
+            header: true,
+            footer: true,
+            dateFormat: 'yyyy-mm-dd',
+            rangePicker : true,
+            direction : 'vertical',
+            header: true,
+            toolbarCloseText : 'Apply',
+            headerPlaceholder : 'Select date range',
+            closeByOutsideClick : true,
+            on: {
+              closed: function(){
+                console.log(calendarModal.value);
+                var fromDate = calendarModal.value[0];
+                var fromDay;
+                if (fromDate.getDate().toString().length == 1) {
+                  fromDay = "0" + fromDate.getDate();
+                }
+                else{
+                  fromDay = fromDate.getDate();
+                }
+
+
+                var fromMonth;
+                if (fromDate.getMonth().toString().length == 1) {
+                  fromMonth = "0" + parseInt(fromDate.getMonth() + 1);
+                }
+                else{
+                  fromMonth = parseInt(fromDate.getMonth()) + 1;
+                }
+
+                var mergeFromDate = fromDate.getFullYear() + "-" + fromMonth + "-" + fromDay + " " + "00:00:00";
+                console.log(mergeFromDate);
+
+                var endDate = calendarModal.value[1];
+                var endDay;
+                if (endDate.getDate().toString().length == 1) {
+                  endDay = "0" + endDate.getDate();
+                }
+                else{
+                  endDay = endDate.getDate();
+                }
+
+                var endMonth;
+                if (endDate.getMonth().toString().length == 1) {
+                  endMonth = "0" + parseInt(endDate.getMonth() + 1);
+                }
+                else{
+                  endMonth = endDate.getMonth();
+                }
+
+                var mergeEndDate = endDate.getFullYear() + "-" + endMonth + "-" + endDay + " " + "00:00:00";
+                console.log(mergeEndDate);
+
+                var invoiceDateRange = window.localStorage.getItem("invoiceDateRange");
+                invoiceDateRange = JSON.parse(invoiceDateRange);
+                for (var p in invoiceDateRange) {
+                  invoiceDateRange["from_date"] = mergeFromDate;
+                  invoiceDateRange["to_date"] = mergeEndDate;
+                }
+                invoiceDateRange = JSON.stringify(invoiceDateRange);
+                window.localStorage.setItem("invoiceDateRange", invoiceDateRange);
+                 loadAllInvoices();
+                 loadPaidInvoices();
+                 loadUnpaidInvoices();
+                 loadOverdueInvoices();
+                 loadPartialInvoices();
+              }
+            }
+          });
 
 
 
@@ -2636,6 +3078,86 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
   var addExpensesPopup = app.popup.create({
       el : '.add-expenses-popup'
   });
+
+
+
+
+  $$("#mark-as-paid-btn").click(function(){
+    app.dialog.confirm("Are you sure you want to mark as paid?", function(){
+
+      app.dialog.preloader("Please wait...");
+
+      // if yes, grab invoice id
+      var theInvoiceType = window.localStorage.getItem(window.localStorage.getItem("invoiceTypeCurrentlyOn"));
+      var theInvoice = JSON.parse(theInvoiceType);
+      theInvoice = theInvoice[window.localStorage.getItem("invoiceCurrentlyOn")];
+
+      var totalPayins = 0;
+      // quickly calculate total payins
+      for (var i = 0; i < theInvoice["invoice_payins"].length; i++) {
+        
+        var thePayinAmount = theInvoice["invoice_payins"][i]["transaction_amount"];
+        thePayinAmount = parseInt(thePayinAmount);
+
+        totalPayins = totalPayins + thePayinAmount;
+      }
+
+      console.log(totalPayins);
+
+
+      var invoicePayinBalance = theInvoice["grand_total_amount"] - totalPayins;
+      console.log(invoicePayinBalance);
+
+
+        app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/mark_as_paid.php",
+          {
+            "invoice_id" : theInvoice.invoice_sn,
+            "invoice_number" : theInvoice.invoice_number,
+            "invoice_balance" : invoicePayinBalance
+          },
+            function(data){
+              console.log(data);
+              data = JSON.parse(data);
+
+              if (data.status == "successful") {
+                toastMe("Marked as paid!");
+                  
+                  app.dialog.close();
+                  app.popup.close();
+                  mainView.router.refreshPage();
+              }
+              else{
+
+                toastMe(data.status);
+                  
+                app.dialog.close();
+                
+                
+
+              }
+          }, function(){
+
+              $$("#add-contact-button").html("Add contact").prop("disbled", false);
+              toastMe("Network error. Try again later");
+
+          });
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }, function(){
+      toastMe("Not sure you want to mark as paid");
+    });
+  });
   
 
 
@@ -2652,7 +3174,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
     if (chosenCompany.company_access == "administrator") {
         
     
-     app.request.post("https://nairasurvey.com/auditbar_backend/check_subscription.php",
+     app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/check_subscription.php",
           {
             "company_id" : chosenCompany.company_id
           },
@@ -2699,7 +3221,18 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
     var theLoadedInvoices = window.localStorage.getItem(theLoadedInvoice);
     theLoadedInvoices = JSON.parse(theLoadedInvoices);
 
+    var totalPayins = 0;
+      // quickly calculate total payins
+      for (var i = 0; i < theLoadedInvoices[id]["invoice_payins"].length; i++) {
+        
+        var thePayinAmount = theLoadedInvoices[id]["invoice_payins"][i]["transaction_amount"];
+        thePayinAmount = parseInt(thePayinAmount);
 
+        totalPayins = totalPayins + thePayinAmount;
+      }
+
+      totalPayins = parseInt(totalPayins);
+      totalPayins = totalPayins.toLocaleString();
 
      app.dialog.preloader("Opening invoice...");
      setTimeout(function(){
@@ -2725,9 +3258,12 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
     $$(".open-invoice-number").text(theLoadedInvoices[id]["invoice_number"]);
     $$("#open-invoice-biller").text(theLoadedInvoices[id]["biller"]);
     $$("#open-invoice-biller-address").text(theLoadedInvoices[id]["biller_address"]);
-    $$("#open-invoice-total-amount").text(theLoadedInvoices[id]["currency"] + "" + invoiceTotalAmount);
-    $$("#open-invoice-vat").text(theLoadedInvoices[id]["vat"] + "% (" + theLoadedInvoices[id]["currency"] + "" + vatAmount + ")");
-    $$("#open-invoice-grand-total-amount").text(theLoadedInvoices[id]["currency"] + "" +invoiceGrandTotalAmount);
+    $$("#open-invoice-total-amount").html("<b>" + theLoadedInvoices[id]["currency"] + "" + invoiceTotalAmount + "</b>");
+    $$("#open-invoice-vat").html("<b>" + theLoadedInvoices[id]["vat"] + "% (" + theLoadedInvoices[id]["currency"] + "" + vatAmount + ")</b>");
+    $$("#open-invoice-grand-total-amount").html("<b>" + theLoadedInvoices[id]["currency"] + "" +invoiceGrandTotalAmount + "</b>");
+
+    $$("#open-invoice-amount-paid").html("<b>" + theLoadedInvoices[id]["currency"] + "" +totalPayins + "</b>");
+
     $$("#open-invoice-date").text(invoiceDate[0]);
     $$("#open-invoice-due-date").text(invoiceDueDate[0]);
 
@@ -2756,10 +3292,10 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
       var magnetExpenses = "<ul>"
       for (var i = 0; i < thisInvoiceExpenses.length; i++) {
 
-        var expenseAmount = thisInvoiceExpenses[i]["amount"];
+        var expenseAmount = parseInt(thisInvoiceExpenses[i]["amount"]);
         expenseAmount = expenseAmount.toLocaleString();
           
-        magnetExpenses += "<li class='accordion-item'><a href='#' class='item-link item-content'><div class='item-inner'><div class='item-title'>" + thisInvoiceExpenses[i]["expense_description"] + "<br><small>" + thisInvoiceExpenses[i]["transaction_id"] + "</small></div></div></a><div class='accordion-item-content'><ul><li><div class='item-content'><div class='item-inner'><div class='item-title'>Category:</div><div class='item-after' id='open-invoice-biller'>" + thisInvoiceExpenses[i]["category"] + "</div></div></div></li>   <li><div class='item-content'><div class='item-inner'><div class='item-title'>Amount:</div><div class='item-after'>" + theLoadedInvoices[invoiceCurrentlyOn]["currency"] + "" + expenseAmount + "</div></div></div></li>    <li><div class='item-content'><div class='item-inner'><div class='item-title'>Transaction ID:</div><div class='item-after'>" + thisInvoiceExpenses[i]["transaction_id"] + "</div></div></div></li>    <li><div class='item-content'><div class='item-inner'><div class='item-title'>Description:</div><div class='item-after'>" + thisInvoiceExpenses[i]["expense_description"] + "</div></div></div></li>   <li><div class='item-content'><div class='item-inner'><div class='item-title'>Transaction Date:</div><div class='item-after'>" + thisInvoiceExpenses[i]["expense_date"].split(" ")[0] + "</div></div></div></li>  </ul></div></li>";
+        magnetExpenses += "<li class='accordion-item'><a href='#' class='item-link item-content'><div class='item-inner'><div class='item-title'>" + thisInvoiceExpenses[i]["expense_description"] + "<br><small>" + thisInvoiceExpenses[i]["transaction_id"] + "</small></div></div></a><div class='accordion-item-content'><ul><li><div class='item-content'><div class='item-inner'><div class='item-title'>Category:</div><div class='item-after text-color-black'>" + thisInvoiceExpenses[i]["category"] + "</div></div></div></li>   <li><div class='item-content'><div class='item-inner'><div class='item-title'>Amount:</div><div class='item-after text-color-black'>" + theLoadedInvoices[invoiceCurrentlyOn]["currency"] + "" + expenseAmount + "</div></div></div></li>    <li><div class='item-content'><div class='item-inner'><div class='item-title'>Transaction ID:</div><div class='item-after text-color-black'>" + thisInvoiceExpenses[i]["transaction_id"] + "</div></div></div></li>    <li><div class='item-content'><div class='item-inner'><div class='item-title'>Description:</div><div class='item-after text-color-black'>" + thisInvoiceExpenses[i]["expense_description"] + "</div></div></div></li>   <li><div class='item-content'><div class='item-inner'><div class='item-title'>Transaction Date:</div><div class='item-after text-color-black'>" + thisInvoiceExpenses[i]["expense_date"].split(" ")[0] + "</div></div></div></li>  </ul></div></li>";
 
       }
 
@@ -2787,10 +3323,10 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
      //quickly save id of invoice selected
     var invoiceCurrentlyOn = window.localStorage.getItem("invoiceCurrentlyOn");
 
-    var theLoadedInvoices = window.localStorage.getItem("loadedInvoices");
-    theLoadedInvoices = JSON.parse(theLoadedInvoices);
+    var theLoadedInvoiceType = window.localStorage.getItem("invoiceTypeCurrentlyOn");
+    theLoadedInvoiceType = JSON.parse(window.localStorage.getItem(theLoadedInvoiceType));
 
-    var thisInvoicePayins = theLoadedInvoices[invoiceCurrentlyOn]["invoice_payins"];
+    var thisInvoicePayins = theLoadedInvoiceType[invoiceCurrentlyOn]["invoice_payins"];
     console.log(thisInvoicePayins);
     if (thisInvoicePayins.length == 0) {
       toastMe("No payins found!");
@@ -2805,7 +3341,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
         var payinAmount = parseInt(thisInvoicePayins[i]["transaction_amount"]);
         payinAmount = payinAmount.toLocaleString();
           
-        magnetPayins += "<li class='accordion-item'><a href='#' class='item-link item-content'><div class='item-inner'><div class='item-title'>" + thisInvoicePayins[i]["payin_description"] + "<br><small>" + thisInvoicePayins[i]["transaction_id"] + "</small></div></div></a><div class='accordion-item-content'><ul>  <li><div class='item-content'><div class='item-inner'><div class='item-title'>Amount:</div><div class='item-after'>" + theLoadedInvoices[invoiceCurrentlyOn]["currency"] + "" + payinAmount + "</div></div></div></li>    <li><div class='item-content'><div class='item-inner'><div class='item-title'>Transaction ID:</div><div class='item-after'>" + thisInvoicePayins[i]["transaction_id"] + "</div></div></div></li>    <li><div class='item-content'><div class='item-inner'><div class='item-title'>Description:</div><div class='item-after'>" + thisInvoicePayins[i]["payin_description"] + "</div></div></div></li>   <li><div class='item-content'><div class='item-inner'><div class='item-title'>Transaction Date:</div><div class='item-after'>" + thisInvoicePayins[i]["transaction_date"].split(" ")[0] + "</div></div></div></li>  </ul></div></li>";
+        magnetPayins += "<li class='accordion-item'><a href='#' class='item-link item-content'><div class='item-inner'><div class='item-title'>" + thisInvoicePayins[i]["payin_description"] + "<br><small>" + thisInvoicePayins[i]["transaction_id"] + "</small></div></div></a><div class='accordion-item-content'><ul>  <li><div class='item-content'><div class='item-inner'><div class='item-title'>Amount:</div><div class='item-after text-color-black'>" + theLoadedInvoiceType[invoiceCurrentlyOn]["currency"] + "" + payinAmount + "</div></div></div></li>    <li><div class='item-content'><div class='item-inner'><div class='item-title'>Transaction ID:</div><div class='item-after text-color-black'>" + thisInvoicePayins[i]["transaction_id"] + "</div></div></div></li>    <li><div class='item-content'><div class='item-inner'><div class='item-title'>Description:</div><div class='item-after text-color-black'>" + thisInvoicePayins[i]["payin_description"] + "</div></div></div></li>   <li><div class='item-content'><div class='item-inner'><div class='item-title'>Transaction Date:</div><div class='item-after text-color-black'>" + thisInvoicePayins[i]["transaction_date"].split(" ")[0] + "</div></div></div></li>  </ul></div></li>";
 
       }
 
@@ -2823,12 +3359,16 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
   }
 
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
+
+function loadAllInvoices(){
+
+   app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
-             "from_date" : "",
-             "to_date" : "",
-             "invoice_status" : ""            
+             "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
+             "to_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).to_date,
+             "invoice_status" : "",
+             "currency" : window.localStorage.getItem("invoice_currency")           
            },
              function (dataRec) {
               console.log(dataRec);
@@ -2841,7 +3381,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
                 else{
                   window.localStorage.setItem("loadedInvoices", dataRec);
                 var allInvoicesPlate = "<ul>";
-                var invoicePaymentStatus = "<button type='button' class='button button-outline button-small'>Paid</button>";
+                var invoicePaymentStatus = "";
 
 
 
@@ -2854,12 +3394,14 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
                   case "unpaid" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-orange'>Unpaid</button>"; break;
 
-                  case "paid" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-green col'>Paid</button>"; break;
+                  case "paid" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-teal col'>Paid</button>"; break;
 
-                  default : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-teal'>Partial</button>"; break;
+                  case "partial" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-green'>Partial</button>"; break;
+
+                  default : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-red'>Overdue</button>"; break;
 
                 }
-            allInvoicesPlate += "<li onclick=openInvoice('" + i + "','loadedInvoices')><div class='item-content'><div class='item-inner'><div class='item-title'>" + data[i]["biller"] + "<br>" + data[i]["invoice_date"].split(" ")[0] + "</div><div class='item-after'>" + data[i]["currency"] + "" + grandTotalAmount + "&nbsp;&nbsp;" + invoicePaymentStatus +"</div></div></div></li>";
+            allInvoicesPlate += "<li onclick=openInvoice('" + i + "','loadedInvoices')><div class='item-content'><div class='item-inner text-color-black'><div class='item-title'>" + data[i]["biller"] + "<br>" + data[i]["invoice_date"].split(" ")[0] + "</div><div class='item-after text-color-black'>" + data[i]["currency"] + "" + grandTotalAmount + "&nbsp;&nbsp;" + invoicePaymentStatus +"</div></div></div></li>";
 
           }
 
@@ -2872,19 +3414,19 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
                 toastMe("Network error. Try again later");
              });
 
+}
 
 
 
+function loadPaidInvoices(){
 
-
-
-
-   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
+   app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
-             "from_date" : "",
-             "to_date" : "",
-             "invoice_status" : "paid"            
+             "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
+             "to_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).to_date,
+             "invoice_status" : "paid",
+             "currency" : window.localStorage.getItem("invoice_currency")            
            },
              function (dataRec) {
               console.log(dataRec);
@@ -2897,7 +3439,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
                 else{
                   window.localStorage.setItem("loadedPaidInvoices", dataRec);
                 var allInvoicesPlate = "<ul>";
-                var invoicePaymentStatus = "<button type='button' class='button button-outline button-small'>Paid</button>";
+                var invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-teal col'>Paid</button>";
 
 
 
@@ -2906,16 +3448,8 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
                 var grandTotalAmount = parseInt(data[i]["grand_total_amount"]);
                 grandTotalAmount = grandTotalAmount.toLocaleString();
                 
-                switch(data[i]["invoice_status"]){
-
-                  case "unpaid" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-orange'>Unpaid</button>"; break;
-
-                  case "paid" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-green col'>Paid</button>"; break;
-
-                  default : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-red'>Overdue</button>"; break;
-
-                }
-            allInvoicesPlate += "<li onclick=openInvoice('" + i + "','loadedPaidInvoices')><div class='item-content'><div class='item-inner'><div class='item-title'>" + data[i]["biller"] + "<br>" + data[i]["invoice_date"].split(" ")[0] + "</div><div class='item-after'>" + data[i]["currency"] + "" + grandTotalAmount + "&nbsp;&nbsp;" + invoicePaymentStatus +"</div></div></div></li>";
+            
+            allInvoicesPlate += "<li onclick=openInvoice('" + i + "','loadedPaidInvoices')><div class='item-content'><div class='item-inner text-color-black'><div class='item-title'>" + data[i]["biller"] + "<br>" + data[i]["invoice_date"].split(" ")[0] + "</div><div class='item-after text-color-black'>" + data[i]["currency"] + "" + grandTotalAmount + "&nbsp;&nbsp;" + invoicePaymentStatus +"</div></div></div></li>";
 
           }
 
@@ -2930,14 +3464,19 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
 
 
+}
 
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
+
+function loadUnpaidInvoices(){
+
+   app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
-             "from_date" : "",
-             "to_date" : "",
-             "invoice_status" : "unpaid"            
+             "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
+             "to_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).to_date,
+             "invoice_status" : "unpaid",
+             "currency" : window.localStorage.getItem("invoice_currency")            
            },
              function (dataRec) {
               console.log(dataRec);
@@ -2950,7 +3489,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
                 else{
                   window.localStorage.setItem("loadedUnpaidInvoices", dataRec);
                 var allInvoicesPlate = "<ul>";
-                var invoicePaymentStatus = "<button type='button' class='button button-outline button-small'>Paid</button>";
+                var invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-orange col'>Unpaid</button>";
 
 
 
@@ -2959,16 +3498,8 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
                 var grandTotalAmount = parseInt(data[i]["grand_total_amount"]);
                 grandTotalAmount = grandTotalAmount.toLocaleString();
                 
-                switch(data[i]["invoice_status"]){
-
-                  case "unpaid" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-orange'>Unpaid</button>"; break;
-
-                  case "paid" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-green col'>Paid</button>"; break;
-
-                  default : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-red'>Overdue</button>"; break;
-
-                }
-            allInvoicesPlate += "<li onclick=openInvoice('" + i + "','loadedUnpaidInvoices')><div class='item-content'><div class='item-inner'><div class='item-title'>" + data[i]["biller"] + "<br>" + data[i]["invoice_date"].split(" ")[0] + "</div><div class='item-after'>" + data[i]["currency"] + "" + grandTotalAmount + "&nbsp;&nbsp;" + invoicePaymentStatus +"</div></div></div></li>";
+              
+            allInvoicesPlate += "<li onclick=openInvoice('" + i + "','loadedUnpaidInvoices')><div class='item-content'><div class='item-inner text-color-black'><div class='item-title'>" + data[i]["biller"] + "<br>" + data[i]["invoice_date"].split(" ")[0] + "</div><div class='item-after text-color-black'>" + data[i]["currency"] + "" + grandTotalAmount + "&nbsp;&nbsp;" + invoicePaymentStatus +"</div></div></div></li>";
 
           }
 
@@ -2981,21 +3512,22 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
                 toastMe("Network error. Try again later");
              });
 
+}
 
 
 
 
 
 
+function loadOverdueInvoices(){
 
-
-
-   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
+   app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
-             "from_date" : "",
-             "to_date" : "",
-             "invoice_status" : "overdue"            
+             "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
+             "to_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).to_date,
+             "invoice_status" : "overdue",
+             "currency" : window.localStorage.getItem("invoice_currency")            
            },
              function (dataRec) {
               console.log(dataRec);
@@ -3008,7 +3540,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
                 else{
                   window.localStorage.setItem("loadedOverdueInvoices", dataRec);
                 var allInvoicesPlate = "<ul>";
-                var invoicePaymentStatus = "<button type='button' class='button button-outline button-small'>Paid</button>";
+                var invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-red col'>Overdue</button>";
 
 
 
@@ -3017,16 +3549,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
                 var grandTotalAmount = parseInt(data[i]["grand_total_amount"]);
                 grandTotalAmount = grandTotalAmount.toLocaleString();
                 
-                switch(data[i]["invoice_status"]){
-
-                  case "unpaid" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-orange'>Unpaid</button>"; break;
-
-                  case "paid" : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-green col'>Paid</button>"; break;
-
-                  default : invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-red'>Overdue</button>"; break;
-
-                }
-            allInvoicesPlate += "<li onclick=openInvoice('" + i + "','loadedOverdueInvoices')><div class='item-content'><div class='item-inner'><div class='item-title'>" + data[i]["biller"] + "<br>" + data[i]["invoice_date"].split(" ")[0] + "</div><div class='item-after'>" + data[i]["currency"] + "" + grandTotalAmount + "&nbsp;&nbsp;" + invoicePaymentStatus +"</div></div></div></li>";
+            allInvoicesPlate += "<li onclick=openInvoice('" + i + "','loadedOverdueInvoices')><div class='item-content'><div class='item-inner text-color-black'><div class='item-title'>" + data[i]["biller"] + "<br>" + data[i]["invoice_date"].split(" ")[0] + "</div><div class='item-after text-color-black'>" + data[i]["currency"] + "" + grandTotalAmount + "&nbsp;&nbsp;" + invoicePaymentStatus +"</div></div></div></li>";
 
           }
 
@@ -3039,6 +3562,72 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
                 toastMe("Network error. Try again later");
              });
 
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function loadPartialInvoices(){
+
+   app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_invoices.php', 
+            {
+            "company_serial" : chosenCompany.company_id,
+             "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
+             "to_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).to_date,
+             "invoice_status" : "partial",
+             "currency" : window.localStorage.getItem("invoice_currency")            
+           },
+             function (dataRec) {
+              console.log(dataRec);
+                data = JSON.parse(dataRec);
+                console.log(data);
+
+                if (data[0].count_status == 0) {
+                  $$("#all-partial-invoices-list").html("<img src='imgs/assets/box.png' style='margin:0 auto; max-width:120px;'><br><h3>No invoices found</h3>").addClass("text-center");
+                }
+                else{
+                  window.localStorage.setItem("loadedPartialInvoices", dataRec);
+                var allInvoicesPlate = "<ul>";
+                var invoicePaymentStatus = "<button type='button' class='button button-outline button-small color-green col'>Partial</button>";
+
+
+
+              for (var i = 0; i < data.length; i++) {
+
+                var grandTotalAmount = parseInt(data[i]["grand_total_amount"]);
+                grandTotalAmount = grandTotalAmount.toLocaleString();
+                
+              
+            allInvoicesPlate += "<li onclick=openInvoice('" + i + "','loadedPartialInvoices')><div class='item-content'><div class='item-inner text-color-black'><div class='item-title'>" + data[i]["biller"] + "<br>" + data[i]["invoice_date"].split(" ")[0] + "</div><div class='item-after text-color-black'>" + data[i]["currency"] + "" + grandTotalAmount + "&nbsp;&nbsp;" + invoicePaymentStatus +"</div></div></div></li>";
+
+          }
+
+          allInvoicesPlate += "</ul>";
+
+             $$("#all-partial-invoices-list").html(allInvoicesPlate).removeClass("text-center");
+           }
+             },
+             function(){
+                toastMe("Network error. Try again later");
+             });
+
+
+}
 
 
   $$("#open-invoice-expenses").click(function(){
@@ -3054,7 +3643,11 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
 
 
-
+   loadAllInvoices();
+   loadPaidInvoices();
+   loadUnpaidInvoices();
+   loadOverdueInvoices();
+   loadPartialInvoices();
 
 
 
@@ -3084,7 +3677,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/invoice_payins.php",
+          app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/invoice_payins.php",
           {
             
             "invoice_id" : selectedInvoice["invoice_sn"],
@@ -3128,45 +3721,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
 
 
-  /* $("#upload-company-logo-form").ajaxSubmit({
-            
-            beforeSend : function(){
-                
-                //$("#registration-btn").html("<i class='fa fa-spinner fa-spin'></i>").prop("disabled", "disabled");
-            
-            },
-            success : (data) => {
-                
-                dataRec = JSON.parse(data);
-              console.log(data); 
-              if (dataRec.status == "successful") {
 
-                  toastMe("Payin successful!");
-                  addExpensesPopup.close();
-                  openExpensesPopup.close();
-
-                  $$("#expense-button").html("Add payment").prop("disbled", false);
-                  $$("#add-expense-form").trigger("reset");
-
-
-              }else{
-
-                toastMe(dataRec.status);
-                $$("#expense-button").html("Add payment").prop("disbled", false);
-
-              }    
-              console.log(data);
-                  
-             },
-
-            error : (jqXHR, error, status) => {
-                  
-              $$("#expense-button").html("Add payment").prop("disbled", false);
-              toastMe("Network error. Try again later");
-
-            }
-        });
-*/
 
 
 
@@ -3267,10 +3822,12 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
    var picker = app.picker.create({
     inputEl: '#expense-category',
+    toolbarCloseText : 'Close',
     cols: [
        {
-         values: ['rent', 'food', 'transportation'],
-         displayValues: ['rent', 'food', 'transportation'],
+         textAlign : 'center',
+         values: ['rent', 'food', 'transportation', 'vehicle expenses', 'home & office expenses', 'salaries & wages', 'office supplies & expenses', 'professional services', 'client & employee entertainment', 'furniture & equipment', 'independent labour / freelance services', 'employee benefits', 'start up expenses', 'computer software', 'utilities', 'travel', 'taxes', 'commision', 'machinery & equipment rental', 'interest on loan', 'employee education', 'employee child care assistance', 'mortgage interest', 'bank charges', 'insurance', 'tools', 'advertising & marketing', 'cleaning & janitorial services', 'moving expenses', 'intangible expenses', 'others'],
+         displayValues: ['Rent', 'Food', 'Transportation', 'Vehicle expenses', 'Home & office expenses', 'Salaries & wages', 'Office supplies & expenses', 'Professional services', 'Client & employee entertainment', 'Furniture & equipment', 'Independent labour / freelance services', 'Employee benefits', 'Start up expenses', 'Computer software', 'Utilities', 'Travel', 'Taxes', 'Commision', 'Machinery & equipment rental', 'Interest on loan', 'Employee education', 'Employee child care assistance', 'Mortgage interest', 'Bank charges', 'Insurance', 'Tools', 'Advertising & marketing', 'Cleaning & janitorial services', 'Moving expenses', 'Intangible expenses', 'Others'],
        }
      ]
   });
