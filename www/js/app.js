@@ -39,7 +39,7 @@ toastMe = function(toastMessage){
 
 messenger = function(theMessage, theChannel, theEmail, thePhone, theSubject){
 
-  app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/messenger.php', 
+  app.request.post('https://nairasurvey.com/auditbar_backend/messenger.php', 
             {
              "the_message" : theMessage,
              "the_channel" : theChannel,
@@ -365,7 +365,7 @@ $$(document).on('page:init', '.page[data-name="login"]', function (e){
           $$("#login-btn").html("Logging in...").prop("disabled", true);
             
           
-            app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/user_login.php', 
+            app.request.post('https://nairasurvey.com/auditbar_backend/user_login.php', 
             {
              "user_email" : $$("#user-email").val(),
              "user_password" : $$("#user-password").val()
@@ -495,7 +495,7 @@ $$(document).on('page:init', '.page[data-name="signup"]', function (e){
             window.localStorage.setItem("temporaryReg", tempStorage);
 
 
-            app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/generate_code.php', 
+            app.request.post('https://nairasurvey.com/auditbar_backend/generate_code.php', 
             
              function (data) {
 
@@ -608,7 +608,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
 
 
 
-             app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/user_registration.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/user_registration.php', 
             {
              "new_user_first_name" : tempStorage.first_name,
              "new_user_last_name" : tempStorage.last_name,
@@ -707,7 +707,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
             tempStorage = JSON.parse(tempStorage);
 
 
-             app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/user_registration.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/user_registration.php', 
             {
              "new_user_first_name" : tempStorage.first_name,
              "new_user_last_name" : tempStorage.last_name,
@@ -1065,7 +1065,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
 
       function subscribe(subscriptionID){
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/init_transaction.php',
+      app.request.post('https://nairasurvey.com/auditbar_backend/init_transaction.php',
               {
 
                "subscription_id" : subscriptionID,
@@ -1107,7 +1107,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
             
             pushedData = JSON.parse(pushedData);
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/paystack/paystack_init.php",
+            app.request.post("https://nairasurvey.com/auditbar_backend/paystack/paystack_init.php",
                         {
                           "buyer_email" : permanentReg.user_email,
                           "amount_2_pay" : pushedData.subscription_price * 100,
@@ -1149,7 +1149,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
 
 
           //fetch prices and add them to button
-          app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/fetch_prices.php',
+          app.request.post('https://nairasurvey.com/auditbar_backend/fetch_prices.php',
               
                function (data) {
                 
@@ -1180,7 +1180,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
            function confirmPayment(transactionID){
 
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/paystack/verify_payment.php",
+            app.request.post("https://nairasurvey.com/auditbar_backend/paystack/verify_payment.php",
                         {
                           
                           "transaction_id" : transactionID                         
@@ -1238,7 +1238,7 @@ $$(document).on('page:init', '.page[data-name="recovery"]', function (e){
         else{
 
             $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-             app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/recover_account.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/recover_account.php', 
             {
              "user_email" : $$("#recovery-email").val(),
            },
@@ -1450,7 +1450,7 @@ $$(document).on('page:init', '.page[data-name="newpassword"]', function (e){
         else{
 
             $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-             app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/set_new_password.php', 
+             app.request.post('https://nairasurvey.com/auditbar_backend/set_new_password.php', 
             {
             "user_serial_no" : recoveryProps.user_serial_no,
              "user_email" : recoveryProps.recovery_email,
@@ -1806,7 +1806,7 @@ pushChart2 = function(myData){
     if (theChosenCompany.company_access == "administrator") {
         
     
-     app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/check_subscription.php",
+     app.request.post("https://nairasurvey.com/auditbar_backend/check_subscription.php",
           {
             "company_id" : chosen_company_id
           },
@@ -1934,7 +1934,7 @@ pushChart2 = function(myData){
     var dateRange = window.localStorage.getItem("dateRange");
     dateRange = JSON.parse(dateRange);
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/company_summary.php', 
+      app.request.post('https://nairasurvey.com/auditbar_backend/company_summary.php', 
             {
             "company_serial" : theCompanyID,
              "from_date" : dateRange.fromDate,
@@ -2399,7 +2399,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
       $$("#invoice-total-plate").text(totalInvoicePrice);
 
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/generate_invoice_preview.php', 
+      app.request.post('https://nairasurvey.com/auditbar_backend/generate_invoice_preview.php', 
             {
               
             "invoice_owner" : chosenCompany.company_id,
@@ -2426,7 +2426,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
              function (data) {
 
               console.log(data);
-              var invoicePreviewURL = "https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/businesses/" + chosenCompany.company_name + "_" + chosenCompany.company_id + "/invoice.html";
+              var invoicePreviewURL = "https://nairasurvey.com/auditbar_backend/businesses/" + chosenCompany.company_name + "_" + chosenCompany.company_id + "/invoice.html";
               invoicePreviewURL = encodeURI(invoicePreviewURL);
               window.setTimeout(function(){
                 $("#preview-invoice").load(invoicePreviewURL);
@@ -2463,7 +2463,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
       $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
       
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/create_invoice.php",
+          app.request.post("https://nairasurvey.com/auditbar_backend/create_invoice.php",
           {
             "company_name" :  chosenCompany.company_name,
             "invoice_owner" : chosenCompany.company_id,
@@ -2628,7 +2628,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/add_contact.php",
+          app.request.post("https://nairasurvey.com/auditbar_backend/add_contact.php",
           {
             
             "contact_name" : $$("#contact-name").val(),
@@ -2707,7 +2707,7 @@ $$(document).on('page:init', '.page[data-name="contactsearch"]', function (e){
 
 
 
-    app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/find_contact.php",
+    app.request.post("https://nairasurvey.com/auditbar_backend/find_contact.php",
           {
             
             "my_id" : permanentReg.user_serial
@@ -3109,7 +3109,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
       console.log(invoicePayinBalance);
 
 
-        app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/mark_as_paid.php",
+        app.request.post("https://nairasurvey.com/auditbar_backend/mark_as_paid.php",
           {
             "invoice_id" : theInvoice.invoice_sn,
             "invoice_number" : theInvoice.invoice_number,
@@ -3174,7 +3174,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
     if (chosenCompany.company_access == "administrator") {
         
     
-     app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/check_subscription.php",
+     app.request.post("https://nairasurvey.com/auditbar_backend/check_subscription.php",
           {
             "company_id" : chosenCompany.company_id
           },
@@ -3362,7 +3362,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
 function loadAllInvoices(){
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_invoices.php', 
+   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3420,7 +3420,7 @@ function loadAllInvoices(){
 
 function loadPaidInvoices(){
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_invoices.php', 
+   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3470,7 +3470,7 @@ function loadPaidInvoices(){
 
 function loadUnpaidInvoices(){
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_invoices.php', 
+   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3521,7 +3521,7 @@ function loadUnpaidInvoices(){
 
 function loadOverdueInvoices(){
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_invoices.php', 
+   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3584,7 +3584,7 @@ function loadOverdueInvoices(){
 
 function loadPartialInvoices(){
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/list_invoices.php', 
+   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3677,7 +3677,7 @@ function loadPartialInvoices(){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/repo/php_hub/auditbar_backend/invoice_payins.php",
+          app.request.post("https://nairasurvey.com/auditbar_backend/invoice_payins.php",
           {
             
             "invoice_id" : selectedInvoice["invoice_sn"],
