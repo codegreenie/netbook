@@ -1,4 +1,4 @@
-<div class="page" data-name="addbusiness">
+<div class="page" data-name="editbusiness">
 
 
 
@@ -13,7 +13,7 @@
 
                
 
-                <div class="title">&nbsp;</div>
+                <div class="title">Edit Business</div>
 
       
 
@@ -35,20 +35,20 @@
   <div class="page-content" style="padding-bottom:40px;">
 
 
-    <div class="popup business-added-popup">
+    <div class="popup business-updated-popup">
       <div class="page">
         <div class="page-content">
 
           <div class="block text-center">
                 
             <img src="imgs/assets/check.png" style="margin:200px auto 0px; display: block; max-width: 80px;">
-            <h2>Business successfully added</h2>
+            <h2>Business updated. <br> Please re-login</h2>
 
 
             <br><br>
 
-          <button class="col button button-large button-raised button-fill" id="business-added-button">
-             Done
+          <button class="col button button-large button-raised button-fill" id="business-updated-button">
+             Okay
           </button>
 
 
@@ -69,10 +69,11 @@
     <div class="block">
 
     
-                <h1 class="animated fadeIn text-center" style="margin-bottom: 0px;">Add a Business</h1>
-                <h4 style="margin-top:5px;" class="text-center">Tell us about your business</h4>
+                <h1 class="animated fadeIn text-center" style="margin-bottom: 0px;" id="business-name-edit"></h1>
+                <img src="" id="image-update-edit" style="margin:0 auto; display: block; border-radius:50%; max-height: 50px; min-width: 50px; max-height: 50px; max-height: 50px;">
+                <h4 style="margin-top:5px;" class="text-center">update your business details</h4>
       
- <form method="post" enctype="multipart/form-data" id="add-business-form" action="https://nairasurvey.com/auditbar_backend/add_business.php" onsubmit="return false">
+ <form method="post" enctype="multipart/form-data" id="update-business-form" action="https://nairasurvey.com/auditbar_backend/update_business.php" onsubmit="return false">
 
            <div class="list no-hairlines-md no-hairlines-ios" style="margin-bottom: 0px; margin-top:10px;">
       <ul>
@@ -84,8 +85,8 @@
           </div>
           <div class="item-inner">
             <div class="item-input-wrap">
-              <input type="text" placeholder="Business Name" id="business-name" maxlength="40" class="keyboard-open" name="company_name">
-              <span class="input-clear-button"></span>
+              <input type="text" placeholder="Business Name" id="update-business-name" maxlength="40" class="keyboard-open" name="update_company_name" readonly>
+              
             </div>
           </div>
         </li>
@@ -97,8 +98,8 @@
           </div>
           <div class="item-inner">
             <div class="item-input-wrap">
-              <input type="email" placeholder="Business Email" id="business-email" maxlength="40" class="keyboard-open" name="company_email">
-              <span class="input-clear-button"></span>
+              <input type="email" placeholder="Business Email" id="update-business-email" maxlength="40" class="keyboard-open" name="update_company_email" readonly>
+              
             </div>
           </div>
         </li>
@@ -110,7 +111,7 @@
           </div>
           <div class="item-inner">
             <div class="item-input-wrap">
-              <input type="tel" placeholder="Business Phone" id="business-phone" maxlength="11" class="keyboard-open" name="company_phone">
+              <input type="tel" placeholder="Business Phone" id="update-business-phone" maxlength="11" class="keyboard-open" name="update_company_phone">
               <span class="input-clear-button"></span>
             </div>
           </div>
@@ -125,7 +126,7 @@
           </div>
           <div class="item-inner">
             <div class="item-input-wrap">
-              <textarea placeholder="Business Address(optional)" id="business-address" class="keyboard-open" name="company_address" rows="1"></textarea>
+              <textarea placeholder="Business Address(optional)" id="update-business-address" class="keyboard-open" name="update_company_address" rows="1"></textarea>
               <span class="input-clear-button"></span>
             </div>
           </div>
@@ -141,7 +142,7 @@
           </div>
           <div class="item-inner">
             <div class="item-input-wrap">
-              <textarea placeholder="Business Description(optional)" id="business-description" class="keyboard-open" rows="1" name="company_description"></textarea>
+              <textarea placeholder="Business Description(optional)" id="update-business-description" class="keyboard-open" rows="1" name="update_company_description"></textarea>
               <span class="input-clear-button"></span>
             </div>
           </div>
@@ -150,17 +151,18 @@
 
 
           <li class="item-content item-input">
-            <label for="company-logo" class="logo-to-change">
+            <label for="update-company-logo" class="logo-to-change">
                 <i class="icon f7-icons">attachment</i>
-                Select company logo
+                Update company logo
               </span>
             </label>
 
-                <input type="file" name="the_uploaded_logo" id="company-logo" style="position: absolute; left: -999px;" value="">
+                <input type="file" name="the_uploaded_logo" id="update-company-logo" style="position: absolute; left: -999px;" value="">
 
           </li>
 
-          <input type="hidden" name="user_id" id="user-id" value="">
+          
+          <input type="hidden" name="company_id" id="business-id" value="">
         
        
       </ul>
@@ -175,7 +177,9 @@
     <div class="block" style="margin-top:15px;">
       
       <br><br>
-      <button class="button button-large button-raised button-fill" id="add-business-btn" type="submit">Continue</button>
+      <button class="button button-large button-raised button-fill" id="update-business-btn" type="submit">
+        Update Business
+      </button>
 
     </div>
 
