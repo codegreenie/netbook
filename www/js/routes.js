@@ -173,5 +173,20 @@ var routes = [
     name: 'support',
     path: '/support/',
     url: './support.html'
+    },
+    {
+    name: 'share',
+    path: '/share/',
+    url: './share.html'
+    },
+    {
+    name: 'mybusinesses',
+    path: '/mybusinesses/',
+    url: './mybusinesses.html'
+    },
+    {
+    name: 'editbusiness',
+    path: '/editbusiness/',
+    url: './editbusiness.html'
     }
 ];

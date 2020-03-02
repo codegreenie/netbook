@@ -765,6 +765,7 @@ $$(document).on('page:init', '.page[data-name="emailupdateotp"]', function (e){
 
                             $$("#verify-btn").text("Verify").prop("disabled", false);
                              toastMe("Email changed! Re-login!");
+                             window.localStorage.removeItem("permanentReg");
                              mainView.router.navigate("/login/");
                             
                           }
@@ -891,3 +892,310 @@ $$(document).on('page:init', '.page[data-name="updatepassword"]', function (e){
       });
 
 });
+
+
+
+
+
+
+
+
+
+
+$$(document).on('page:init', '.page[data-name="share"]', function (e){
+
+  var permanentReg = window.localStorage.getItem("permanentReg");
+  permanentReg = JSON.parse(permanentReg);
+
+  $$("#enter-code-block").hide();
+
+  //quickly check if i was already referred
+  app.request.post('https://nairasurvey.com/auditbar_backend/check_ref.php', 
+            {
+            "my_id" : permanentReg.user_serial,
+           },
+             function (data) {
+
+              console.log(data);
+
+              dataCheck = JSON.parse(data);
+              console.log(dataCheck);
+
+              if (dataCheck.status == "already ref") {
+                
+
+                $$("#ref-done-block").show();
+                $$("#enter-code-block").hide();
+
+                
+
+              }
+              else{
+
+                $$("#ref-done-block").hide();
+                $$("#enter-code-block").show();
+
+              }
+
+
+             },
+             function(){
+
+                toastMe("Network error. Try Later");
+                $$("#validate-referral-button").text("Validate").prop("disabled", false);
+
+             });
+
+
+
+
+
+
+
+
+
+
+
+  $$("#referral-code-span").text(window.localStorage.getItem("user_referral_code"));
+
+      $$("#share-auditbar-button").click(function(){
+        shareAuditbar();
+      });
+
+      $$("#validate-referral-button").click(function(){
+        if ($$("#referral-code-input").val().trim() == "") {
+          toastMe("Please enter a referral code!");
+        }
+        else{
+
+          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
+          app.request.post('https://nairasurvey.com/auditbar_backend/push_referrer.php', 
+            {
+            "my_id" : permanentReg.user_serial,
+            "referral_code" : $$("#referral-code-input").val()
+           },
+             function (data) {
+
+              console.log(data);
+
+              dataCheck = JSON.parse(data);
+              console.log(dataCheck);
+
+              if (dataCheck.status != "successful") {
+                
+
+                toastMe(dataCheck.status);
+                $$("#validate-referral-button").text("Validate").prop("disabled", false);
+                mainView.router.refreshPage();
+                
+
+              }
+              else{
+
+                toastMe("successful!");
+                $$("#validate-referral-button").text("Validate").prop("disabled", false);
+
+              }
+
+
+             },
+             function(){
+
+                toastMe("Network error. Try Later");
+                $$("#validate-referral-button").text("Validate").prop("disabled", false);
+
+             });
+
+        }
+      });
+
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$$(document).on('page:init', '.page[data-name="mybusinesses"]', function (e){
+
+    //toastMe("Swipe left to delete a customer");
+
+var permanentReg = window.localStorage.getItem("permanentReg");
+permanentReg = JSON.parse(permanentReg);
+
+
+
+
+              var companyListJoin = "";
+
+
+              for (var i = 0; i < permanentReg["companys"].length; i++) {
+
+                var companySN = permanentReg["companys"][i]["company_id"];
+                var companyName = permanentReg["companys"][i]["company_name"];
+                var companyEmail = permanentReg["companys"][i]["company_email"];
+                var companyPhone = permanentReg["companys"][i]["company_phone"];
+                var companyAddress = permanentReg["companys"][i]["company_address"];
+                var companyDescription = permanentReg["companys"][i]["company_description"];
+
+                
+
+               companyListJoin += "<li><a class='item-link item-content' href='#' onclick=editCompany(" + companySN + ")><div class='item-media'><i class='icon f7-icons'>business</i></div><div class='item-inner'><div class='item-title'>" + companyName + "</div></div></a></li>";
+               $$("#all-companies-list").html(companyListJoin).removeClass("text-center");
+
+             }
+
+
+
+
+
+
+
+
+
+    editCompany = function(companySN){
+
+     app.dialog.preloader("Editing business...", "blue");
+
+      
+
+       for (var i = 0; i < permanentReg["companys"].length; i++) {
+
+        
+
+          if(permanentReg["companys"][i]['company_id'] == companySN){
+
+              var editCompanySN = permanentReg["companys"][i]['company_id'];
+              var editCompanyName = permanentReg["companys"][i]['company_name'];
+              var editCompanyEmail = permanentReg["companys"][i]['company_email'];
+              var editCompanyPhone = permanentReg["companys"][i]['company_phone'];
+              var editCompanyAddress = permanentReg["companys"][i]['company_address'];
+              var editCompanyDescription = permanentReg["companys"][i]['company_description'];
+              var editCompanyLogo = permanentReg["companys"][i]['company_logo'];
+
+              window.localStorage.setItem("editCompany", JSON.stringify({
+                "company_sn" : editCompanySN,
+                "company_name" : editCompanyName,
+                "company_email" : editCompanyEmail,
+                "company_phone" : editCompanyPhone,
+                "company_address" : editCompanyAddress,
+                "company_description" : editCompanyDescription,
+                "company_logo" : editCompanyLogo
+              }));
+              setTimeout(function(){
+                mainView.router.navigate("/editbusiness/");
+                app.dialog.close();
+              }, 2500);
+              break;
+          }
+
+       }
+
+    }
+
+});
+
+
+
+
+
+
+
+
+
+
+
+$$(document).on('page:init', '.page[data-name="editbusiness"]', function (e){
+
+
+  var updatedBusinessPopup = app.popup.create({
+      el : '.business-updated-popup'
+   });
+
+
+    var companyToEdit = window.localStorage.getItem("editCompany");
+    companyToEdit = JSON.parse(companyToEdit);
+
+    $$("#business-name-edit").text(companyToEdit.company_name);
+    $$("#image-update-edit").prop("src", companyToEdit.company_logo);
+    $$("#update-business-name").val(companyToEdit.company_name);
+    $$("#update-business-email").val(companyToEdit.company_email);
+    $$("#update-business-phone").val(companyToEdit.company_phone);
+    $$("#update-business-address").val(companyToEdit.company_address);
+    $$("#update-business-description").val(companyToEdit.company_description);
+
+
+    $$("#business-id").val(companyToEdit.company_sn);
+
+$("#update-business-form").submit(function(){
+
+
+
+    $("#update-business-form").ajaxSubmit({
+            
+            beforeSend : function(){
+                
+                $("#update-business-btn").html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
+            
+            },
+            success : (data) => {
+
+              console.log(data);
+
+              var data = JSON.parse(data);
+              if (data.status == "Business updated") {
+
+                updatedBusinessPopup.open();
+
+              }
+              else{
+
+                toastMe(dataRec.status);
+                $("#update-business-btn").html("Update Business").prop("disabled", false);
+
+              }
+
+            
+                  
+             },
+
+            error : (jqXHR, error, status) => {
+
+            toastMe("Network Error. Try again later");
+            $("#update-business-btn").html("Update Business").prop("disabled", false);
+
+            }
+        });
+
+
+
+});
+
+
+
+
+
+
+
+
+  $$("#business-updated-button").click(function(){
+    updatedBusinessPopup.close();
+    window.localStorage.removeItem("permanentReg");
+    mainView.router.navigate("/login/");
+    
+  });
+
+
+
+
+  });

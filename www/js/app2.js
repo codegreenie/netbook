@@ -1,6 +1,6 @@
 $$(document).on('page:init', '.page[data-name="contacts"]', function (e){
 
-	toastMe("Swipe left to delete a customer");
+	//toastMe("Swipe left to delete a customer");
 
 var permanentReg = window.localStorage.getItem("permanentReg");
 permanentReg = JSON.parse(permanentReg);
@@ -15,24 +15,27 @@ permanentReg = JSON.parse(permanentReg);
             function(data){
               window.localStorage.setItem("myContacts", data);
 
+              console.log(data);
+
               data = JSON.parse(data); 
               console.log(data);
-              if (data[0].count_status == 0) {
+              if (data.count_status == 0) {
 
               		$$("#all-contacts-list").html("<img src='imgs/assets/box.png' style='margin:0 auto; max-width:120px;'><br><h3>No contacts found</h3>").addClass("text-center");
               		 
               }
               else{
 
+
               var contactListJoin = "";
 
-              for (var i = 0; i < data.length; i++) {
+              for (var i = 0; i < data["found_contacts"].length; i++) {
 
-                var contactSN = data[i]["contact_sn"];
-                var contactName = data[i]["contact_name"];
-                var contactEmail = data[i]["contact_email"];
-                var contactPhone = data[i]["contact_phone"];
-                var contactAddress = data[i]["contact_address"];
+                var contactSN = data["found_contacts"][i]["contact_sn"];
+                var contactName = data["found_contacts"][i]["contact_name"];
+                var contactEmail = data["found_contacts"][i]["contact_email"];
+                var contactPhone = data["found_contacts"][i]["contact_phone"];
+                var contactAddress = data["found_contacts"][i]["contact_address"];
 
                 
 
@@ -58,14 +61,14 @@ permanentReg = JSON.parse(permanentReg);
 
     deleteChosenContact = function(contactSN){
 
-      app.dialog.preloader("Deleting contact...");
+      app.dialog.preloader("Deleting contact...", "blue");
 
 	     var allContacts = window.localStorage.getItem("myContacts");
 	     allContacts = JSON.parse(allContacts);
 
-	     for(p in allContacts){
+	     for (var i = 0; i < allContacts['found_contacts'].length; i++) {
 
-	        if(allContacts[p]['contact_sn'] == contactSN){
+	        if(allContacts['found_contacts'][i]['contact_sn'] == contactSN){
 
               app.request.post("https://nairasurvey.com/auditbar_backend/delete_contact.php",
                   {
@@ -113,19 +116,21 @@ permanentReg = JSON.parse(permanentReg);
 
      editChosenContact = function(contactSN){
 
-     	app.dialog.preloader("Editing contact...");
+     app.dialog.preloader("Editing contact...", "blue");
 
 	     var allContacts = window.localStorage.getItem("myContacts");
 	     allContacts = JSON.parse(allContacts);
 
-	     for(p in allContacts){
+	     for (var i = 0; i < allContacts['found_contacts'].length; i++) {
 
-	        if(allContacts[p]['contact_sn'] == contactSN){
+        
 
-	            var chosenContactName = allContacts[p]['contact_name'];
-	            var chosenContactEmail = allContacts[p]['contact_email'];
-	            var chosenContactPhone = allContacts[p]['contact_phone'];
-	            var chosenContactAddress = allContacts[p]['contact_address'];
+	        if(allContacts['found_contacts'][i]['contact_sn'] == contactSN){
+
+	            var chosenContactName = allContacts['found_contacts'][i]['contact_name'];
+	            var chosenContactEmail = allContacts['found_contacts'][i]['contact_email'];
+	            var chosenContactPhone = allContacts['found_contacts'][i]['contact_phone'];
+	            var chosenContactAddress = allContacts['found_contacts'][i]['contact_address'];
 
 	            window.localStorage.setItem("chosenContactEdit", JSON.stringify({
 	              "contact_sn" : contactSN,
@@ -258,7 +263,7 @@ $$(document).on('page:init', '.page[data-name="editcontact"]', function (e){
 $$(document).on('page:init', '.page[data-name="employees"]', function (e){
 
 
-app.dialog.preloader("Loading employees...");
+app.dialog.preloader("Loading employees...", "blue");
 
 var permanentReg = window.localStorage.getItem("permanentReg");
 permanentReg = JSON.parse(permanentReg);
@@ -307,7 +312,7 @@ permanentReg = JSON.parse(permanentReg);
 
       removeEmployee = function(employeeSN){
 
-      app.dialog.preloader("Removing access...");
+      app.dialog.preloader("Removing access...", "blue");
 
        var allEmployees = window.localStorage.getItem("myEmployees");
        allEmployees = JSON.parse(allEmployees);
@@ -384,7 +389,7 @@ $$(document).on('page:init', '.page[data-name="addemployee"]', function (e){
 
 
   //Load up my companies
-  app.dialog.preloader("Loading companies...");
+  app.dialog.preloader("Loading companies...", "blue");
 
 
   var myCompanies = permanentReg.companys;
@@ -1193,3 +1198,13 @@ $$(document).on('page:init', '.page[data-name="accountstatement"]', function (e)
 
 
 });
+
+
+
+
+
+
+
+
+
+

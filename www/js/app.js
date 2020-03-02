@@ -124,10 +124,10 @@ function deviceIsReady(){
 // this is the complete list of currently supported params you can pass to the plugin (all optional)
 var options = {
 
-  message: 'Accounting and Invoicing app in your pocket. Auditbar', 
+  message: 'Accounting and Invoicing app in your pocket. Download Auditbar app and get 2 months free trial when you use referral code - ' + window.localStorage.getItem('user_referral_code'), 
   subject: 'Auditbar', // fi. for email
   files: [], // an array of filenames either locally or remotely
-  url: 'https://play.google.com/store/apps/details?id=com.codegreenie.quickbankcodes',
+  url: 'https://play.google.com/store/apps/details?id=com.auditbar.app',
   chooserTitle: 'Share via'
 };
 
@@ -427,6 +427,7 @@ $$(document).on('page:init', '.page[data-name="login"]', function (e){
                 window.localStorage.setItem("chosenCompany", JSON.stringify(chosenCompany));
 
                 window.localStorage.setItem("permanentReg", data);
+                window.localStorage.setItem("user_referral_code", dataCheck.referral_code);
                   window.setTimeout(function(){
                       mainView.router.navigate("/dashboard/");
                   }, 3000);
@@ -653,6 +654,9 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
                 }
                 tempStorage = JSON.stringify(tempStorage);
                 window.localStorage.setItem("permanentReg", tempStorage);
+
+                //now set referral code too
+                window.localStorage.setItem("user_referral_code", data.referral_code);
 
                 var companyID = data.companys[0].company_id;
 
@@ -1057,7 +1061,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
     
 
 
-    app.dialog.preloader("Fetching prices...");
+    app.dialog.preloader("Fetching prices...", "blue");
 
 
       
@@ -1506,15 +1510,7 @@ $$(document).on('page:init', '.page[data-name="newpassword"]', function (e){
 
 $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
 
-
-  var graphSlider = app.swiper.create({
-          'el' : '.swiper-container',
-          
-    });
-
-  window.setTimeout(function(){
-    graphSlider.slideNext();
-  }, 4000);
+  
 
   var permanentReg = window.localStorage.getItem("permanentReg");
   permanentReg = JSON.parse(permanentReg);
@@ -1645,22 +1641,34 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
     timeFramePopover.close();
   });
 
-  var bigChart,  bigChart2;
+  var bigChart
 
-  pushChart = function(myData){
+  pushChart = function(myDataIncome, myDataExpense){
 
       var hugeData = [];
 
-      for(b = 0; b < myData.length; b++){
+      for(b = 0; b < myDataIncome.length; b++){
 
         var dataToAppend = {
-          "group_name": "Income", "name": myData[b].transaction_date.split(" ")[0], "value": parseInt(myData[b].transaction_amount)
+          "group_name": "Income", "name": myDataIncome[b].transaction_date.split(" ")[0], "value": parseInt(myDataIncome[b].transaction_amount)
         }
 
         hugeData.push(dataToAppend);
-
       }
 
+
+      for(b = 0; b < myDataExpense.length; b++){
+
+        var dataToAppend = {
+          "group_name": "Expense", "name": myDataExpense[b].transaction_date.split(" ")[0], "value": parseInt(myDataExpense[b].transaction_amount)
+        }
+
+        hugeData.push(dataToAppend);
+      }
+
+
+      
+ 
       console.log("Huge data is ", hugeData);
       bigChart.updateChart({ data: hugeData });
   
@@ -1668,75 +1676,23 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
 
 
 
-pushChart2 = function(myData){
 
-      var hugeData2 = [];
-
-      for(b = 0; b < myData.length; b++){
-
-        var dataToAppend = {
-          "group_name": "Expenses", "name": myData[b].transaction_date.split(" ")[0], "value": parseInt(myData[b].transaction_amount)
-        }
-
-        hugeData2.push(dataToAppend);
-
-      }
-
-      console.log("Huge data 2 is ", hugeData2);
-      bigChart2.updateChart({ data: hugeData2 });
-  
-}
 
 
 
 
    var zero_data = [
-    { "group_name": "Expenses", "name": "0000-00-00", "value": 0 },
+    { "group_name": "Income", "name": "0000-00-00", "value": 0 },
     { "group_name": "Expenses", "name": "0000-00-00", "value": 0 }
    ];
-   bigChart2 = $('#chtAnimatedBarChart2').animatedBarChart({ 
-    data: zero_data,
-    number_format: {
-    format: ',.2f', // default number format
-    decimal: '.', // decimal symbol
-    thousands : ',', // thousand separator symbol
-    grouping: [3], // thousand separator grouping
-    currency: [window.localStorage.getItem("dashboard_currency")] // currency symbol
-   },
-
-
-   legend: {
-    position: LegendPosition.top, // legend position (bottom/top/right/left)
-    width: 500 // legend width in pixels for left/right
-  },
-
-  rotate_x_axis_labels: { 
-    process: true, // process xaxis label rotation
-    minimun_resolution: 720, // minimun_resolution for label rotating
-    bottom_margin: 100, // bottom margin for label rotation
-    rotating_angle: 75, // angle for rotation,
-    x_position: 10, // label x position after rotation
-    y_position: -3 // label y position after rotation
-  },
-
-
-   bars: { 
-    padding: 0.1, // padding between bars
-    opacity: 0.7, // default bar opacity
-    opacity_hover: 0.45, // default bar opacity on mouse hover
-    disable_hover: false, // disable animation and legend on hover
-    hover_name_text: 'date', // text for name column for label displayed on bar hover
-    hover_value_text: 'amount', // text for value column for label displayed on bar hover
-  },
-
-  });
+  
 
 
 
 
    bigChart = $('#chtAnimatedBarChart').animatedBarChart({ 
     data: zero_data,
-
+    colors: ['#1c7ebf', '#d62728'],
 	    number_format: {
 	    format: ',.2f', // default number format
 	    decimal: '.', // decimal symbol
@@ -1798,7 +1754,7 @@ pushChart2 = function(myData){
 
   $$("#dashboard-create-invoice-btn").click(function(){
 
-    app.dialog.preloader("Please wait...");
+    app.dialog.preloader("Please wait...", "blue");
 
     //check if i am admin of company,
     //check if company has an active subscription
@@ -1961,8 +1917,8 @@ pushChart2 = function(myData){
                   $$("#" + cashIDs[i]).text(invoiceCurrency + "" + parseInt(dataCheck[thisDataView]).toLocaleString());
                   }
                   console.log(dataCheck.income_breakdown);
-                  pushChart(dataCheck.income_breakdown);
-                  pushChart2(dataCheck.expenses_breakdown);
+                  pushChart(dataCheck.income_breakdown, dataCheck.expenses_breakdown);
+                  
 
                   
                    
@@ -1988,11 +1944,11 @@ pushChart2 = function(myData){
             $$("#" + cashIDs[i]).text(window.localStorage.getItem("dashboard_currency") + "0");
           }
           var zero_data = [
-            { "group_name": "Income", "name": "0000-00-00", "value": "0" },
-            { "group_name": "Income", "name": "0000-00-00", "value": "0" }
+            { "group_name": "Income", "name": "0000-00-00", "value": 0 },
+            { "group_name": "Expense", "name": "0000-00-00", "value": 0 }
            ];
           bigChart.updateChart({ data: zero_data });
-          bigChart2.updateChart({ data: zero_data });
+          
            
       }
 
@@ -2719,18 +2675,28 @@ $$(document).on('page:init', '.page[data-name="contactsearch"]', function (e){
               data = JSON.parse(data); 
               console.log(data);
 
-              for (var i = 0; i < data.length; i++) {
+              if (data.count_status == 0) {
 
-                var contactSN = data[i]["contact_sn"];
-                var contactName = data[i]["contact_name"];
-                var contactEmail = data[i]["contact_email"];
-                var contactPhone = data[i]["contact_phone"];
-                var contactAddress = data[i]["contact_address"];
+                  toastMe("No contacts found!");
+                  mainView.router.navigate("/addcontact/");
+
+              }
+              else{
+
+              for (var i = 0; i < data["found_contacts"].length; i++) {
+
+                var contactSN = data["found_contacts"][i]["contact_sn"];
+                var contactName = data["found_contacts"][i]["contact_name"];
+                var contactEmail = data["found_contacts"][i]["contact_email"];
+                var contactPhone = data["found_contacts"][i]["contact_phone"];
+                var contactAddress = data["found_contacts"][i]["contact_address"];
 
                 
 
                 $$(".search-found-bar").append("<li class='item-content' onclick=storeChosenContact(" + contactSN + ")><div class='item-inner'><div class='item-title'>" + contactName + "</div></div></li>");
               }
+
+            }
               
 
           }, function(){
@@ -2746,15 +2712,15 @@ $$(document).on('page:init', '.page[data-name="contactsearch"]', function (e){
      var allContacts = window.localStorage.getItem("myContacts");
      allContacts = JSON.parse(allContacts);
 
-     for(p in allContacts){
+     for (var p = 0; p < allContacts["found_contacts"].length; p++) {
 
-        if(allContacts[p]['contact_sn'] == contactSN){
+        if(allContacts["found_contacts"][p]['contact_sn'] == contactSN){
 
-            var chosenContactSN = allContacts[p]['contact_sn'];
-            var chosenContactName = allContacts[p]['contact_name'];
-            var chosenContactEmail = allContacts[p]['contact_email'];
-            var chosenContactPhone = allContacts[p]['contact_phone'];
-            var chosenContactAddress = allContacts[p]['contact_address'];
+            var chosenContactSN = allContacts["found_contacts"][p]['contact_sn'];
+            var chosenContactName = allContacts["found_contacts"][p]['contact_name'];
+            var chosenContactEmail = allContacts["found_contacts"][p]['contact_email'];
+            var chosenContactPhone = allContacts["found_contacts"][p]['contact_phone'];
+            var chosenContactAddress = allContacts["found_contacts"][p]['contact_address'];
 
             window.localStorage.setItem("chosenContact", JSON.stringify({
               "contact_sn" : chosenContactSN,
@@ -3085,7 +3051,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
   $$("#mark-as-paid-btn").click(function(){
     app.dialog.confirm("Are you sure you want to mark as paid?", function(){
 
-      app.dialog.preloader("Please wait...");
+      app.dialog.preloader("Please wait...", "blue");
 
       // if yes, grab invoice id
       var theInvoiceType = window.localStorage.getItem(window.localStorage.getItem("invoiceTypeCurrentlyOn"));
@@ -3166,7 +3132,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
   $$("#invoice-page-create-invoice-button").click(function(){
 
-    app.dialog.preloader("Please wait...");
+    app.dialog.preloader("Please wait...", "blue");
 
     //check if i am admin of company,
     //check if company has an active subscription
@@ -3234,7 +3200,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
       totalPayins = parseInt(totalPayins);
       totalPayins = totalPayins.toLocaleString();
 
-     app.dialog.preloader("Opening invoice...");
+     app.dialog.preloader("Opening invoice...", "blue");
      setTimeout(function(){
       app.dialog.close();
       openThisInvoice.open();
@@ -3302,7 +3268,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
       magnetExpenses += "</ul>";
       $$("#load-invoice-expenses").html(magnetExpenses);
 
-      app.dialog.preloader("Opening invoice expenses...");
+      app.dialog.preloader("Opening invoice expenses...", "blue");
        setTimeout(function(){
         app.dialog.close();
         openExpensesPopup.open();
@@ -3348,7 +3314,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
       magnetPayins += "</ul>";
       $$("#load-invoice-payins").html(magnetPayins);
 
-      app.dialog.preloader("Opening invoice payins...");
+      app.dialog.preloader("Opening invoice payins...", "blue");
        setTimeout(function(){
         app.dialog.close();
         openPayinsPopup.open();
