@@ -188,5 +188,15 @@ var routes = [
     name: 'editbusiness',
     path: '/editbusiness/',
     url: './editbusiness.html'
+    },
+    {
+    name: 'bankaccounts',
+    path: '/bankaccounts/',
+    url: './bankaccounts.html'
+    },
+    {
+    name: 'addbankaccount',
+    path: '/addbankaccount/',
+    url: './addbankaccount.html'
     }
 ];

@@ -49,7 +49,7 @@ permanentReg = JSON.parse(permanentReg);
 
           }, function(){
 
-              $$("#add-contact-button").html("Add contact").prop("disbled", false);
+              $$("#add-contact-button").html("Add contact").prop("disabled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -205,7 +205,7 @@ $$(document).on('page:init', '.page[data-name="editcontact"]', function (e){
 
       } else{
 
-          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
+          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
           app.request.post("https://nairasurvey.com/auditbar_backend/update_contact.php",
           {
@@ -226,19 +226,19 @@ $$(document).on('page:init', '.page[data-name="editcontact"]', function (e){
                 
                 toastMe(dataRec.status);
                 mainView.router.navigate("/contacts/");
-                $$("#update-contact-button").html("Update contact").prop("disbled", false);
+                $$("#update-contact-button").html("Update contact").prop("disabled", false);
 
               }
               else{
 
                 toastMe(dataRec.status);
-                $$("#update-contact-button").html("Update contact").prop("disbled", false);
+                $$("#update-contact-button").html("Update contact").prop("disabled", false);
 
               }
               
 
           }, function(){
-              $$("#update-contact-button").html("Update contact").prop("disbled", false);
+              $$("#update-contact-button").html("Update contact").prop("disabled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -249,6 +249,208 @@ $$(document).on('page:init', '.page[data-name="editcontact"]', function (e){
 
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$$(document).on('page:init', '.page[data-name="bankaccounts"]', function (e){
+
+
+app.dialog.preloader("Loading bank accounts...", "blue");
+
+var permanentReg = window.localStorage.getItem("permanentReg");
+permanentReg = JSON.parse(permanentReg);
+
+var theChosenCompany = window.localStorage.getItem("chosenCompany");
+  theChosenCompany = JSON.parse(theChosenCompany);
+
+
+    app.request.post("https://nairasurvey.com/auditbar_backend/list_bank_accounts.php",
+          {
+            
+            "company_serial" : theChosenCompany.company_id
+
+          },
+            function(dataSeed){
+
+              console.log(dataSeed);
+              var data = JSON.parse(dataSeed);
+
+              if (data.count_status == 0) {
+
+                $$("#load-all-accounts").html("<img src='imgs/assets/box.png' style='margin:0 auto; max-width:120px;'><br><h3>No bank accounts!</h3>").addClass("text-center");
+                app.dialog.close();
+
+              }
+              else{
+
+              //window.localStorage.setItem("myEmployees", dataSeed);
+
+              magnetAccounts = "<ul>";
+
+              for (var i = 0; i < data["all_accounts"].length; i++) {
+              
+              magnetAccounts += "<li class='accordion-item'><a href='#' class='item-link item-content'><div class='item-inner'><div class='item-title'>" + data["all_accounts"][i]["account_details"] + "</div></div></a><div class='accordion-item-content'><ul>  <li><div class='item-content'><div class='item-inner'>" + data["all_accounts"][i]["account_details"] + "<div class='item-after'></div></div></div></li>    <li><div class='item-content'><div class='item-inner'><div class='item-title'><button class='button button-fill color-red' onclick=deleteAccount(" + data["all_accounts"][i]['account_sn'] + ")>Delete bank account</button></div><div class='item-after'></div></div></div></li>     </ul></div></li>";
+
+              }
+              magnetAccounts += "</ul>";
+              $$("#load-all-accounts").html(magnetAccounts);
+              app.dialog.close();
+            }
+              
+
+          }, function(){
+
+              app.dialog.close();
+              toastMe("Network error. Try again later");
+
+          });
+
+
+
+
+
+
+
+
+      deleteAccount = function(accountSN){
+
+      app.dialog.preloader("Removing account...", "blue");
+
+              app.request.post("https://nairasurvey.com/auditbar_backend/delete_bank_account.php",
+                  {
+                    
+                    "account_sn" :  accountSN,
+
+                  },
+                    function(data){
+
+                      console.log(data);
+                      
+                      var data = JSON.parse(data);
+                      if (data.status == "account deleted") {
+                        
+                        toastMe(data.status);
+                        console.log(data);
+                        app.dialog.close();
+                        mainView.router.refreshPage();
+                      
+                      }
+                      else{
+
+                        toastMe(data.status);
+                        app.dialog.close();
+
+                      }
+
+                      
+                      
+                  }, function(){
+                      
+                      toastMe("Network error. Try again later");
+                      app.dialog.close();
+
+                  });
+              
+       
+
+    }
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+$$(document).on('page:init', '.page[data-name="addbankaccount"]', function (e){
+
+
+  var permanentReg = window.localStorage.getItem("permanentReg");
+  permanentReg = JSON.parse(permanentReg);
+
+
+  var theChosenCompany = window.localStorage.getItem("chosenCompany");
+  theChosenCompany = JSON.parse(theChosenCompany);
+
+
+
+  var bankAccountPopup = app.popup.create({
+      el : '.bank-account-added-popup'
+  });
+
+
+  $$("#add-account-button").click(function(){
+
+      if ($$("#bank-account-details").val().trim() == "") {
+
+          toastMe("Please complete the form!");
+
+      } else{
+
+          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
+
+          app.request.post("https://nairasurvey.com/auditbar_backend/add_bank_account.php",
+          {
+            
+            "bank_account_details" : $$("#bank-account-details").val(),
+            "company_id" : theChosenCompany.company_id
+          },
+            function(data){
+              
+              console.log(data);
+              dataRec = JSON.parse(data);
+              if (dataRec.status == "bank account added") {
+                
+                bankAccountPopup.open();
+
+              }
+              else{
+
+                toastMe(dataRec.status);
+                $$("#add-account-button").html("Add account").prop("disabled", false);
+
+              } 
+
+          }, function(){
+              $$("#add-account-button").html("Add account").prop("disabled", false);
+              toastMe("Network error. Try again later");
+
+          });
+      }
+
+    });
+
+
+
+});
+
+
+
+
+
 
 
 
@@ -275,14 +477,20 @@ permanentReg = JSON.parse(permanentReg);
             "my_id" : permanentReg.user_serial
 
           },
-            function(data){
+            function(dataSeed){
 
-              window.localStorage.setItem("myEmployees", data);
+              console.log(dataSeed);
+              var data = JSON.parse(dataSeed);
 
-              console.log(JSON.parse(data));
+              if (data.count_status == 0) {
 
-              data = JSON.parse(data);
+                $$("#load-all-employees").html("<img src='imgs/assets/box.png' style='margin:0 auto; max-width:120px;'><br><h3>No employees found!</h3>").addClass("text-center");
+                app.dialog.close();
 
+              }
+              else{
+
+              window.localStorage.setItem("myEmployees", dataSeed);
 
               magnetEmployees = "<ul>";
 
@@ -294,6 +502,7 @@ permanentReg = JSON.parse(permanentReg);
               magnetEmployees += "</ul>";
               $$("#load-all-employees").html(magnetEmployees);
               app.dialog.close();
+            }
               
 
           }, function(){
@@ -467,7 +676,7 @@ $$(document).on('page:init', '.page[data-name="addemployee"]', function (e){
 
       } else{
 
-          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
+          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
           app.request.post("https://nairasurvey.com/auditbar_backend/add_employee.php",
           {
@@ -492,12 +701,12 @@ $$(document).on('page:init', '.page[data-name="addemployee"]', function (e){
               else{
 
                 toastMe(dataRec.status);
-                $$("#add-employee-button").html("Add employee").prop("disbled", false);
+                $$("#add-employee-button").html("Add employee").prop("disabled", false);
 
               } 
 
           }, function(){
-              $$("#add-employee-button").html("Add employee").prop("disbled", false);
+              $$("#add-employee-button").html("Add employee").prop("disabled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -1084,7 +1293,7 @@ $$(document).on('page:init', '.page[data-name="accountstatement"]', function (e)
 
       } else{
 
-          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
+          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
           app.request.post("https://nairasurvey.com/auditbar_backend/account_statement_request.php",
           {
@@ -1157,7 +1366,7 @@ $$(document).on('page:init', '.page[data-name="accountstatement"]', function (e)
 
       } else{
 
-          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
+          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
           app.request.post("https://nairasurvey.com/auditbar_backend/customer_account_statement_request.php",
           {

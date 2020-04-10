@@ -1793,14 +1793,14 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
    else{
 
       toastMe("Only administrators can create an invoice");
-      addBusinessPopup.close();
+      app.dialog.close();
     }
     
   });
 
   $$("#add-contact-btn").click(function(){
       mainView.router.navigate("/addcontact/");
-      addBusinessPopup.close();
+      app.dialog.close();
   });
 
 
@@ -1865,7 +1865,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
             $$(".company-logo").prop("src", "imgs/assets/logo.png");
           }
           else{
-            $$(".company-logo").prop("src", company_logo);
+            $$(".company-logo").prop("src", company_logo).css({"border-radius" : "50%"});
           }
 
           chosenCompanyDetails = JSON.stringify(chosenCompanyDetails);
@@ -2158,6 +2158,12 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
   });
 
 
+
+  var selectBankAccountPopup = app.popup.create({
+      el : '.select-bank-account-popup'
+  });
+
+
   var previewInvoicePopup = app.popup.create({
       el : '.preview-invoice-popup'
   });
@@ -2190,6 +2196,69 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
   $$('.swipeout').on('swipeout:deleted', function () {
     toastMe('Thanks, item removed!');
   });
+
+
+
+  $$("#bank-details").click(function(){
+    selectBankAccountPopup.open();
+  });
+
+
+
+  app.request.post("https://nairasurvey.com/auditbar_backend/list_bank_accounts.php",
+          {
+            
+            "company_serial" : chosenCompany.company_id
+
+          },
+            function(dataSeed){
+
+              console.log(dataSeed);
+              var data = JSON.parse(dataSeed);
+
+              if (data.count_status == 0) {
+
+                $$("#bank-account-list-container").html("<img src='imgs/assets/box.png' style='margin:0 auto; max-width:120px;'><br><h3>No bank accounts!</h3>").addClass("text-center");
+                app.dialog.close();
+
+              }
+              else{
+
+              window.localStorage.setItem("foundBankAccounts", dataSeed);
+
+              magnetAccounts = "<ul>";
+
+              for (var i = 0; i < data["all_accounts"].length; i++) {
+
+
+                magnetAccounts += "<li onclick='selectAccount(" + data["all_accounts"][i]['account_sn'] + ")'><div class='item-content'><div class='item-inner'><div class='item-title'>" + data["all_accounts"][i]["account_details"] + "</div></div></div></li>";
+
+              }
+              magnetAccounts += "</ul>";
+              $$("#bank-account-list-container").html(magnetAccounts);
+            }
+              
+
+          }, function(){
+
+              app.dialog.close();
+              toastMe("Network error. Try again later");
+
+          });
+
+
+  selectAccount = function(accountSN){
+
+    var foundBankAccounts = JSON.parse(window.localStorage.getItem("foundBankAccounts"));
+    for (var i = 0; i < foundBankAccounts["all_accounts"].length; i++) {
+        if (foundBankAccounts["all_accounts"][i]["account_sn"] == accountSN) {
+
+          $$("#bank-details").focus().text(foundBankAccounts["all_accounts"][i]["account_details"]);
+          selectBankAccountPopup.close();
+          break;
+        }
+      }
+  }
 
 
   refreshInvoiceList = function(){
