@@ -1561,6 +1561,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
           case "today" : todayNi(); grabCompanySummary(chosen_company_id); break;
           case "this_month" : thisMonthNi(); grabCompanySummary(chosen_company_id); break;
           case "this_year" : thisYearNi(); grabCompanySummary(chosen_company_id); break;
+          case "all_time" : allTimeNi(); grabCompanySummary(chosen_company_id); break;
           default : thisWeekNi(); grabCompanySummary(chosen_company_id);
        }
 
@@ -1625,6 +1626,18 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
         window.localStorage.setItem("dateRange", dateRange);
     }
     
+
+
+
+    function allTimeNi(){
+       
+      dateRange["fromDate"] = "";
+
+      dateRange["endDate"] = "";
+        
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("dateRange", dateRange);
+    }
     
    
 
@@ -1960,21 +1973,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
         return i;
       }
 
-/*
-      function resetDateRange(){
 
-        var dateRange = window.localStorage.getItem("dateRange");
-        dateRange = JSON.parse(dateRange);
-        var newDate = new Date();
-        
-          dateRange["fromDate"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth()) + "-" + addZero(newDate.getDay()) + " " + "00:00:01";
-
-          dateRange["endDate"] = newDate.getFullYear() + "-" + addZero(newDate.getMonth()) + "-" + addZero(newDate.getDay()) + " " + "23:59:58";
-        
-        dateRange = JSON.stringify(dateRange);
-        window.localStorage.setItem("dateRange", dateRange);
-
-      }*/
 
   
 
@@ -2056,10 +2055,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
 
 
 
-       
-
-
-
+      
 });
 
 
@@ -2844,7 +2840,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
   var chosenCompany = window.localStorage.getItem("chosenCompany");
   chosenCompany = JSON.parse(chosenCompany);
 
-  $$(".company-name").text(chosenCompany.company_name);
+  $$(".company-name").text(chosenCompany.company_name.substr(0, 4) + "..");
   if (chosenCompany.company_logo == "") {
     $$(".company-logo").prop("src", "imgs/assets/logo.png");
   }
@@ -2870,10 +2866,12 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
         }
         return i;
       }
+
+
     var invoiceDateRange = {
 
-      "from_date" : myToday.getFullYear() + "-" + addZero(myToday.getMonth()) + "-" + addZero(myToday.getDay()) + " 00:00:00",
-      "to_date" : myToday.getFullYear() + "-" + addZero(myToday.getMonth()) + "-" + addZero(myToday.getDay()) + " 00:00:00",
+      "from_date" : "",
+      "to_date" : "",
     }
 
     invoiceDateRange = JSON.stringify(invoiceDateRange);
@@ -2917,6 +2915,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
           case "today" : todayNi(); loodAllGrand(); break;
           case "this_month" : thisMonthNi(); loodAllGrand(); break;
           case "this_year" : thisYearNi(); loodAllGrand(); break;
+          case "all_time" : allTimeNi(); loodAllGrand(); break;
           default : thisWeekNi(); loodAllGrand();
        }
 
@@ -2956,6 +2955,18 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
         window.localStorage.setItem("invoiceDateRange", dateRange);
     }      
 
+
+
+    function allTimeNi(){
+       
+      dateRange["from_date"] = "";
+
+      dateRange["to_date"] = "";
+        
+        dateRange = JSON.stringify(dateRange);
+        window.localStorage.setItem("invoiceDateRange", dateRange);
+    } 
+
      
 
     function thisWeekNi(){
@@ -2980,11 +2991,6 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
         dateRange = JSON.stringify(dateRange);
         window.localStorage.setItem("invoiceDateRange", dateRange);
     }
-    
-    
-   
-
-
     
   }
 
@@ -3176,16 +3182,6 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
               toastMe("Network error. Try again later");
 
           });
-
-
-
-
-
-
-
-
-
-
 
 
 
