@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.auditbar.app" version="1.2.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Auditbar</name>
+<widget id="com.blueportal.netbook" version="1.2.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>netbook</name>
     <description>
         Accounting and Invoicing in your pocket
     </description>
-    <author email="codegreenie@gmail.com" href="http://instagram.com/codegreenie">
+    <author email="codegreenie@gmail.com" href="http://twitter.com/codegreenie">
         @codegreenie
     </author>
     <content src="index.html" />
