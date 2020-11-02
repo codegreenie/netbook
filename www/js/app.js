@@ -39,7 +39,7 @@ toastMe = function(toastMessage){
 
 messenger = function(theMessage, theChannel, theEmail, thePhone, theSubject){
 
-  app.request.post('https://nairasurvey.com/auditbar_backend/messenger.php', 
+  app.request.post('https://abtechnology.com.ng/netbooks/messenger.php', 
             {
              "the_message" : theMessage,
              "the_channel" : theChannel,
@@ -314,10 +314,6 @@ $$(document).on('page:init', '.page[data-name="slides"]', function (e){
         });
         var swiper = app.swiper.get('.swiper-container');
 
-        $$("#next-btn").on("click", function(){
-          swiper.slideNext();
-        });
-
         $$("#skip-btn").click(function(){
           mainView.router.navigate("/login/");
         });
@@ -365,7 +361,7 @@ $$(document).on('page:init', '.page[data-name="login"]', function (e){
           $$("#login-btn").html("Logging in...").prop("disabled", true);
             
           
-            app.request.post('https://nairasurvey.com/auditbar_backend/user_login.php', 
+            app.request.post('https://abtechnology.com.ng/netbooks/user_login.php', 
             {
              "user_email" : $$("#user-email").val(),
              "user_password" : $$("#user-password").val()
@@ -496,7 +492,7 @@ $$(document).on('page:init', '.page[data-name="signup"]', function (e){
             window.localStorage.setItem("temporaryReg", tempStorage);
 
 
-            app.request.post('https://nairasurvey.com/auditbar_backend/generate_code.php', 
+            app.request.post('https://abtechnology.com.ng/netbooks/generate_code.php', 
             
              function (data) {
 
@@ -609,7 +605,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
 
 
 
-             app.request.post('https://nairasurvey.com/auditbar_backend/user_registration.php', 
+             app.request.post('https://abtechnology.com.ng/netbooks/user_registration.php', 
             {
              "new_user_first_name" : tempStorage.first_name,
              "new_user_last_name" : tempStorage.last_name,
@@ -711,7 +707,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
             tempStorage = JSON.parse(tempStorage);
 
 
-             app.request.post('https://nairasurvey.com/auditbar_backend/user_registration.php', 
+             app.request.post('https://abtechnology.com.ng/netbooks/user_registration.php', 
             {
              "new_user_first_name" : tempStorage.first_name,
              "new_user_last_name" : tempStorage.last_name,
@@ -1069,7 +1065,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
 
       function subscribe(subscriptionID){
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/init_transaction.php',
+      app.request.post('https://abtechnology.com.ng/netbooks/init_transaction.php',
               {
 
                "subscription_id" : subscriptionID,
@@ -1111,7 +1107,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
             
             pushedData = JSON.parse(pushedData);
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/paystack/paystack_init.php",
+            app.request.post("https://abtechnology.com.ng/netbooks/paystack/paystack_init.php",
                         {
                           "buyer_email" : permanentReg.user_email,
                           "amount_2_pay" : pushedData.subscription_price * 100,
@@ -1153,7 +1149,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
 
 
           //fetch prices and add them to button
-          app.request.post('https://nairasurvey.com/auditbar_backend/fetch_prices.php',
+          app.request.post('https://abtechnology.com.ng/netbooks/fetch_prices.php',
               
                function (data) {
                 
@@ -1184,7 +1180,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
            function confirmPayment(transactionID){
 
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/paystack/verify_payment.php",
+            app.request.post("https://abtechnology.com.ng/netbooks/paystack/verify_payment.php",
                         {
                           
                           "transaction_id" : transactionID                         
@@ -1242,7 +1238,7 @@ $$(document).on('page:init', '.page[data-name="recovery"]', function (e){
         else{
 
             $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-             app.request.post('https://nairasurvey.com/auditbar_backend/recover_account.php', 
+             app.request.post('https://abtechnology.com.ng/netbooks/recover_account.php', 
             {
              "user_email" : $$("#recovery-email").val(),
            },
@@ -1454,7 +1450,7 @@ $$(document).on('page:init', '.page[data-name="newpassword"]', function (e){
         else{
 
             $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-             app.request.post('https://nairasurvey.com/auditbar_backend/set_new_password.php', 
+             app.request.post('https://abtechnology.com.ng/netbooks/set_new_password.php', 
             {
             "user_serial_no" : recoveryProps.user_serial_no,
              "user_email" : recoveryProps.recovery_email,
@@ -1775,7 +1771,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
     if (theChosenCompany.company_access == "administrator") {
         
     
-     app.request.post("https://nairasurvey.com/auditbar_backend/check_subscription.php",
+     app.request.post("https://abtechnology.com.ng/netbooks/check_subscription.php",
           {
             "company_id" : chosen_company_id
           },
@@ -1798,7 +1794,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
               }
           }, function(){
 
-              $$("#add-contact-button").html("Add contact").prop("disbled", false);
+              $$("#add-contact-button").html("Add contact").prop("disabled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -1903,7 +1899,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
     var dateRange = window.localStorage.getItem("dateRange");
     dateRange = JSON.parse(dateRange);
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/company_summary.php', 
+      app.request.post('https://abtechnology.com.ng/netbooks/company_summary.php', 
             {
             "company_serial" : theCompanyID,
              "from_date" : dateRange.fromDate,
@@ -2201,7 +2197,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
 
 
 
-  app.request.post("https://nairasurvey.com/auditbar_backend/list_bank_accounts.php",
+  app.request.post("https://abtechnology.com.ng/netbooks/list_bank_accounts.php",
           {
             
             "company_serial" : chosenCompany.company_id
@@ -2420,7 +2416,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
       $$("#invoice-total-plate").text(totalInvoicePrice);
 
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/generate_invoice_preview.php', 
+      app.request.post('https://abtechnology.com.ng/netbooks/generate_invoice_preview.php', 
             {
               
             "invoice_owner" : chosenCompany.company_id,
@@ -2447,7 +2443,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
              function (data) {
 
               console.log(data);
-              var invoicePreviewURL = "https://nairasurvey.com/auditbar_backend/businesses/" + chosenCompany.company_name + "_" + chosenCompany.company_id + "/invoice.html";
+              var invoicePreviewURL = "https://abtechnology.com.ng/netbooks/businesses/" + chosenCompany.company_name + "_" + chosenCompany.company_id + "/invoice.html";
               invoicePreviewURL = encodeURI(invoicePreviewURL);
               window.setTimeout(function(){
                 $("#preview-invoice").load(invoicePreviewURL);
@@ -2481,10 +2477,10 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
       toastMe("sending invoice...");
       var theChosenContact = JSON.parse(window.localStorage.getItem("chosenContact"));
 
-      $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
+      $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
       
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/create_invoice.php",
+          app.request.post("https://abtechnology.com.ng/netbooks/create_invoice.php",
           {
             "company_name" :  chosenCompany.company_name,
             "invoice_owner" : chosenCompany.company_id,
@@ -2516,11 +2512,11 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
               }
               else{
                 toastMe("Unable to send invoice. Try later");
-                $$("#send-invoice-button").html("<i class='icon f7-icons' style='font-size: 32px;'>paper_plane</i>Send").prop("disbled", false);
+                $$("#send-invoice-button").html("<i class='icon f7-icons' style='font-size: 32px;'>paper_plane</i>Send").prop("disabled", false);
               }
 
           }, function(){
-              $$("#send-invoice-button").html("<i class='icon f7-icons' style='font-size: 32px;'>paper_plane</i>Send").prop("disbled", false);
+              $$("#send-invoice-button").html("<i class='icon f7-icons' style='font-size: 32px;'>paper_plane</i>Send").prop("disabled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -2647,9 +2643,9 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
 
       } else{
 
-          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
+          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/add_contact.php",
+          app.request.post("https://abtechnology.com.ng/netbooks/add_contact.php",
           {
             
             "contact_name" : $$("#contact-name").val(),
@@ -2672,13 +2668,13 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
               else{
 
                 toastMe(dataRec.status);
-                $$("#add-contact-button").html("Add customer").prop("disbled", false);
+                $$("#add-contact-button").html("Add customer").prop("disabled", false);
 
               }
               
 
           }, function(){
-              $$("#add-contact-button").html("Add customer").prop("disbled", false);
+              $$("#add-contact-button").html("Add customer").prop("disabled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -2728,7 +2724,7 @@ $$(document).on('page:init', '.page[data-name="contactsearch"]', function (e){
 
 
 
-    app.request.post("https://nairasurvey.com/auditbar_backend/find_contact.php",
+    app.request.post("https://abtechnology.com.ng/netbooks/find_contact.php",
           {
             
             "my_id" : permanentReg.user_serial
@@ -2766,7 +2762,7 @@ $$(document).on('page:init', '.page[data-name="contactsearch"]', function (e){
 
           }, function(){
 
-              $$("#add-contact-button").html("Add contact").prop("disbled", false);
+              $$("#add-contact-button").html("Add contact").prop("disabled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -3150,7 +3146,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
       console.log(invoicePayinBalance);
 
 
-        app.request.post("https://nairasurvey.com/auditbar_backend/mark_as_paid.php",
+        app.request.post("https://abtechnology.com.ng/netbooks/mark_as_paid.php",
           {
             "invoice_id" : theInvoice.invoice_sn,
             "invoice_number" : theInvoice.invoice_number,
@@ -3178,7 +3174,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
               }
           }, function(){
 
-              $$("#add-contact-button").html("Add contact").prop("disbled", false);
+              $$("#add-contact-button").html("Add contact").prop("disabled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -3205,7 +3201,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
     if (chosenCompany.company_access == "administrator") {
         
     
-     app.request.post("https://nairasurvey.com/auditbar_backend/check_subscription.php",
+     app.request.post("https://abtechnology.com.ng/netbooks/check_subscription.php",
           {
             "company_id" : chosenCompany.company_id
           },
@@ -3228,7 +3224,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
               }
           }, function(){
 
-              $$("#add-contact-button").html("Add contact").prop("disbled", false);
+              $$("#add-contact-button").html("Add contact").prop("disabled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -3393,7 +3389,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
 function loadAllInvoices(){
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
+   app.request.post('https://abtechnology.com.ng/netbooks/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3451,7 +3447,7 @@ function loadAllInvoices(){
 
 function loadPaidInvoices(){
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
+   app.request.post('https://abtechnology.com.ng/netbooks/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3501,7 +3497,7 @@ function loadPaidInvoices(){
 
 function loadUnpaidInvoices(){
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
+   app.request.post('https://abtechnology.com.ng/netbooks/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3552,7 +3548,7 @@ function loadUnpaidInvoices(){
 
 function loadOverdueInvoices(){
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
+   app.request.post('https://abtechnology.com.ng/netbooks/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3615,7 +3611,7 @@ function loadOverdueInvoices(){
 
 function loadPartialInvoices(){
 
-   app.request.post('https://nairasurvey.com/auditbar_backend/list_invoices.php', 
+   app.request.post('https://abtechnology.com.ng/netbooks/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3706,9 +3702,9 @@ function loadPartialInvoices(){
 
       } else{
 
-          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
+          $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
-          app.request.post("https://nairasurvey.com/auditbar_backend/invoice_payins.php",
+          app.request.post("https://abtechnology.com.ng/netbooks/invoice_payins.php",
           {
             
             "invoice_id" : selectedInvoice["invoice_sn"],
@@ -3727,20 +3723,20 @@ function loadPartialInvoices(){
                   addPayinsPopup.close();
                   openPayinsPopup.close();
 
-                  $$("#payin-button").html("Add payment").prop("disbled", false);
+                  $$("#payin-button").html("Add payment").prop("disabled", false);
                   $$("#add-payin-form").trigger("reset");
 
 
               }else{
 
                 toastMe(dataRec.status);
-                $$("#payin-button").html("Add payment").prop("disbled", false);
+                $$("#payin-button").html("Add payment").prop("disabled", false);
 
               }         
 
           }, function(){
               
-              $$("#payin-button").html("Add payment").prop("disbled", false);
+              $$("#payin-button").html("Add payment").prop("disabled", false);
               toastMe("Network error. Try again later");
 
           });
@@ -3778,7 +3774,7 @@ function loadPartialInvoices(){
 
       } else{
 
-          $$("#expense-button").html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disbled", true);
+          $$("#expense-button").html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
           $("#add-expense-form").ajaxSubmit({
             success : (data) => {
                 
@@ -3790,14 +3786,14 @@ function loadPartialInvoices(){
                   addExpensesPopup.close();
                   openExpensesPopup.close();
 
-                  $$("#expense-button").html("Add payment").prop("disbled", false);
+                  $$("#expense-button").html("Add payment").prop("disabled", false);
                   $$("#add-expense-form").trigger("reset");
 
 
               }else{
 
                 toastMe(dataRec.status);
-                $$("#expense-button").html("Add payment").prop("disbled", false);
+                $$("#expense-button").html("Add payment").prop("disabled", false);
 
               }    
               console.log(data);
@@ -3806,7 +3802,7 @@ function loadPartialInvoices(){
 
             error : (jqXHR, error, status) => {
                   
-              $$("#expense-button").html("Add payment").prop("disbled", false);
+              $$("#expense-button").html("Add payment").prop("disabled", false);
               toastMe("Network error. Try again later");
 
             }

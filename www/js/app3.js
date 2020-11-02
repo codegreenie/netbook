@@ -243,7 +243,7 @@ $$(document).on('page:init', '.page[data-name="taxcompliance"]', function (e){
 
         
 
-      app.request.post('https://nairasurvey.com/auditbar_backend/tax_compliance_request.php',
+      app.request.post('https://abtechnology.com.ng/netbooks/tax_compliance_request.php',
               {
 
                "tax_compliance_id" : subscriptionID,
@@ -285,7 +285,7 @@ $$(document).on('page:init', '.page[data-name="taxcompliance"]', function (e){
             
             pushedData = JSON.parse(pushedData);
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/paystack/paystack_init.php",
+            app.request.post("https://abtechnology.com.ng/netbooks/paystack/paystack_init.php",
                         {
                           "buyer_email" : permanentReg.user_email,
                           "amount_2_pay" : pushedData.price * 100,
@@ -334,7 +334,7 @@ $$(document).on('page:init', '.page[data-name="taxcompliance"]', function (e){
            function confirmPayment(transactionID){
 
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/paystack/verify_tax_compliance_payment.php",
+            app.request.post("https://abtechnology.com.ng/netbooks/paystack/verify_tax_compliance_payment.php",
                         {
                           
                           "transaction_id" : transactionID                         
@@ -439,14 +439,14 @@ $("#add-business-form").submit(function(){
               else{
 
                 toastMe(dataRec.status);
-                $("#add-business-btn").html("Add business").prop("disbled", false);
+                $("#add-business-btn").html("Add business").prop("disabled", false);
 
               }     
              },
 
             error : (jqXHR, error, status) => {
 
-             $("#add-business-btn").html("Add business").prop("disbled", false);
+             $("#add-business-btn").html("Add business").prop("disabled", false);
               toastMe("Network error. Try again later");
             }
         });
@@ -498,7 +498,7 @@ $$(document).on('page:init', '.page[data-name="updateprofile"]', function (e){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
 
-            app.request.post("https://nairasurvey.com/auditbar_backend/user_profile_update.php",
+            app.request.post("https://abtechnology.com.ng/netbooks/user_profile_update.php",
                         {
                           
                           "user_serial" : permanentReg.user_serial,
@@ -584,7 +584,7 @@ $$(document).on('page:init', '.page[data-name="updateemail"]', function (e){
 
             $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true)
               
-          app.request.post('https://nairasurvey.com/auditbar_backend/generate_code.php', 
+          app.request.post('https://abtechnology.com.ng/netbooks/generate_code.php', 
             
              function (data) {
 
@@ -751,7 +751,7 @@ $$(document).on('page:init', '.page[data-name="emailupdateotp"]', function (e){
         
         if (emailUpdateProps.verification_code == userRecoveryInput) {
 
-              app.request.post("https://nairasurvey.com/auditbar_backend/update_email.php",
+              app.request.post("https://abtechnology.com.ng/netbooks/update_email.php",
                         {
                           
                           "user_serial" : permanentReg.user_serial,
@@ -847,7 +847,7 @@ $$(document).on('page:init', '.page[data-name="updatepassword"]', function (e){
         else{
 
             $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-             app.request.post('https://nairasurvey.com/auditbar_backend/change_password.php', 
+             app.request.post('https://abtechnology.com.ng/netbooks/change_password.php', 
             {
             "user_serial_no" : permanentReg.user_serial,
             "current_password" : $$("#current-password").val(),
@@ -910,7 +910,7 @@ $$(document).on('page:init', '.page[data-name="share"]', function (e){
   $$("#enter-code-block").hide();
 
   //quickly check if i was already referred
-  app.request.post('https://nairasurvey.com/auditbar_backend/check_ref.php', 
+  app.request.post('https://abtechnology.com.ng/netbooks/check_ref.php', 
             {
             "my_id" : permanentReg.user_serial,
            },
@@ -969,7 +969,7 @@ $$(document).on('page:init', '.page[data-name="share"]', function (e){
         else{
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-          app.request.post('https://nairasurvey.com/auditbar_backend/push_referrer.php', 
+          app.request.post('https://abtechnology.com.ng/netbooks/push_referrer.php', 
             {
             "my_id" : permanentReg.user_serial,
             "referral_code" : $$("#referral-code-input").val()
