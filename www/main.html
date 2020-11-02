@@ -7,10 +7,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#043a7a">
   <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
-  <title>auditbar</title>
+  <title>netbook</title>
   <link rel="stylesheet" href="css/framework7.min.css">
   <link rel="stylesheet" href="css/app.css">
-  <link rel="stylesheet" href="css/ussd.css">
+  <link rel="stylesheet" href="css/netbook.css">
   <link rel="stylesheet" href="css/animate.css">
   <link rel="stylesheet" href="css/bar.chart.min.css">
   
@@ -27,6 +27,10 @@
            <div class="page bg-color-white" data-name="main" style="padding-bottom: 0px; overflow: hidden;">
 
 
+              <h1 class="color-pink" id="logo">netbook</h1>
+              <p class="color-blue text-center" style="bottom:0px;position: absolute; width: 100%;font-size: 14px; font-weight: bold;">By Blueportal Company</p>
+
+
            </div>
 
 
@@ -38,7 +42,6 @@
 </div>
 <script src="cordova.js"></script>
 <script src="js/framework7.min.js"></script>
-<script src="https://js.paystack.co/v1/paystack.js" async></script>
 <script src="js/routes.js"></script>
 <script src="js/jquery.js"></script>
 <script src='js/dj3s.js'></script>
@@ -53,23 +56,31 @@
     	console.log("No user has logged in yet!");
       window.setTimeout(function(){
       mainView.router.navigate("/slides/");
-    }, 2000);
+    }, 4000);
     }
     else{
       window.setTimeout(function(){
       mainView.router.navigate("/dashboard/");
-    }, 2000);
+    }, 4000);
   }
   
-
-  
-  
   
 
+    var screenHeight = $$('body').height();
+    var screenWidth = $$('body').width();
 
-/*
-  window.setTimeout(function(){
-      mainView.router.navigate("/createinvoice/");
+
+    $$("#logo").css({
+      marginTop: (parseInt(screenHeight) / 2) + "px",
+      marginLeft: (parseInt(screenWidth) / 3) + "px",
+      fontSize: "32px"
+    })
+  
+
+
+
+/*  window.setTimeout(function(){
+      mainView.router.navigate("/newpassword/");
     }, 2000);*/
 
 

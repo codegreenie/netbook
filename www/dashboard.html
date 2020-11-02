@@ -119,12 +119,6 @@
 
 
 
-  <div class="fab fab-right-bottom" style="margin-bottom: 42px;"> 
-    <a href="#" id="dashboard-create-invoice-btn">
-      <i class="icon f7-icons">add</i>
-    </a>
-  </div>
-
   <div class="popover popover-company-list">
     <div class="popover-inner">
       <div class="list">
@@ -135,18 +129,25 @@
   </div>
 
 
-  <div class="toolbar tabbar tabbar-labels toolbar-bottom bg-color-white">
+ 
+
+
+
+
+      <div class="toolbar tabbar tabbar-labels toolbar-bottom bg-color-white">
       <div class="toolbar-inner">
         
-        <a href="#" class="tab-link tab-link-active text-color-primary">
-          <i class="icon f7-icons">data</i>
+        <a href="#" class="tab-link tab-link-active color-blue">
+          <i class="icon f7-icons ios-only">home</i>
+          <i class="icon material-icons md-only">home</i>
           <span class="tabbar-label">Home</span>
         </a>
 
         
 
         <a href="/invoices/" class="tab-link text-color-black">
-          <i class="icon f7-icons">document_chart</i>
+           <i class="icon f7-icons ios-only">document_chart</i>
+          <i class="icon material-icons md-only">assessment</i>
           <span class="tabbar-label">Invoices</span>
         </a>
 
@@ -158,7 +159,8 @@
 
         
         <a href="/more/" class="tab-link text-color-black">
-          <i class="icon f7-icons">bars</i>
+          <i class="icon f7-icons ios-only">data</i>
+          <i class="icon material-icons md-only">apps</i>
           <span class="tabbar-label">More</span>
         </a>
 
@@ -216,13 +218,20 @@
       </div>
 
 
-      <div class="text-center" style="margin-top: 10px;">
-        <a class="link popover-open text-color-black" href="#" data-popover=".popover-company-list">
+      <div class="row" style="margin-top: 10px;">
+        <div class="col-75">
+        <a class="link popover-open text-color-black" href="#" data-popover=".popover-company-list" style="margin-top:10px;margin-left:10px; ">
+        <span class="company-name"></span>
+        <i class="icon f7-icons" style="font-size: 16px;">chevron_down</i>
+        </a>
+      </div>
+
+      <div class="col-25">
         <img src="" class="company-logo lazy-load" style="max-width: 35px; min-width: 35px; max-height: 35px; min-height: 35px;">
         &nbsp;
-        <span class="company-name"></span>
-        <i class="icon f7-icons" style="font-size: 12px;">chevron_down</i>
-        </a>
+      </div>
+
+
       </div>
 
 
@@ -236,18 +245,19 @@
 
          
 
-            <div id="chtAnimatedBarChart" class="bcBar" style="width:100%; margin-top:10px;"></div>
-
+           <!--  <div id="chtAnimatedBarChart" class="bcBar" style="width:100%; margin-top:10px;"></div>
+ -->
         
 
 
-
-
-      
-
-
-
-
+<div class="block">
+ <div class="card background-blue elevation-6">
+      <div class="card-content card-content-padding text-center" style="padding-top: 30px; padding-bottom: 30px;">
+        <span class="text-color-blue">Net Profit</span>
+        <h1 class="text-color-white" style="margin:0px;" id="net-profit">NGN0</h1>
+      </div>
+  </div>
+</div>
 
 
 
@@ -256,43 +266,61 @@
    
     <div class="block">
 
-
-      <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px;">
-        <span>Net Profit</span>
-        <br>
-        <span id="net-profit" style="font-size:22px;">NGN0</span>
+      <div class="block-title color-blue">
+        <h4>Profit &amp; Loss</h4>
       </div>
 
+  <div class="row no-gap">
+
+    <div class="col-50">
+      <div class="card elevation-3" style="background-color:#efeff4;">
+      <div class="card-content card-content-padding text-center" style="padding-top: 30px; padding-bottom: 30px;">
+        <span class="text-color-blue">Income</span>
+        <h4 class="color-blue" style="margin:0px;" id="total-income">NGN0</h4>
+      </div>
+    </div>
+  </div>
 
 
 
-      <div class="list no-hairlines-md no-hairlines-ios">
-      <ul>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Income</div>
-              <div class="item-after text-color-black" id="total-income">NGN0</div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Expenses</div>
-              <div class="item-after text-color-black" id="total-expenses">NGN0</div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Gross Profit</div>
-              <div class="item-after text-color-black" id="gross-profit">NGN0</div>
-            </div>
-          </div>
-        </li>
-      </ul>
+  <div class="col-50">
+      <div class="card elevation-3" style="background-color:#efeff4;">
+      <div class="card-content card-content-padding text-center" style="padding-top: 30px; padding-bottom: 30px;">
+        <span class="text-color-blue">Expenses</span>
+        <h4 class="color-blue" style="margin:0px;" id="total-expenses">NGN0</h4>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div class="col">
+      <div class="card elevation-3" style="background-color:#efeff4;">
+      <div class="card-content card-content-padding text-center" style="padding-top: 30px; padding-bottom: 30px;">
+        <span class="text-color-blue">Gross Profit</span>
+        <h2 class="color-blue" style="margin:0px;" id="gross-profit">NGN0</h2>
+      </div>
+    </div>
+  </div> 
+
+
+  </div>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 
 
@@ -303,99 +331,6 @@
 
 
 
-
-      <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px;">
-        <h3>Invoices</h3>
-      </div>
-
-
-
-      <div class="list no-hairlines-md no-hairlines-ios">
-      <ul>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Total Invoice</div>
-              <div class="item-after text-color-black" id="total-invoice-amount">NGN0</div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Paid Invoice</div>
-              <div class="item-after text-color-black" id="total-paid-invoice">NGN0</div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Unpaid Invoice</div>
-              <div class="item-after text-color-black" id="total-unpaid-invoice">NGN0</div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-
-
-
-      <div class="bg-color-blue block text-color-white" style="padding-top: 15px; padding-bottom: 15px; border-radius: 8px;">
-        <h3>Expenses</h3>
-      </div>
-
-
-
-
-
-
-
-      <div class="list no-hairlines-md no-hairlines-ios" style="margin-bottom: 70px;">
-      <ul>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Inventory</div>
-              <div class="item-after text-color-black" id="inventory">NGN0</div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Labour</div>
-              <div class="item-after text-color-black" id="labour">NGN0</div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Rent</div>
-              <div class="item-after text-color-black" id="rent">NGN0</div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Tax</div>
-              <div class="item-after text-color-black" id="tax">NGN0</div>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item-content">
-            <div class="item-inner">
-              <div class="item-title">Others</div>
-              <div class="item-after text-color-black" id="other">NGN0</div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
 
 
       
