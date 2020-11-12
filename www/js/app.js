@@ -8,8 +8,8 @@ var $$ = Dom7;
 
 // Init App
 var app = new Framework7({
-  name : 'Auditbar',
-  id: 'com.auditbar.app',
+  name : 'Netbook',
+  id: 'com.blueportal.netbook',
   root: '#app',
   theme: 'auto',
   language: 'en',
