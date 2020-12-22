@@ -134,34 +134,39 @@
 
 
 
-      <div class="toolbar tabbar tabbar-labels toolbar-bottom bg-color-white">
+      <div class="toolbar tabbar toolbar-bottom bg-color-white">
       <div class="toolbar-inner">
-        
-        <a href="#" class="tab-link tab-link-active color-blue">
-          <i class="icon f7-icons ios-only">home</i>
-          <i class="icon material-icons md-only">home</i>
-          <span class="tabbar-label">Home</span>
-        </a>
 
-        
-
-        <a href="/invoices/" class="tab-link text-color-black">
+         <a href="/invoices/" class="tab-link">
            <i class="icon f7-icons ios-only">document_chart</i>
           <i class="icon material-icons md-only">assessment</i>
-          <span class="tabbar-label">Invoices</span>
         </a>
+       
 
-
-        <a href="/contacts/" class="tab-link text-color-black">
-          <i class="icon f7-icons">person_round</i>
-          <span class="tabbar-label">Customers</span>
+        <a href="/mybusinesses/" class="tab-link">
+          <i class="icon f7-icons ios-only size-50">business_fill</i>
+          <i class="icon material-icons md-only size-50">business</i>
         </a>
 
         
-        <a href="/more/" class="tab-link text-color-black">
+
+         <a href="#" class="tab-link tab-link-active color-blue">
+          <i class="icon f7-icons ios-only">home</i>
+          <i class="icon material-icons md-only">home</i>
+        </a>
+
+       
+
+
+        <a href="/contacts/" class="tab-link">
+          <i class="icon f7-icons ios-only">person</i>
+          <i class="icon f7-icons md-only">person</i>
+        </a>
+
+        
+        <a href="/more/" class="tab-link">
           <i class="icon f7-icons ios-only">data</i>
           <i class="icon material-icons md-only">apps</i>
-          <span class="tabbar-label">More</span>
         </a>
 
        
@@ -174,14 +179,13 @@
       <div class="navbar">
               <div class="navbar-inner bg-color-white">
 
-                <div class="left ios-only">
-                  Dashboard
+                <div class="left">
+                  <span class="md-only">&nbsp;&nbsp;</span>
+                  <i class="icon f7-icons ios-only">bars</i>
+                  <i class="icon material-icons md-only">list</i>
                 </div>
 
-                <div class="left md-only">
-                  &nbsp;Dashboard
-                </div>
-
+             
 
                 <div class="title"></div>
 
@@ -227,7 +231,7 @@
       </div>
 
       <div class="col-25">
-        <img src="" class="company-logo lazy-load" style="max-width: 35px; min-width: 35px; max-height: 35px; min-height: 35px;">
+        <img src="" class="company-logo lazy" style="max-width: 35px; min-width: 35px; max-height: 35px; min-height: 35px; margin-top:10px; border:solid 2px #1c2d4c;">
         &nbsp;
       </div>
 
@@ -254,7 +258,8 @@
  <div class="card background-blue elevation-6">
       <div class="card-content card-content-padding text-center" style="padding-top: 30px; padding-bottom: 30px;">
         <span class="text-color-blue">Net Profit</span>
-        <h1 class="text-color-white" style="margin:0px;" id="net-profit">NGN0</h1>
+        <h1 class="text-color-white" style="margin:0px;" id="net-profit">NGN 0</h1>
+        <span id="date-span" class="text-color-white"></span>
       </div>
   </div>
 </div>

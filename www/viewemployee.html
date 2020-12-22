@@ -1,10 +1,6 @@
-<div class="page" data-name="employees">
+<div class="page" data-name="viewemployee">
 
-  <div class="fab fab-right-bottom" style="margin-bottom: 42px;"> 
-    <a href="/addemployee/" class="link" style="background-color:#1c2d4c;">
-      <i class="icon f7-icons">add</i>
-    </a>
-  </div>
+ 
 
 
  
@@ -61,7 +57,7 @@
 
                
 
-                <div class="title">My Employees</div>
+                <div class="title">Employee profile</div>
 
       
 
@@ -114,22 +110,13 @@
 
 
    
-    <div class="block" id="load-all-employees">
+   
 
       
-
-
-      
-
-        
-
-      
-
-
 
       
    
-      <!-- <div class="row no-gap" id="load-all-employees" style="padding:30px;border-radius:20px;background-color: #efefef;">
+      <div class="row no-gap" style="padding:15px;border-radius:20px;">
       
         <div class="col-20">
           <i class="icon f7-icons">person_round</i>
@@ -137,18 +124,108 @@
 
 
         <div class="col-75">
-          <h3 style="margin:0;">Edmond Osaro</h3>
-          <span>edmond@hotmail.com</span>
+          <h3 style="margin:0;" id="this-employee-name"></h3>
+          <span id="this-employee-email"></span>
+        </div>
+
+
+
+      </div>
+
+
+
+      <div class="row no-gap" style="padding:15px;border-radius:20px;">
+
+
+        <div class="col-20">
+          <i class="icon material-icons">label_outline</i>
+        </div>
+
+
+        <div class="col-75">
+          <h3 style="margin:0;">Designation</h3>
+          <span id="this-employee-designation"></span>
         </div>
       
-      </div> -->
+      </div>
+
+
+      <div class="block"><hr style="border:solid 0.5px #ededed;"></div>
     
 
 
 
+      <div class="row no-gap" style="padding:15px;border-radius:20px;">
+      
+        <div class="col-20">
+          <i class="icon material-icons">location_city</i>
+        </div>
 
 
-  </div>
+        <div class="col-75">
+          <span>Address</span>
+          <h3 style="margin:0;" id="this-employee-address"></h3>
+          
+        </div>
+      
+      </div>
+
+
+
+
+
+       <div class="row no-gap" style="padding:15px;border-radius:20px;">
+      
+        <div class="col-20">
+          <i class="icon f7-icons">numbers</i>
+        </div>
+
+
+        <div class="col-75">
+          <span>Account number</span>
+          <h3 style="margin:0;" id="this-employee-account-number">003632638 
+            &nbsp;
+            <i class="icon material-icons">content_copy</i>
+          </h3>
+        </div>
+      
+      </div>
+
+
+
+
+      <div class="row no-gap" style="padding:15px;border-radius:20px;">
+      
+        <div class="col-20">
+          <i class="icon f7-icons">business</i>
+        </div>
+
+
+        <div class="col-75">
+          <span>Bank</span>
+          <h3 style="margin:0;" id="this-employee-bank-name">Stanbic IBTC</h3>
+        </div>
+      
+      </div>
+
+
+
+
+
+
+      <div class="row no-gap" style="padding:15px;border-radius:20px;">
+      
+        <div class="col-20">
+          <i class="icon f7-icons">money_dollar</i>
+        </div>
+
+
+        <div class="col-75">
+          <span>Monthly Salary</span>
+          <h3 style="margin:0;" id="this-employee-salary">NGN 150,000</h3>
+        </div>
+      
+      </div>
 
 
 
@@ -156,12 +233,21 @@
 
 
 
+      <div class="block"><hr style="border:solid 0.5px #ededed;"></div>
 
 
 
+      <div class="block text-center">
+
+        
+
+            <button class="button button-fill color-red" id="remove-employee">Remove access</button>
 
 
+      
 
+
+      </div>
 
 
 

@@ -121,34 +121,42 @@
     </a>
   </div>
 
- <div class="toolbar tabbar tabbar-labels toolbar-bottom bg-color-white">
+ 
+
+ 
+      <div class="toolbar tabbar toolbar-bottom bg-color-white">
       <div class="toolbar-inner">
-        
-        <a href="/dashboard/" class="tab-link text-color-black">
-          <i class="icon f7-icons ios-only">home</i>
-          <i class="icon material-icons md-only">home</i>
-          <span class="tabbar-label">Home</span>
-        </a>
 
-        
-
-        <a href="#" class="tab-link tab-link-active color-blue">
+         <a href="#" class="tab-link tab-link-active color-blue">
            <i class="icon f7-icons ios-only">document_chart</i>
           <i class="icon material-icons md-only">assessment</i>
-          <span class="tabbar-label">Invoices</span>
         </a>
+       
 
-
-        <a href="/contacts/" class="tab-link text-color-black">
-          <i class="icon f7-icons">person_round</i>
-          <span class="tabbar-label">Customers</span>
+        <a href="/mybusinesses/" class="tab-link">
+          <i class="icon f7-icons ios-only size-50">business_fill</i>
+          <i class="icon material-icons md-only size-50">business</i>
         </a>
 
         
-        <a href="/more/" class="tab-link text-color-black">
+
+         <a href="/dashboard/" class="tab-link">
+          <i class="icon f7-icons ios-only">home</i>
+          <i class="icon material-icons md-only">home</i>
+        </a>
+
+       
+
+
+        <a href="/contacts/" class="tab-link">
+          <i class="icon f7-icons ios-only">person</i>
+          <i class="icon f7-icons md-only">person</i>
+        </a>
+
+        
+        <a href="/more/" class="tab-link">
           <i class="icon f7-icons ios-only">data</i>
           <i class="icon material-icons md-only">apps</i>
-          <span class="tabbar-label">More</span>
         </a>
 
        
@@ -235,7 +243,7 @@
           <div class="block">
 
           
-          <a href="#" class="popup-close link" data-popup=".open-invoice-popup">
+          <a href="#" class="popup-close link color-blue" data-popup=".open-invoice-popup">
             <i class="icon f7-icons" style="font-size: 32px;">arrow_left</i>
           </a>
         
@@ -383,7 +391,7 @@
           <div class="block row">
 
           <div class="col-33">
-          <a href="#" class="popup-close link" data-popup=".open-expenses-popup">
+          <a href="#" class="popup-close link color-blue" data-popup=".open-expenses-popup">
             <i class="icon f7-icons" style="font-size: 32px;">arrow_left</i>
           </a>
         </div>
@@ -440,7 +448,7 @@
           <div class="block row">
 
           <div class="col-33">
-          <a href="#" class="popup-close link" data-popup=".open-payins-popup">
+          <a href="#" class="popup-close link color-blue" data-popup=".open-payins-popup">
             <i class="icon f7-icons" style="font-size: 32px;">arrow_left</i>
           </a>
         </div>
@@ -488,7 +496,7 @@
         <div class="block row">
 
           <div class="col-33">
-          <a href="#" class="popup-close link" data-popup=".add-payins-popup">
+          <a href="#" class="popup-close link color-blue" data-popup=".add-payins-popup">
             <i class="icon f7-icons" style="font-size: 32px;">arrow_left</i>
           </a>
         </div>
@@ -560,7 +568,7 @@
 
         <div class="block" style="margin-top:10px;">
        
-      <button type="button" class="col button button-fill color-blue button-large" id="payin-button">Add payment</button>
+      <button type="button" class="col button button-fill background-blue button-large" id="payin-button">Add payment</button>
       </div>
 
 
@@ -593,7 +601,7 @@
         <div class="block row">
 
           <div class="col-33">
-          <a href="#" class="popup-close link" data-popup=".add-expenses-popup">
+          <a href="#" class="popup-close link color-blue" data-popup=".add-expenses-popup">
             <i class="icon f7-icons" style="font-size: 32px;">arrow_left</i>
           </a>
         </div>
@@ -613,7 +621,7 @@
       
 
 
-      <form class="list no-hairlines-md no-hairlines-ios" style="margin-top: 0px;" method="post" id="add-expense-form" action="https://abtechnology.com.ng/netbooks/push_expenses.php" onsubmit="return false" enctype="multipart/form-data">
+      <form class="list no-hairlines-md no-hairlines-ios" style="margin-top: 0px;" method="post" id="add-expense-form" action="https://abtechnology.com.ng/auditbar/push_expenses.php" onsubmit="return false" enctype="multipart/form-data">
 
         
 
@@ -705,7 +713,7 @@
 
         <div class="block" style="margin-top:10px;">
        
-      <button type="submit" class="col button button-fill color-blue button-large" id="expense-button">Add payment</button>
+      <button type="submit" class="col button button-fill background-blue button-large" id="expense-button">Add payment</button>
       </div>
 
 

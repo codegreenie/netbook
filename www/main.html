@@ -27,7 +27,7 @@
            <div class="page bg-color-white" data-name="main" style="padding-bottom: 0px; overflow: hidden;">
 
 
-              <h1 class="color-pink" id="logo">netbook</h1>
+              <img src="imgs/assets/logo.png" id="logo" class="lazy" style="max-width: 100px; display: block; margin:0 auto;">
               <p class="color-blue text-center" style="bottom:0px;position: absolute; width: 100%;font-size: 14px; font-weight: bold;">By Blueportal Company</p>
 
 
@@ -56,12 +56,12 @@
     	console.log("No user has logged in yet!");
       window.setTimeout(function(){
       mainView.router.navigate("/slides/");
-    }, 4000);
+    }, 3000);
     }
     else{
       window.setTimeout(function(){
       mainView.router.navigate("/dashboard/");
-    }, 4000);
+    }, 3000);
   }
   
   
@@ -71,16 +71,15 @@
 
 
     $$("#logo").css({
-      marginTop: (parseInt(screenHeight) / 2) + "px",
+      marginTop: (parseInt(screenHeight) / 3) + "px",
       marginLeft: (parseInt(screenWidth) / 3) + "px",
-      fontSize: "32px"
-    })
+    });
   
 
 
 
 /*  window.setTimeout(function(){
-      mainView.router.navigate("/newpassword/");
+      mainView.router.navigate("/companylogo/");
     }, 2000);*/
 
 
