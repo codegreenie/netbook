@@ -198,5 +198,10 @@ var routes = [
     name: 'addbankaccount',
     path: '/addbankaccount/',
     url: './addbankaccount.html'
+    },
+    {
+    name: 'viewemployee',
+    path: '/viewemployee/',
+    url: './viewemployee.html'
     }
 ];

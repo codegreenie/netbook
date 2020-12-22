@@ -6,7 +6,7 @@ var permanentReg = window.localStorage.getItem("permanentReg");
 permanentReg = JSON.parse(permanentReg);
 
 
-    app.request.post("https://abtechnology.com.ng/netbooks/find_contact.php",
+    app.request.post("https://abtechnology.com.ng/auditbar/find_contact.php",
           {
             
             "my_id" : permanentReg.user_serial
@@ -70,7 +70,7 @@ permanentReg = JSON.parse(permanentReg);
 
 	        if(allContacts['found_contacts'][i]['contact_sn'] == contactSN){
 
-              app.request.post("https://abtechnology.com.ng/netbooks/delete_contact.php",
+              app.request.post("https://abtechnology.com.ng/auditbar/delete_contact.php",
                   {
                     
                     "my_id" : permanentReg.user_serial,
@@ -207,7 +207,7 @@ $$(document).on('page:init', '.page[data-name="editcontact"]', function (e){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
-          app.request.post("https://abtechnology.com.ng/netbooks/update_contact.php",
+          app.request.post("https://abtechnology.com.ng/auditbar/update_contact.php",
           {
             
             "edit_contact_name" : $$("#edit-contact-name").val(),
@@ -278,7 +278,7 @@ var theChosenCompany = window.localStorage.getItem("chosenCompany");
   theChosenCompany = JSON.parse(theChosenCompany);
 
 
-    app.request.post("https://abtechnology.com.ng/netbooks/list_bank_accounts.php",
+    app.request.post("https://abtechnology.com.ng/auditbar/list_bank_accounts.php",
           {
             
             "company_serial" : theChosenCompany.company_id
@@ -330,7 +330,7 @@ var theChosenCompany = window.localStorage.getItem("chosenCompany");
 
       app.dialog.preloader("Removing account...", "blue");
 
-              app.request.post("https://abtechnology.com.ng/netbooks/delete_bank_account.php",
+              app.request.post("https://abtechnology.com.ng/auditbar/delete_bank_account.php",
                   {
                     
                     "account_sn" :  accountSN,
@@ -412,7 +412,7 @@ $$(document).on('page:init', '.page[data-name="addbankaccount"]', function (e){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
-          app.request.post("https://abtechnology.com.ng/netbooks/add_bank_account.php",
+          app.request.post("https://abtechnology.com.ng/auditbar/add_bank_account.php",
           {
             
             "bank_account_details" : $$("#bank-account-details").val(),
@@ -455,13 +455,6 @@ $$(document).on('page:init', '.page[data-name="addbankaccount"]', function (e){
 
 
 
-
-
-
-
-
-
-
 $$(document).on('page:init', '.page[data-name="employees"]', function (e){
 
 
@@ -471,7 +464,7 @@ var permanentReg = window.localStorage.getItem("permanentReg");
 permanentReg = JSON.parse(permanentReg);
 
 
-    app.request.post("https://abtechnology.com.ng/netbooks/list_employees.php",
+    app.request.post("https://abtechnology.com.ng/auditbar/list_employees.php",
           {
             
             "my_id" : permanentReg.user_serial
@@ -495,9 +488,9 @@ permanentReg = JSON.parse(permanentReg);
               magnetEmployees = "<ul>";
 
               for (var i = 0; i < data.length; i++) {
-              
-              magnetEmployees += "<li class='accordion-item'><a href='#' class='item-link item-content'><div class='item-inner'><div class='item-title'>" + data[i]["first_name"] + " " + data[i]["last_name"] + "</div></div></a><div class='accordion-item-content'><ul>  <li><div class='item-content'><div class='item-inner'><div class='item-title'>Company:</div><div class='item-after'>" + data[i]["company"] + "</div></div></div></li>     <li><div class='item-content'><div class='item-inner'><div class='item-title'>Email:</div><div class='item-after'>" + data[i]["user_email"] + "</div></div></div></li>   <li><div class='item-content'><div class='item-inner'><div class='item-title'><button class='button button-fill color-red' onclick=removeEmployee(" + data[i]['user_serial'] + ")>Revoke Access</button></div><div class='item-after'>" + data[i]["access_type"] + "</div></div></div></li>  </ul></div></li>";
 
+
+                magnetEmployees += "<div class='row no-gap' style='padding:30px;border-radius:20px;background-color: #efefef;margin:0px 0px 15px;' onclick=viewEmployee(" + data[i]['user_serial'] + ")> <div class='col-20'> <i class='icon f7-icons'>person_round</i> </div> <div class='col-75'> <h3 style='margin:0;'>" + data[i]["first_name"] + " " + data[i]["last_name"] + "</h3> <span>" + data[i]["user_email"] +"</span> </div> </div>"
               }
               magnetEmployees += "</ul>";
               $$("#load-all-employees").html(magnetEmployees);
@@ -517,6 +510,76 @@ permanentReg = JSON.parse(permanentReg);
 
 
 
+     viewEmployee = function(employeeSN){
+
+      app.dialog.preloader("Please wait...", "blue");
+      window.localStorage.setItem("employee_to_view", employeeSN);
+      setTimeout(function() {
+        mainView.router.navigate("/viewemployee/");
+        app.dialog.close();
+      }, 2000);
+      
+
+
+    }
+
+
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+$$(document).on('page:init', '.page[data-name="viewemployee"]', function (e){
+
+var permanentReg = window.localStorage.getItem("permanentReg");
+permanentReg = JSON.parse(permanentReg);
+
+
+var myEmployees = window.localStorage.getItem("myEmployees");
+myEmployees = JSON.parse(myEmployees);
+
+var thisEmployeeID = window.localStorage.getItem("employee_to_view");
+
+
+  
+  for (var i = 0; i < myEmployees.length; i++) {
+
+    var employeeFound;
+
+    var employeeSerial = myEmployees[i]["user_serial"];
+    if (employeeSerial == thisEmployeeID) {
+
+      employeeFound = myEmployees[i];
+      $$("#this-employee-name").html(employeeFound["first_name"] + " " + employeeFound["last_name"]);
+      $$("#this-employee-email").html(employeeFound["user_email"]);
+      $$("#this-employee-address").html(employeeFound["employee_address"]);
+      $$("#this-employee-account-number").html(employeeFound["employee_account_number"]);
+      $$("#this-employee-bank-name").html(employeeFound["employee_bank"]);
+      $$("#this-employee-salary").html("NGN " + parseInt(employeeFound["employee_salary"]).toLocaleString());
+      $$("#this-employee-designation").html(employeeFound["access_type"].toUpperCase());
+      break;
+    }
+
+  }
+
+
+
+
+  $$("#remove-employee").click(function(){
+      removeEmployee(thisEmployeeID);
+  });
+
+
 
 
       removeEmployee = function(employeeSN){
@@ -530,7 +593,7 @@ permanentReg = JSON.parse(permanentReg);
 
           if(allEmployees[p]['user_serial'] == employeeSN){
 
-              app.request.post("https://abtechnology.com.ng/netbooks/remove_employee.php",
+              app.request.post("https://abtechnology.com.ng/auditbar/remove_employee.php",
                   {
                     
                     "my_id" : permanentReg.user_serial,
@@ -548,7 +611,7 @@ permanentReg = JSON.parse(permanentReg);
                         toastMe(data.status);
                         console.log(data);
                         app.dialog.close();
-                        mainView.router.refreshPage();
+                        mainView.router.back();
                       
                       }
                       else{
@@ -670,7 +733,7 @@ $$(document).on('page:init', '.page[data-name="addemployee"]', function (e){
 
   $$("#add-employee-button").click(function(){
 
-      if ($$("#employee-email").val().trim() == "" || $$("#selected-company").val().trim() == "" || $$("#employee-designation").val().trim() == "") {
+      if ($$("#employee-email").val().trim() == "" || $$("#selected-company").val().trim() == "" || $$("#employee-designation").val().trim() == "" || $$("#bank-name").val().trim() == "" || $$("#account-number").val().trim() == "" || $$("#salary").val().trim() == "" || $$("#employee-address").val().trim() == "") {
 
           toastMe("Please complete the form!");
 
@@ -678,14 +741,18 @@ $$(document).on('page:init', '.page[data-name="addemployee"]', function (e){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
-          app.request.post("https://abtechnology.com.ng/netbooks/add_employee.php",
+          app.request.post("https://abtechnology.com.ng/auditbar/add_employee.php",
           {
             
             
             "employee_email" : $$("#employee-email").val(),
             "company_id" : $$("#selected-company-id").val(),
             "employee_designation" : $$("#employee-designation").val(),
-            "my_id" : permanentReg.user_serial
+            "my_id" : permanentReg.user_serial,
+            "bank_name" : $$("#bank-name").val(),
+            "account_number" :$$("#account-number").val(),
+            "salary" : $$("#salary").val(),
+            "employee_address" : $$("#employee-address").val()
 
           },
             function(data){
@@ -744,104 +811,15 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
   var permanentReg = window.localStorage.getItem("permanentReg");
   permanentReg = JSON.parse(permanentReg);
 
-  $$("#payment-expiry-date").keyup(function(){
-    var countEntry = $$(this).val().length;
-    var key = event.keyCode || event.charCode;
-    
-    if (countEntry == 2 && key != 8 && key != 46) {
-      $$("#payment-expiry-date").val($$("#payment-expiry-date").val() + " / ");
-    }
-  });
-
-
-  $$("#regchooseplan-play-button").click(function(){
-    if ($$("#card-number").val().trim() == "" || $$("#payment-expiry-date").val().trim() == "" || $$("#payment-cvv").val().trim() == "") {
-
-        toastMe("Please complete card details");
-    }
-    else{
-
-      $$("#regchooseplan-play-button").html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-      var splitExpiryDate = $$("#payment-expiry-date").val().split(" / ");
-      $$("#expiry-month").val(splitExpiryDate[0]);
-      $$("#expiry-year").val(splitExpiryDate[1]);
-
-      
-      Paystack.init({
-            access_code: window.localStorage.getItem("regChoosePlanAccessCode"),
-            form: "auditbar-payment-form"
-        }).then(function(returnedObj){
-
-            window.PAYSTACK = returnedObj;
-            $$("#auditbar-payment-form").trigger("submit");
-
-        }).catch(function(error){
-            // If there was a problem, you may 
-            // log to console (while testing)
-            console.log("Problem connecting to payments server. Try again later");
-            // or report to your backend for debugging (in production)
-            window.reportErrorToBackend(error);
-        });
-
-    }
-  });
 
 
 
 
 
-  $$("#auditbar-payment-form").submit(function(){
-
-      PAYSTACK.card.charge().then(function(response){
-
-        console.log(response);
-
-        switch(response.status) {
-            case 'auth':
-                switch(response.data.auth) {
-                    case 'pin':
-                        paySheet.close();
-                        pinSheet.open();
-                        break;
-                    case 'phone':
-                        toastMe("Invalid Card Supplied!");
-                        paySheet.close();
-                        break;
-                    case 'otp':
-                        paySheet.close();
-                        otpSheet.open();
-                        break;
-                    case '3DS':
-                        toastMe("Invalid Card Supplied!");
-                        paySheet.close();
-                        break;
-                }
-                break;
-            case 'failed' : 
-              toastMe("Payment failed");
-              break;
-            case 'timeout':
-                toastMe("Server Timeout. Try Again");
-                $$("#push-payment-btn").html("<i class='icon f7-icons'>lock</i>&nbsp;Pay").prop("disabled", false);
-                break;
-            case 'success':
-                confirmPayment(response.data.reference);
-                //paySheet.close();
-                //paymentCompletePopup.open();
-                break;
-              }
 
 
-              });
 
 
-    });
-
-
-    console.log("Welcome to the reg choose plan page");
-    $$("#free-trial-btn").click(function(){
-      mainView.router.navigate("/dashboard/");
-    });
     $$("#goto-dashboard-button").click(function(){
       paymentCompletePopup.close();
       mainView.router.navigate("/dashboard/");
@@ -859,122 +837,14 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
       subscribe(2);
     });
 
-    $$("#free-trial-button").click(function(){
-      app.dialog.preloader();
-      subscribe(3);
-    });
-
-    $$("#confirm-pin-button").click(function(){
-      if ($$("#card-pin").val().trim() == "" || $$("#card-pin").val().trim().length < 4) {
-        toastMe("Enter a valid PIN");
-      }
-      else{
-        $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-        PAYSTACK.card.charge({
-          pin: $$("#card-pin").val()
-
-        }).then(function(response){
-          console.log(response);
-          switch(response.status) {
-            case 'auth':
-                switch(response.data.auth) {
-                    case 'phone':
-                        toastMe("Unsupported Card!");
-                        pinSheet.close();
-                    case 'otp':
-                        pinSheet.close();
-                        otpSheet.open();
-                        break;
-                    case '3DS':
-                        toastMe("Unsupported Card!");
-                        pinSheet.close();
-                }
-                break;
-            case 'failed':
-                toastMe("Incorrect PIN");
-                $$("#confirm-pin-button").html("Confirm PIN").prop("disabled", false);
-                break;
-            case 'timeout':
-                toastMe("Timeout. Try Again");
-                $$("#confirm-pin-button").html("Confirm PIN").prop("disabled", false);
-              break;
-            case 'success': toastMe("success");
-            //pinSheet.close();
-            confirmPayment(response.data.reference);
-            //paymentCompletePopup.open(); 
-            break;
-      }
-
-    });
-
-      }
-
-    });
+  
 
 
 
 
 
-    $$("#confirm-otp-button").click(function(){
-      if ($$("#card-otp").val().trim() == "") {
-        toastMe("Enter a valid OTP");
-      }
-      else{
-        $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-        PAYSTACK.card.charge({
-          pin: $$("#card-otp").val()
-
-        }).then(function(response){
-          console.log(response);
-          switch(response.status) {
-            case 'failed':
-                toastMe("Incorrect OTP");
-                $$("#confirm-otp-button").html("Confirm OTP").prop("disabled", false);
-                break;
-            case 'timeout':
-                toastMe("Timeout. Try Again");
-                $$("#confirm-otp-button").html("Confirm OTP").prop("disabled", false);
-              break;
-            case 'success': toastMe("success");
-            //otpSheet.close();
-            //paymentCompletePopup.open(); 
-            confirmPayment(reference.data.reference);
-            break;
-      }
-
-    });
-
-  }
-
-});
 
 
-
-
-    var paySheet = app.sheet.create({
-        el : '.pay-plan-sheet',
-        swipeToClose : true,
-        backdrop : true,
-        closeByOutsideClick : true,
-        closeOnEscape : true
-    });
-
-    var pinSheet = app.sheet.create({
-        el : '.pin-sheet',
-        swipeToClose : true,
-        backdrop : true,
-        closeByOutsideClick : true,
-        closeOnEscape : true
-    });
-
-
-    var otpSheet = app.sheet.create({
-        el : '.otp-sheet',
-        swipeToClose : true,
-        backdrop : true,
-        closeByOutsideClick : true,
-        closeOnEscape : true
-    });
 
     
 
@@ -993,7 +863,7 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
 
       function subscribe(subscriptionID){
 
-      app.request.post('https://abtechnology.com.ng/netbooks/init_transaction.php',
+      app.request.post('https://abtechnology.com.ng/auditbar/init_transaction.php',
               {
 
                "subscription_id" : subscriptionID,
@@ -1035,7 +905,7 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
             
             pushedData = JSON.parse(pushedData);
 
-            app.request.post("https://abtechnology.com.ng/netbooks/paystack/paystack_init.php",
+            app.request.post("https://abtechnology.com.ng/auditbar/paystack/paystack_init.php",
                         {
                           "buyer_email" : permanentReg.user_email,
                           "amount_2_pay" : pushedData.subscription_price * 100,
@@ -1052,12 +922,14 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
                           }
                           else{
                           app.dialog.close();
+                          app.dialog.preloader("Awaiting payment...");
                           console.log(data);
                           var parsedData = JSON.parse(data);
-                          var accessCode = parsedData.data.access_code;
-                          window.localStorage.setItem("regChoosePlanAccessCode", accessCode);
+                          var authUrl = parsedData.data.authorization_url;
+                          window.open(authUrl, "_system");
+                          confirmPayment(parsedData.data.reference);
 
-                          paySheet.open();
+                          
                                                   
                       }
                           
@@ -1077,7 +949,7 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
 
 
           //fetch prices and add them to button
-          app.request.post('https://abtechnology.com.ng/netbooks/fetch_prices.php',
+          app.request.post('https://abtechnology.com.ng/auditbar/fetch_prices.php',
               
                function (data) {
                 
@@ -1102,38 +974,79 @@ $$(document).on('page:init', '.page[data-name="chooseplan"]', function (e){
 
 
 
-
+var counter = 0;
 
 
            function confirmPayment(transactionID){
 
 
-            app.request.post("https://abtechnology.com.ng/netbooks/paystack/verify_payment.php",
+            app.request.post("https://abtechnology.com.ng/auditbar/paystack/confirm_payment.php",
                         {
                           
                           "transaction_id" : transactionID                         
                           
                         },
                          function(data){
+                          
 
-                        
-                          console.log(data);
-                         
+                          console.log(JSON.parse(data));
+                          var data = JSON.parse(data);
 
-                            paySheet.close();
-                            pinSheet.close();
-                            otpSheet.close();
+
+                          if (data.status == "No payment made") {
+                            
+                            if(counter < 60){
+                              counter++;
+                              console.log(counter);
+                              confirmPayment(transactionID);
+                            }
+                            else{
+                              app.dialog.close();
+                              app.dialog.alert("Payment failed!");
+                            }
+
+                          }
+                          else{
+                            app.dialog.close();
                             paymentCompletePopup.open();
+                          }
+                          
 
-                                                                        
-                      
-                          
-                          
+
                          }, function(){
 
-                            
+                            app.dialog.close();
                             toastMe("Unable to verify transaction. Try again later");
                             
+                         });
+
+          }
+
+
+
+
+
+
+
+
+        function checkPayment(paymentRef){
+
+
+            app.request.post("https://abtechnology.com.ng/auditbar/paystack/verify_payment.php",
+                        {
+                          
+                          "transaction_id" : paymentRef                         
+                          
+                        },
+                         function(data){
+                        
+                          console.log(data);
+                          paymentCompletePopup.open();
+
+
+                         }, function(){
+
+                            toastMe("Unable to verify transaction. Try again later");
                             
                          });
 
@@ -1295,7 +1208,7 @@ $$(document).on('page:init', '.page[data-name="accountstatement"]', function (e)
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
-          app.request.post("https://abtechnology.com.ng/netbooks/account_statement_request.php",
+          app.request.post("https://abtechnology.com.ng/auditbar/account_statement_request.php",
           {
             
             
@@ -1368,7 +1281,7 @@ $$(document).on('page:init', '.page[data-name="accountstatement"]', function (e)
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
-          app.request.post("https://abtechnology.com.ng/netbooks/customer_account_statement_request.php",
+          app.request.post("https://abtechnology.com.ng/auditbar/customer_account_statement_request.php",
           {
             
             "customer_id" : $$("#customer-id").val(),

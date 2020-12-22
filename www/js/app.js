@@ -39,7 +39,7 @@ toastMe = function(toastMessage){
 
 messenger = function(theMessage, theChannel, theEmail, thePhone, theSubject){
 
-  app.request.post('https://abtechnology.com.ng/netbooks/messenger.php', 
+  app.request.post('https://abtechnology.com.ng/auditbar/messenger.php', 
             {
              "the_message" : theMessage,
              "the_channel" : theChannel,
@@ -361,7 +361,7 @@ $$(document).on('page:init', '.page[data-name="login"]', function (e){
           $$("#login-btn").html("Logging in...").prop("disabled", true);
             
           
-            app.request.post('https://abtechnology.com.ng/netbooks/user_login.php', 
+            app.request.post('https://abtechnology.com.ng/auditbar/user_login.php', 
             {
              "user_email" : $$("#user-email").val(),
              "user_password" : $$("#user-password").val()
@@ -492,7 +492,7 @@ $$(document).on('page:init', '.page[data-name="signup"]', function (e){
             window.localStorage.setItem("temporaryReg", tempStorage);
 
 
-            app.request.post('https://abtechnology.com.ng/netbooks/generate_code.php', 
+            app.request.post('https://abtechnology.com.ng/auditbar/generate_code.php', 
             
              function (data) {
 
@@ -605,7 +605,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
 
 
 
-             app.request.post('https://abtechnology.com.ng/netbooks/user_registration.php', 
+             app.request.post('https://abtechnology.com.ng/auditbar/user_registration.php', 
             {
              "new_user_first_name" : tempStorage.first_name,
              "new_user_last_name" : tempStorage.last_name,
@@ -707,7 +707,7 @@ $$(document).on('page:init', '.page[data-name="companylogo"]', function (e){
             tempStorage = JSON.parse(tempStorage);
 
 
-             app.request.post('https://abtechnology.com.ng/netbooks/user_registration.php', 
+             app.request.post('https://abtechnology.com.ng/auditbar/user_registration.php', 
             {
              "new_user_first_name" : tempStorage.first_name,
              "new_user_last_name" : tempStorage.last_name,
@@ -816,98 +816,10 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
   var permanentReg = window.localStorage.getItem("permanentReg");
   permanentReg = JSON.parse(permanentReg);
 
-  $$("#payment-expiry-date").keyup(function(){
-    var countEntry = $$(this).val().length;
-    var key = event.keyCode || event.charCode;
-    
-    if (countEntry == 2 && key != 8 && key != 46) {
-      $$("#payment-expiry-date").val($$("#payment-expiry-date").val() + " / ");
-    }
-  });
-
-
-  $$("#regchooseplan-play-button").click(function(){
-    if ($$("#card-number").val().trim() == "" || $$("#payment-expiry-date").val().trim() == "" || $$("#payment-cvv").val().trim() == "") {
-
-        toastMe("Please complete card details");
-    }
-    else{
-
-      $$("#regchooseplan-play-button").html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-      var splitExpiryDate = $$("#payment-expiry-date").val().split(" / ");
-      $$("#expiry-month").val(splitExpiryDate[0]);
-      $$("#expiry-year").val(splitExpiryDate[1]);
-
-      
-      Paystack.init({
-            access_code: window.localStorage.getItem("regChoosePlanAccessCode"),
-            form: "auditbar-payment-form"
-        }).then(function(returnedObj){
-
-            window.PAYSTACK = returnedObj;
-            $$("#auditbar-payment-form").trigger("submit");
-
-        }).catch(function(error){
-            // If there was a problem, you may 
-            // log to console (while testing)
-            console.log("Problem connecting to payments server. Try again later");
-            // or report to your backend for debugging (in production)
-            window.reportErrorToBackend(error);
-        });
-
-    }
-  });
 
 
 
 
-
-  $$("#auditbar-payment-form").submit(function(){
-
-      PAYSTACK.card.charge().then(function(response){
-
-        console.log(response);
-
-        switch(response.status) {
-            case 'auth':
-                switch(response.data.auth) {
-                    case 'pin':
-                        paySheet.close();
-                        pinSheet.open();
-                        break;
-                    case 'phone':
-                        toastMe("Invalid Card Supplied!");
-                        paySheet.close();
-                        break;
-                    case 'otp':
-                        paySheet.close();
-                        otpSheet.open();
-                        break;
-                    case '3DS':
-                        toastMe("Invalid Card Supplied!");
-                        paySheet.close();
-                        break;
-                }
-                break;
-            case 'failed' : 
-              toastMe("Payment failed");
-              break;
-            case 'timeout':
-                toastMe("Server Timeout. Try Again");
-                $$("#push-payment-btn").html("<i class='icon f7-icons'>lock</i>&nbsp;Pay").prop("disabled", false);
-                break;
-            case 'success':
-                confirmPayment(response.data.reference);
-                //paySheet.close();
-                //paymentCompletePopup.open();
-                break;
-              }
-
-
-              });
-
-
-    });
 
 
     console.log("Welcome to the reg choose plan page");
@@ -936,117 +848,12 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
       subscribe(3);
     });
 
-    $$("#confirm-pin-button").click(function(){
-      if ($$("#card-pin").val().trim() == "" || $$("#card-pin").val().trim().length < 4) {
-        toastMe("Enter a valid PIN");
-      }
-      else{
-        $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-        PAYSTACK.card.charge({
-          pin: $$("#card-pin").val()
-
-        }).then(function(response){
-          console.log(response);
-          switch(response.status) {
-            case 'auth':
-                switch(response.data.auth) {
-                    case 'phone':
-                        toastMe("Unsupported Card!");
-                        pinSheet.close();
-                    case 'otp':
-                        pinSheet.close();
-                        otpSheet.open();
-                        break;
-                    case '3DS':
-                        toastMe("Unsupported Card!");
-                        pinSheet.close();
-                }
-                break;
-            case 'failed':
-                toastMe("Incorrect PIN");
-                $$("#confirm-pin-button").html("Confirm PIN").prop("disabled", false);
-                break;
-            case 'timeout':
-                toastMe("Timeout. Try Again");
-                $$("#confirm-pin-button").html("Confirm PIN").prop("disabled", false);
-              break;
-            case 'success': toastMe("success");
-            //pinSheet.close();
-            confirmPayment(response.data.reference);
-            //paymentCompletePopup.open(); 
-            break;
-      }
-
-    });
-
-      }
-
-    });
 
 
 
 
 
-    $$("#confirm-otp-button").click(function(){
-      if ($$("#card-otp").val().trim() == "") {
-        toastMe("Enter a valid OTP");
-      }
-      else{
-        $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-        PAYSTACK.card.charge({
-          pin: $$("#card-otp").val()
 
-        }).then(function(response){
-          console.log(response);
-          switch(response.status) {
-            case 'failed':
-                toastMe("Incorrect OTP");
-                $$("#confirm-otp-button").html("Confirm OTP").prop("disabled", false);
-                break;
-            case 'timeout':
-                toastMe("Timeout. Try Again");
-                $$("#confirm-otp-button").html("Confirm OTP").prop("disabled", false);
-              break;
-            case 'success': toastMe("success");
-            //otpSheet.close();
-            //paymentCompletePopup.open(); 
-            confirmPayment(reference.data.reference);
-            break;
-      }
-
-    });
-
-  }
-
-});
-
-
-
-
-    var paySheet = app.sheet.create({
-        el : '.pay-plan-sheet',
-        swipeToClose : true,
-        backdrop : true,
-        closeByOutsideClick : true,
-        closeOnEscape : true
-    });
-
-    var pinSheet = app.sheet.create({
-        el : '.pin-sheet',
-        swipeToClose : true,
-        backdrop : true,
-        closeByOutsideClick : true,
-        closeOnEscape : true
-    });
-
-
-    var otpSheet = app.sheet.create({
-        el : '.otp-sheet',
-        swipeToClose : true,
-        backdrop : true,
-        closeByOutsideClick : true,
-        closeOnEscape : true
-    });
 
     
 
@@ -1065,7 +872,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
 
       function subscribe(subscriptionID){
 
-      app.request.post('https://abtechnology.com.ng/netbooks/init_transaction.php',
+      app.request.post('https://abtechnology.com.ng/auditbar/init_transaction.php',
               {
 
                "subscription_id" : subscriptionID,
@@ -1107,7 +914,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
             
             pushedData = JSON.parse(pushedData);
 
-            app.request.post("https://abtechnology.com.ng/netbooks/paystack/paystack_init.php",
+            app.request.post("https://abtechnology.com.ng/auditbar/paystack/paystack_init.php",
                         {
                           "buyer_email" : permanentReg.user_email,
                           "amount_2_pay" : pushedData.subscription_price * 100,
@@ -1124,19 +931,21 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
                           }
                           else{
                           app.dialog.close();
+                          app.dialog.preloader("Awaiting payment...");
                           console.log(data);
                           var parsedData = JSON.parse(data);
-                          var accessCode = parsedData.data.access_code;
-                          window.localStorage.setItem("regChoosePlanAccessCode", accessCode);
+                          var authUrl = parsedData.data.authorization_url;
+                          window.open(authUrl, "_system");
+                          confirmPayment(parsedData.data.reference);;
 
-                          paySheet.open();
+                          
                                                   
                       }
                           
                           
                          }, function(){
 
-                            
+                            app.dialog.close();
                             toastMe("Unable to create transaction now. Try again later");
                             $$("#one-k-subscription-button").html("buttonText").prop("disabled", false);
                             
@@ -1149,7 +958,7 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
 
 
           //fetch prices and add them to button
-          app.request.post('https://abtechnology.com.ng/netbooks/fetch_prices.php',
+          app.request.post('https://abtechnology.com.ng/auditbar/fetch_prices.php',
               
                function (data) {
                 
@@ -1176,40 +985,81 @@ $$(document).on('page:init', '.page[data-name="regchooseplan"]', function (e){
 
 
 
+var counter = 0;
+
 
            function confirmPayment(transactionID){
 
 
-            app.request.post("https://abtechnology.com.ng/netbooks/paystack/verify_payment.php",
+            app.request.post("https://abtechnology.com.ng/auditbar/paystack/confirm_payment.php",
                         {
                           
                           "transaction_id" : transactionID                         
                           
                         },
                          function(data){
+                          
 
-                        
-                          console.log(data);
-                         
+                          console.log(JSON.parse(data));
+                          var data = JSON.parse(data);
 
-                            paySheet.close();
-                            pinSheet.close();
-                            otpSheet.close();
+
+                          if (data.status == "No payment made") {
+                            
+                            if(counter < 60){
+                              counter++;
+                              console.log(counter);
+                              confirmPayment(transactionID);
+                            }
+                            else{
+                              app.dialog.close();
+                              app.dialog.alert("Payment failed!");
+                            }
+
+                          }
+                          else{
+                            app.dialog.close();
                             paymentCompletePopup.open();
+                          }
+                          
 
-                                                                        
-                      
-                          
-                          
+
                          }, function(){
 
-                            
+                            app.dialog.close();
                             toastMe("Unable to verify transaction. Try again later");
-                            
                             
                          });
 
           }
+
+
+
+
+
+        function checkPayment(paymentRef){
+
+
+            app.request.post("https://abtechnology.com.ng/auditbar/paystack/verify_payment.php",
+                        {
+                          
+                          "transaction_id" : paymentRef                         
+                          
+                        },
+                         function(data){
+                        
+                          console.log(data);
+                          paymentCompletePopup.open();
+
+
+                         }, function(){
+
+                            toastMe("Unable to verify transaction. Try again later");
+                            
+                         });
+
+          }
+
 
 
 
@@ -1238,7 +1088,7 @@ $$(document).on('page:init', '.page[data-name="recovery"]', function (e){
         else{
 
             $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-             app.request.post('https://abtechnology.com.ng/netbooks/recover_account.php', 
+             app.request.post('https://abtechnology.com.ng/auditbar/recover_account.php', 
             {
              "user_email" : $$("#recovery-email").val(),
            },
@@ -1450,7 +1300,7 @@ $$(document).on('page:init', '.page[data-name="newpassword"]', function (e){
         else{
 
             $$(this).html("<img src='imgs/assets/loading.gif' style='max-width:50px;'>").prop("disabled", true);
-             app.request.post('https://abtechnology.com.ng/netbooks/set_new_password.php', 
+             app.request.post('https://abtechnology.com.ng/auditbar/set_new_password.php', 
             {
             "user_serial_no" : recoveryProps.user_serial_no,
              "user_email" : recoveryProps.recovery_email,
@@ -1520,6 +1370,9 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
   }
 
 
+
+
+
   var timeFramePopover = app.popover.create({
       el : '.time-frame-change'
    });
@@ -1533,19 +1386,29 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
     grabCompanySummary(chosen_company_id);
   }
 
-
-  changeTimeFrame = function(timeFrame){
-
-    app.popover.close();
-
-
-      function addZero(i){
+    function addZero(i){
         if (i < 10) {
           i = "0" + i;
         }
 
         return i;
       }
+
+
+
+   var todaysDate = new Date().getFullYear() + "-" + addZero(new Date().getMonth() + 1) + "-" + addZero(new Date().getDate());
+
+      $$("#date-span").text(todaysDate);
+      
+
+
+  changeTimeFrame = function(timeFrame){
+
+    app.popover.close();
+
+
+    
+
 
 
        var dateRange = window.localStorage.getItem("dateRange");
@@ -1744,8 +1607,9 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
   var chosen_company_name = theChosenCompany.company_name;
   var chosen_company_logo = theChosenCompany.company_logo;
   var chosen_company_id = theChosenCompany.company_id;
+  var chosen_company_email = theChosenCompany.company_email;
 
-  $$(".company-name").text(chosen_company_name);
+  $$(".company-name").html(chosen_company_name + "<br><small class='text-color-gray'>" + chosen_company_email + "</small>");
   //set company logo
   if (chosen_company_logo == "") {
     $$(".company-logo").prop("src", "imgs/assets/logo.png");
@@ -1771,7 +1635,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
     if (theChosenCompany.company_access == "administrator") {
         
     
-     app.request.post("https://abtechnology.com.ng/netbooks/check_subscription.php",
+     app.request.post("https://abtechnology.com.ng/auditbar/check_subscription.php",
           {
             "company_id" : chosen_company_id
           },
@@ -1831,6 +1695,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
     var company_id = permanentReg.companys[i]["company_id"];
     var company_name = permanentReg.companys[i]["company_name"];
     var company_logo = permanentReg.companys[i]["company_logo"];
+    var company_email = permanentReg.companys[i]["company_email"];
 
     var peg = "<li><a class='list-button item-link' href='#' onclick=selectCompany(" + company_id + ")>" + company_name + "</a></li>";
     $$("#dashboard-company-list").append(peg);
@@ -1855,7 +1720,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
           var company_phone = permanentReg.companys[i]["company_phone"];
           var company_address = permanentReg.companys[i]["company_address"];
           var company_description = permanentReg.companys[i]["company_description"];
-          $$(".company-name").text(company_name);
+          $$(".company-name").html(company_name + "<br><small class='text-color-gray'>" + company_email + "</small>");
           dashboardPopover.close();
 
           //update chosen company
@@ -1899,7 +1764,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
     var dateRange = window.localStorage.getItem("dateRange");
     dateRange = JSON.parse(dateRange);
 
-      app.request.post('https://abtechnology.com.ng/netbooks/company_summary.php', 
+      app.request.post('https://abtechnology.com.ng/auditbar/company_summary.php', 
             {
             "company_serial" : theCompanyID,
              "from_date" : dateRange.fromDate,
@@ -1923,7 +1788,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
                   var invoiceCurrency = window.localStorage.getItem("dashboard_currency");
                   for (var i = 0; i < cashIDs.length; i++) {
                   var thisDataView = viewDatas[i];
-                  $$("#" + cashIDs[i]).text(invoiceCurrency + "" + parseInt(dataCheck[thisDataView]).toLocaleString());
+                  $$("#" + cashIDs[i]).text(invoiceCurrency + " " + parseInt(dataCheck[thisDataView]).toLocaleString());
                   }
                   console.log(dataCheck.income_breakdown);
                   pushChart(dataCheck.income_breakdown, dataCheck.expenses_breakdown);
@@ -1950,7 +1815,7 @@ $$(document).on('page:init', '.page[data-name="dashboard"]', function (e){
          var cashIDs = ["total-income", "total-expenses", "gross-profit", "total-invoice-amount", "total-paid-invoice", "total-unpaid-invoice", "inventory", "labour", "rent", "tax", "other", "net-profit"];
 
          for (var i = 0; i < cashIDs.length; i++) {
-            $$("#" + cashIDs[i]).text(window.localStorage.getItem("dashboard_currency") + "0");
+            $$("#" + cashIDs[i]).text(window.localStorage.getItem("dashboard_currency") + " 0");
           }
           var zero_data = [
             { "group_name": "Income", "name": "0000-00-00", "value": 0 },
@@ -2197,7 +2062,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
 
 
 
-  app.request.post("https://abtechnology.com.ng/netbooks/list_bank_accounts.php",
+  app.request.post("https://abtechnology.com.ng/auditbar/list_bank_accounts.php",
           {
             
             "company_serial" : chosenCompany.company_id
@@ -2416,7 +2281,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
       $$("#invoice-total-plate").text(totalInvoicePrice);
 
 
-      app.request.post('https://abtechnology.com.ng/netbooks/generate_invoice_preview.php', 
+      app.request.post('https://abtechnology.com.ng/auditbar/generate_invoice_preview.php', 
             {
               
             "invoice_owner" : chosenCompany.company_id,
@@ -2443,7 +2308,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
              function (data) {
 
               console.log(data);
-              var invoicePreviewURL = "https://abtechnology.com.ng/netbooks/businesses/" + chosenCompany.company_name + "_" + chosenCompany.company_id + "/invoice.html";
+              var invoicePreviewURL = "https://abtechnology.com.ng/auditbar/businesses/" + chosenCompany.company_name + "_" + chosenCompany.company_id + "/invoice.html";
               invoicePreviewURL = encodeURI(invoicePreviewURL);
               window.setTimeout(function(){
                 $("#preview-invoice").load(invoicePreviewURL);
@@ -2480,7 +2345,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
       $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
       
 
-          app.request.post("https://abtechnology.com.ng/netbooks/create_invoice.php",
+          app.request.post("https://abtechnology.com.ng/auditbar/create_invoice.php",
           {
             "company_name" :  chosenCompany.company_name,
             "invoice_owner" : chosenCompany.company_id,
@@ -2645,7 +2510,7 @@ $$(document).on('page:init', '.page[data-name="createinvoice"]', function (e){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
-          app.request.post("https://abtechnology.com.ng/netbooks/add_contact.php",
+          app.request.post("https://abtechnology.com.ng/auditbar/add_contact.php",
           {
             
             "contact_name" : $$("#contact-name").val(),
@@ -2724,7 +2589,7 @@ $$(document).on('page:init', '.page[data-name="contactsearch"]', function (e){
 
 
 
-    app.request.post("https://abtechnology.com.ng/netbooks/find_contact.php",
+    app.request.post("https://abtechnology.com.ng/auditbar/find_contact.php",
           {
             
             "my_id" : permanentReg.user_serial
@@ -3146,7 +3011,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
       console.log(invoicePayinBalance);
 
 
-        app.request.post("https://abtechnology.com.ng/netbooks/mark_as_paid.php",
+        app.request.post("https://abtechnology.com.ng/auditbar/mark_as_paid.php",
           {
             "invoice_id" : theInvoice.invoice_sn,
             "invoice_number" : theInvoice.invoice_number,
@@ -3201,7 +3066,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
     if (chosenCompany.company_access == "administrator") {
         
     
-     app.request.post("https://abtechnology.com.ng/netbooks/check_subscription.php",
+     app.request.post("https://abtechnology.com.ng/auditbar/check_subscription.php",
           {
             "company_id" : chosenCompany.company_id
           },
@@ -3389,7 +3254,7 @@ $$(document).on('page:init', '.page[data-name="invoices"]', function (e){
 
 function loadAllInvoices(){
 
-   app.request.post('https://abtechnology.com.ng/netbooks/list_invoices.php', 
+   app.request.post('https://abtechnology.com.ng/auditbar/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3447,7 +3312,7 @@ function loadAllInvoices(){
 
 function loadPaidInvoices(){
 
-   app.request.post('https://abtechnology.com.ng/netbooks/list_invoices.php', 
+   app.request.post('https://abtechnology.com.ng/auditbar/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3497,7 +3362,7 @@ function loadPaidInvoices(){
 
 function loadUnpaidInvoices(){
 
-   app.request.post('https://abtechnology.com.ng/netbooks/list_invoices.php', 
+   app.request.post('https://abtechnology.com.ng/auditbar/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3548,7 +3413,7 @@ function loadUnpaidInvoices(){
 
 function loadOverdueInvoices(){
 
-   app.request.post('https://abtechnology.com.ng/netbooks/list_invoices.php', 
+   app.request.post('https://abtechnology.com.ng/auditbar/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3611,7 +3476,7 @@ function loadOverdueInvoices(){
 
 function loadPartialInvoices(){
 
-   app.request.post('https://abtechnology.com.ng/netbooks/list_invoices.php', 
+   app.request.post('https://abtechnology.com.ng/auditbar/list_invoices.php', 
             {
             "company_serial" : chosenCompany.company_id,
              "from_date" : JSON.parse(window.localStorage.getItem("invoiceDateRange")).from_date,
@@ -3704,7 +3569,7 @@ function loadPartialInvoices(){
 
           $$(this).html("<img src='imgs/assets/loading.gif' style='max-width: 50px;'>").prop("disabled", true);
 
-          app.request.post("https://abtechnology.com.ng/netbooks/invoice_payins.php",
+          app.request.post("https://abtechnology.com.ng/auditbar/invoice_payins.php",
           {
             
             "invoice_id" : selectedInvoice["invoice_sn"],
