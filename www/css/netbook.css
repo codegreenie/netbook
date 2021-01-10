@@ -22,15 +22,15 @@
 @font-face {
        
 
-        font-family: "Gigi";
-        src: url("../fonts/GIGI.ttf");
+        font-family: "Roboto";
+        src: url("../fonts/Roboto-Regular.ttf");
 
-         font-family: "Montserrat";
-        src: url("../fonts/Montserrat-Medium.ttf");
+         /*font-family: "Montserrat";
+        src: url("../fonts/Montserrat-Medium.ttf");*/
     }
 
 *{
-    font-family: "Montserrat";
+    font-family: "Roboto";
     -webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
