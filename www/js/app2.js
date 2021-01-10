@@ -39,7 +39,7 @@ permanentReg = JSON.parse(permanentReg);
 
                 
 
-               contactListJoin += "<li class='swipeout'><a class='item-link item-content swipeout-content' href='#' onclick=editChosenContact(" + contactSN + ")><div class='item-media'><i class='icon f7-icons'>person_round</i></div><div class='item-inner'><div class='item-title'>" + contactName + "</div></div></a><div class='swipeout-actions-right'><a class='swipeout-delete' href='#' onclick=deleteChosenContact(" + contactSN + ")>Delete</a></div></li>";
+               contactListJoin += "<li class='swipeout' style='padding:7px 0px;'><a class='item-link item-content swipeout-content' href='#' onclick=editChosenContact(" + contactSN + ")><div class='item-media'><i class='icon f7-icons'>person_round</i></div><div class='item-inner'><div class='item-title'>" + contactName + "</div></div></a><div class='swipeout-actions-right'><a class='swipeout-delete' href='#' onclick=deleteChosenContact(" + contactSN + ")>Delete</a></div></li>";
                $$("#all-contacts-list").html(contactListJoin).removeClass("text-center");
 
               }
